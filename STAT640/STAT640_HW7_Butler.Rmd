@@ -1,0 +1,150 @@
+---
+output: 
+  pdf_document: 
+    keep_tex: yes
+    includes:
+        in_header: preamble_common.tex
+---
+
+
+
+STAT 640: Homework 7
+===================
+Due **Wednesday, March 23, 11:59pm MT** on the course Canvas webpage. Please follow the homework guidelines on the syllabus.
+
+
+
+## Name: Hannah Butler
+##
+
+
+## Problem 1
+
+For this question, use the same data and model as Problem 4 on Homework 6. Consider the null hypothesis that there is no difference in chick weight at age 6 between chicks on Diets 1, 2, and 4. (Note: this hypothesis does not involve Diet 3.)
+
+**a.** Provide the form of the linear model for weight as a function of diet for the entire dataset of age 6 chicks. In other words, copy your answer to Problem 4a from Homework 6.
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+**b.** Find $\bmA$ such that $\bmA\bmbeta = \bm0$ corresponds to this hypothesis.
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+**c.** Compute $RSS_H - RSS$ using only $\bbh$, $\bmA$, and $\bmX$.
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+**d.** Conduct an F-test to test this hypothesis. Provide the test statistic, p-value, and a conclusion statement.
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+**e.** Check your answer to (c) by fitting a model that corresponds to the null hypothesis and calculating $RSS_H$.
+    
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+    
+# Problem 2
+
+Prove Proposition 5.11. That is, under the conditions of that proposition, show that 
+\[\frac{RSS_H - RSS}{RSS} = \frac{R^2 - R^2_H}{1 - R^2}\]
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+
+# Problem 3
+
+Consider the two regression lines
+\[Y_{ki} = \beta_kx_i + \epsilon_{ki}\]
+for $k=1, 2$ and $i=1, \dots, n$. Assume uncorrelated, homoscedastic errors.
+Find the F-statistic for testing $H : \beta_1 = \beta_2$.
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+# Problem 4
+Consider the linear model $\bmY = \bmX\bmbeta + \bmepsilon$ with $\bmX \in \mathbb{R}^{n \times p}$ and $\rank(\bmX) = r$. Let $\bmA\bmbeta = \bm0$ be a testable hypothesis with $\bmA \in \mathbb{R}^{q \times p}$ and $q < r$. Prove that if $\rank(\bmA) = q$, then $\rank(\bmA(\XtX)^{-}\bmA^\mT) = q$. (Hint: recall that $\rank(\bmB\bmB^\mT) = \rank(\bmB)$.)
+
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+
+
+# Problem 5
+
+Consider the linear model
+\begin{align*}
+Y_1 &= \theta_1 + \theta_2 + \epsilon_1\\
+Y_2 &= 2\theta_2 + \epsilon_2\\
+Y_3 &= -\theta_1 + \theta_2 + \epsilon_3
+\end{align*}
+where $\E[\bmepsilon] = \bm0$ and $\Var(\bmepsilon) = \sigma^2\bmI$.
+
+
+
+**a.** Show that $H : \theta_1 = 2\theta_2$ is a testable hypothesis.
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+    
+    
+**b.** Derive the form of the F-statistic for testing $H$.
+
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+       
+    
+**c.** If we assume the errors are normally distributed and the null hypothesis is true, what is the distribution of $F$?
+
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+       
+    
+        
+    

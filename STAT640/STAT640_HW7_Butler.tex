@@ -1,0 +1,321 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+\usepackage{amssymb,amsmath}
+\usepackage{natbib}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{ctable}
+% \usepackage{newtxtext} % Times-like font
+% \usepackage{titlesec}
+% \titleformat*{\section}{\Large\bfseries\sffamily}
+% \titleformat*{\subsection}{\large\bfseries\sffamily}
+
+%%%%%%%%%%%
+% Math Macros
+\newcommand{\bmA}{\ensuremath{\bm A}}
+\newcommand{\bma}{\ensuremath{\bm a}}
+\newcommand{\bmB}{\ensuremath{\bm B}}
+\newcommand{\bmb}{\ensuremath{\bm b}}
+\newcommand{\bmC}{\ensuremath{\bm C}}
+\newcommand{\bmc}{\ensuremath{\bm c}}
+\newcommand{\bmD}{\ensuremath{\bm D}}
+\newcommand{\bmd}{\ensuremath{\bm d}}
+\newcommand{\bmE}{\ensuremath{\bm E}}
+\newcommand{\bme}{\ensuremath{\bm e}}
+\newcommand{\bmF}{\ensuremath{\bm F}}
+\newcommand{\bmG}{\ensuremath{\bm G}}
+\newcommand{\bmg}{\ensuremath{\bm g}}
+\newcommand{\bmH}{\ensuremath{\bm H}}
+\newcommand{\bmI}{\ensuremath{\bm I}}
+\newcommand{\bmJ}{\ensuremath{\bm J}}
+\newcommand{\bmK}{\ensuremath{\bm K}}
+\newcommand{\bmL}{\ensuremath{\bm L}}
+\newcommand{\bmM}{\ensuremath{\bm M}}
+\newcommand{\bmP}{\ensuremath{\bm P}}
+\newcommand{\bmQ}{\ensuremath{\bm Q}}
+\newcommand{\bmq}{\ensuremath{\bm q}}
+\newcommand{\bmR}{\ensuremath{\bm R}}
+\newcommand{\bmr}{\ensuremath{\bm r}}
+\newcommand{\bmS}{\ensuremath{\bm S}}
+\newcommand{\bms}{\ensuremath{\bm s}}
+\newcommand{\bmT}{\ensuremath{\bm T}}
+\newcommand{\bmt}{\ensuremath{\bm t}}
+\newcommand{\bmU}{\ensuremath{\bm U}}
+\newcommand{\bmu}{\ensuremath{\bm u}}
+\newcommand{\bmV}{\ensuremath{\bm V}}
+\newcommand{\bmv}{\ensuremath{\bm v}}
+\newcommand{\bmW}{\ensuremath{\bm W}}
+\newcommand{\bmw}{\ensuremath{\bm w}}
+\newcommand{\bmX}{\ensuremath{\bm X}}
+\newcommand{\bmx}{\ensuremath{\bm x}}
+\newcommand{\bmY}{\ensuremath{\bm Y}}
+\newcommand{\bmy}{\ensuremath{\bm y}}
+\newcommand{\bmZ}{\ensuremath{\bm Z}}
+\newcommand{\bmz}{\ensuremath{\bm z}}
+
+
+\newcommand{\bmalpha}{\ensuremath{\bm{\alpha}}}
+\newcommand{\bmbeta}{\ensuremath{\bm{\beta}}}
+\newcommand{\bmdelta}{\ensuremath{\bm{\delta}}}
+\newcommand{\bmeta}{\ensuremath{\bm{\eta}}}
+\newcommand{\bmepsilon}{\ensuremath{\bm{\epsilon}}}
+\newcommand{\bmGamma}{\ensuremath{\bm{\Gamma}}}
+\newcommand{\bmgamma}{\ensuremath{\bm{\gamma}}}
+\newcommand{\bmLambda}{\ensuremath{\bm{\Lambda}}}
+\newcommand{\bmmu}{\ensuremath{\bm{\mu}}}
+\newcommand{\bmphi}{\ensuremath{\bm{\phi}}}
+\newcommand{\bmSigma}{\ensuremath{\bm{\Sigma}}}
+\newcommand{\bmtheta}{\ensuremath{\bm{\theta}}}
+\newcommand{\bmzeta}{\ensuremath{\bm{\zeta}}}
+
+\newcommand{\rank}{\ensuremath{\mathsf{rank}}}
+\newcommand{\nullity}{\ensuremath{\mathsf{nullity}}}
+\newcommand{\trace}{\ensuremath{\mathsf{tr}}}
+\newcommand{\diag}{\ensuremath{\mathsf{diag}}}
+\newcommand{\vecspan}{\ensuremath{\mathsf{span}}}
+
+\newcommand{\mT}{\ensuremath{\mathsf{T}}}
+
+\newcommand{\bbh}{\ensuremath{\hat{\bmbeta}}}
+\newcommand{\Rn}{\ensuremath{\mathbb{R}^n}}
+\newcommand{\Rnp}{\ensuremath{\mathbb{R}^{n\times p}}}
+\newcommand{\Pa}{\ensuremath{{\bmP}_{\bmA}}}
+\newcommand{\Pb}{\ensuremath{{\bmP}_{\bmB}}}
+\newcommand{\Pv}{\ensuremath{{\bmP}_\mathcal{V}}}
+\newcommand{\Pw}{\ensuremath{{\bmP}_\mathcal{W}}}
+\newcommand{\Px}{\ensuremath{{\bmP}_{\bmX}}}
+\newcommand{\XtX}{\ensuremath{\bmX^\mT\bmX}}
+\newcommand{\XtXinv}{\ensuremath{(\bmX^\mT\bmX)^{-1}}}
+\newcommand{\gtb}{\ensuremath{\bmg^\mT\bmbeta}}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\bbmx}{\ensuremath{\begin{bmatrix}}}
+\newcommand{\ebmx}{\ensuremath{\end{bmatrix}}}
+
+\newcommand{\E}{\ensuremath{\mathrm{E}}}
+\newcommand{\Var}{\ensuremath{\mathrm{Var}}}
+\newcommand{\Cov}{\ensuremath{\mathrm{Cov}}}
+
+\newcommand{\FWER}{\ensuremath{\mathrm{FWER}}}
+\newcommand{\PCER}{\ensuremath{\mathrm{PCER}}}
+\newcommand{\FDR}{\ensuremath{\mathrm{FDR}}}
+\newcommand{\sFWER}{\ensuremath{\mathrm{sFWER}}}
+
+
+
+
+
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\hypertarget{stat-640-homework-7}{%
+\section{STAT 640: Homework 7}\label{stat-640-homework-7}}
+
+Due \textbf{Wednesday, March 23, 11:59pm MT} on the course Canvas
+webpage. Please follow the homework guidelines on the syllabus.
+
+\hypertarget{name-hannah-butler}{%
+\subsection{Name: Hannah Butler}\label{name-hannah-butler}}
+
+\hypertarget{section}{%
+\subsection{}\label{section}}
+
+\hypertarget{problem-1}{%
+\subsection{Problem 1}\label{problem-1}}
+
+For this question, use the same data and model as Problem 4 on Homework
+6. Consider the null hypothesis that there is no difference in chick
+weight at age 6 between chicks on Diets 1, 2, and 4. (Note: this
+hypothesis does not involve Diet 3.)
+
+\textbf{a.} Provide the form of the linear model for weight as a
+function of diet for the entire dataset of age 6 chicks. In other words,
+copy your answer to Problem 4a from Homework 6.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Answer:}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{b.} Find \(\bmA\) such that \(\bmA\bmbeta = \bm0\) corresponds
+to this hypothesis.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Answer:}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{c.} Compute \(RSS_H - RSS\) using only \(\bbh\), \(\bmA\), and
+\(\bmX\).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Answer:}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{d.} Conduct an F-test to test this hypothesis. Provide the test
+statistic, p-value, and a conclusion statement.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Answer:}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{e.} Check your answer to (c) by fitting a model that corresponds
+to the null hypothesis and calculating \(RSS_H\).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Answer:}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{problem-2}{%
+\section{Problem 2}\label{problem-2}}
+
+Prove Proposition 5.11. That is, under the conditions of that
+proposition, show that
+\[\frac{RSS_H - RSS}{RSS} = \frac{R^2 - R^2_H}{1 - R^2}\]
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Answer:}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{problem-3}{%
+\section{Problem 3}\label{problem-3}}
+
+Consider the two regression lines
+\[Y_{ki} = \beta_kx_i + \epsilon_{ki}\] for \(k=1, 2\) and
+\(i=1, \dots, n\). Assume uncorrelated, homoscedastic errors. Find the
+F-statistic for testing \(H : \beta_1 = \beta_2\).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Answer:}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{problem-4}{%
+\section{Problem 4}\label{problem-4}}
+
+Consider the linear model \(\bmY = \bmX\bmbeta + \bmepsilon\) with
+\(\bmX \in \mathbb{R}^{n \times p}\) and \(\rank(\bmX) = r\). Let
+\(\bmA\bmbeta = \bm0\) be a testable hypothesis with
+\(\bmA \in \mathbb{R}^{q \times p}\) and \(q < r\). Prove that if
+\(\rank(\bmA) = q\), then \(\rank(\bmA(\XtX)^{-}\bmA^\mT) = q\). (Hint:
+recall that \(\rank(\bmB\bmB^\mT) = \rank(\bmB)\).)
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Answer:}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{problem-5}{%
+\section{Problem 5}\label{problem-5}}
+
+Consider the linear model \begin{align*}
+Y_1 &= \theta_1 + \theta_2 + \epsilon_1\\
+Y_2 &= 2\theta_2 + \epsilon_2\\
+Y_3 &= -\theta_1 + \theta_2 + \epsilon_3
+\end{align*} where \(\E[\bmepsilon] = \bm0\) and
+\(\Var(\bmepsilon) = \sigma^2\bmI\).
+
+\textbf{a.} Show that \(H : \theta_1 = 2\theta_2\) is a testable
+hypothesis.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Answer:}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{b.} Derive the form of the F-statistic for testing \(H\).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Answer:}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{c.} If we assume the errors are normally distributed and the
+null hypothesis is true, what is the distribution of \(F\)?
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Answer:}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\end{document}

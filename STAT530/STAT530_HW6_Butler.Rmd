@@ -1,0 +1,40 @@
+---
+title: "STAT 530 Homework 6"
+output: pdf_document
+date: '2022-03-18'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newcommand{\rsamp}[1]{#1_1, \dots , #1_n}
+\newcommand{\orderstats}[1]{#1_{(1)} < \dots < #1_(n)}
+
+(1) Problem 7.55 (a) and (b) Casella & Berger: For each of the following pdfs, let $\rsamp{X}$ be a sample from that distribution. In each case, find the best unbiased estimator of $\theta^r$.
+
+    (a) $f(x\mid \theta) = \frac{1}{\theta}, \quad 0 < x< \theta, r<n$
+    (b) $f(x\mid \theta) = e^{-(x-\theta)}, \quad x > \theta$
+    
+(2) Suppose $\rsamp{X} \overset{iid}{\sim}$ Poisson$(\lambda)$, where
+$$P(X = x \mid \lambda) = \frac{e^{-\lambda}\lambda^x}{x!}; \quad x = 0, 1, \dots; \quad 0 \leq \lambda < \infty.$$
+Find the UMVUE of $\tau(\lambda) = \lambda^r$ for some positive integer $r$.
+
+(3) Prove the following claims:
+
+    (a) Suppose $\hat{\theta}$ is the unique Bayes estimator, then $\hat{\theta}$ is admissible.
+    (b) Suppose $\theta^*$ is the unique minimax estimator, then $\theta^*$ is admissible.
+    
+(4) For this question, we will study the *breakdown value* in greater depth. The textbook definition of a breakdown value is given below:
+
+Definition 10.2.2 Let $\orderstats{X}$ be an ordered sample of size $n$, and let $T_n$ be a statistic based on this sample. $T_n$ has *breakdown value* $b, 0\leq b\leq 1$, if, for every $\epsilon > 0$,
+$$\lim_{X_{(\{ (1-b)n\})} \to \infty} T_n < \infty \quad \text{ and } \quad \lim_{X_{(\{(1-(b+\epsilon))n \})} \to \infty} T_n = \infty$$
+(Recall Definition 5.4.2 on percentile notation)
+
+Where $\{b\}$ is the number $b$ rounded to the nearest integer. That is, if $i$ is an integer and $i-0.5 \leq b < i + 0.5$, then $\{ b\} = i$. The textbook also claims that the sample median $M_n$ has a breakdown value of 50\%. These do not make sense. For example, consider $n = 10$, $b = 50\%$, and $\epsilon = 0.01$, then $\{(1-b)n\} = \{(1-(b + \epsilon))n \} = 5$. Obviously we cannot have
+$$\lim_{X_{(\{ (1-b)n\})} \to \infty} M_n = \lim_{X_{(5)} \to \infty} M_n< \infty \quad \text{ and } \quad \lim_{X_{(\{(1-(b+\epsilon))n \})} \to \infty} T_n = \lim_{X_{(5)} \to \infty} M_n = \infty$$
+at the same time.
+
+Now consider replacing the equations in Definition 10.2.2 by
+$$\lim_{X_{(\lfloor ( 1- b)n \rfloor)} \to \infty } T_n < \infty \quad \text{ and } \quad \lim_{X_{(\lfloor (1 - (b + \epsilon))n \rfloor) \to \infty}} T_n = \infty,$$
+where $\lfloor b \rfloor$ is the greatest integer less than or equal to $b$, that is, the floor function of $b$. Show that, under the new definition, the sample median $M_n$ has a breakdown value of $\frac{\lfloor \frac{n-3}{2}\rfloor}{n}$ (assume $n\geq 3$). Obviously, this converges to $50\%$ as $n to \infty$.
