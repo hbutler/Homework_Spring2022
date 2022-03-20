@@ -1,0 +1,34 @@
+---
+title: "STAT 530 Homework 5"
+output: pdf_document
+date: '2022-03-19'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newcommand{\rsamp}[1]{#1_1, \dots , #1_n}
+\newcommand{\orderstats}[1]{#1_{(1)} < \dots < #1_(n)}
+
+(1) Suppose $\rsamp{X} \overset{iid}{\sim}$ Bernoulli$(p), 0 < p < 1$.
+
+    (a) Calculate the Fisher information number ${\cal I}_n(p)$
+    (b) Find the value of $p \in (0,1)$ for which ${\cal I}_n(p)$ is minimal. This value of $p$, where the fisher information ${\cal I}_n(p)$ is minimal, corresponds to the most difficult case for estimating $p$. That is, when data are generated under this value of $p$ from the model, the variance of an unbiased estimator of $p$ is potentially largest.
+    (c) Show that $\bar{X} = \sum_{i=1}^n X_i/n$ is the UMVUE of $p$ using the Cramer-Rao inequality.
+    (d) For $n\geq 4$, show that the product $X_1X_2X_3X_4$ is an unbiased estimator of $p^4$, and use this fact to find the UMVUE of $p^4$.
+
+(2) Suppose that the random variables $\rsamp{Y}$ satisfy
+$$Y_i = \beta x_i + \epsilon_i, \quad i = 1, \dots, n$$
+where $\{ x_i\}_{i=1}^n$ are fixed constants and $\{\epsilon_i\}_{i=1}^n$ are i.i.d. $N(0,\sigma^2)$ with known $\sigma^2 > 0$.
+
+    (a) Find the MLE of $\beta$.
+    (b) Find the distribution of the MLE.
+    (c) Find the Cramer-Rao lower bound for the variance of an unbiased estimator of $\beta$.
+    (d) Show that the MLE is the UMVUE of $\beta$ using the Cramer-Rao inequality.
+    
+(3) Suppose $\rsamp{X} \overset{iid}{\sim} N(\theta, 1)$ where $\theta \in \mathbb{R}$. It turns out that $T = \bar{X}^2 - n^{-1}$ is the UMVUE of $\tau(\theta) = \theta^2$ (because it's a function of a complete sufficient statistic). 
+
+    (a) Show that $T$ is an unviased estimator of $\tau(\theta)$ and find the variance Var$_\theta(T)$.
+    (b) Find the Cramer-Rao lower bound for the variance of an unbiased estimator of $\tau(\theta)$. 
+    (c) Show that Var$_\theta(T)$ is strictly larger than the Cramer-Rao lower bound for all values of $\theta \in \mathbb{R}$.
