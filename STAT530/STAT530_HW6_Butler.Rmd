@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 \newcommand{\rsamp}[1]{#1_1, \dots , #1_n}
-\newcommand{\orderstats}[1]{#1_{(1)} < \dots < #1_(n)}
+\newcommand{\orderstats}[1]{#1_{(1)} < \dots < #1_{(n)}}
 
 (1) Problem 7.55 (a) and (b) Casella & Berger: For each of the following pdfs, let $\rsamp{X}$ be a sample from that distribution. In each case, find the best unbiased estimator of $\theta^r$.
 
