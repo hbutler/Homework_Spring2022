@@ -10,12 +10,87 @@ knitr::opts_chunk$set(echo = TRUE)
 
 \newcommand{\rsamp}[1]{#1_1, \dots , #1_n}
 \newcommand{\orderstats}[1]{#1_{(1)} < \dots < #1_{(n)}}
+\newcommand{\minX}{X_{(1)}} 
+\newcommand{\maxX}{X_{(n)}}
+\newcommand{\pd}{\partial}
 
 (1) Problem 7.55 (a) and (b) Casella & Berger: For each of the following pdfs, let $\rsamp{X}$ be a sample from that distribution. In each case, find the best unbiased estimator of $\theta^r$.
 
     (a) $f(x\mid \theta) = \frac{1}{\theta}, \quad 0 < x< \theta, r<n$
+    
+    It is known that $T = \maxX$ is a minimal sufficient and complete statistic (example 6.2.23). Using theorem 7.2.23 from Casella and Berger, we can find a UMVUE $g(\maxX)$. We first calculate the density of T:
+    
+    \begin{align*}
+    f_T(t) &= \frac{\pd}{\pd t}P(\maxX \leq t) = \frac{\pd}{\pd t}[F_X(t)]^n \\
+    &= n[F_X(t)]^{n-1}f_X(t) \\
+    &= \frac{nt^{n-1}}{\theta^n}I(0<t<\theta)
+    \end{align*}
+    Then the UMVUE $g(T)$ must satisfy
+    \begin{align*}
+    \theta^r &= \int_0^\theta g(t)\frac{nt^{n-1}}{\theta^n} dt
+    \end{align*}
+    Taking the derivative of both sides with respect to $\theta$, we have
+    \begin{align*}
+    r\theta^{r-1} &= -n\theta^{-(n+1)} \int_0^\theta g(t)nt^{n-1} dt + \theta^n g(\theta)n\theta^{n-1} \\
+    &= -\frac{n}{\theta}\int_0^\theta g(t)\frac{nt^{n-1}}{\theta^n} dt + \frac{ng(\theta)}{\theta} \\
+    &= -\frac{n\theta^r}{\theta} + \frac{ng(\theta)}{\theta}.
+    \end{align*}
+    Now we can solve for $g(\theta)$:
+    \begin{align*}
+    r\theta^{r-1} &= -\frac{n\theta^r}{\theta} + \frac{ng(\theta)}{\theta} \\
+    r\theta^r &= -n\theta^r + ng(\theta) \\
+    \theta^r(r + n) &= ng(\theta) \\
+    \frac{\theta^r(r+n)}{n} &= g(\theta)
+    \end{align*}
+    Replacing $\theta$ is the complete sufficient statistic $\maxX$, we have that the UMVUE for $\theta^r$ is 
+    \begin{align*}
+    g(\maxX) &= \frac{\maxX^r(n+r)}{n}
+    \end{align*}
+    
+    \newpage
+    
     (b) $f(x\mid \theta) = e^{-(x-\theta)}, \quad x > \theta$
     
+    Here, it can be shown that $T = \minX$ is a complete and sufficient statistic. By the Neyman-Fisher factorization criterion, $T$ is sufficient, and we can show that $T$ is complete as follows:
+    
+    First we find the density function $f_T(t)$:
+    \begin{align*}
+    f_T(t) &= \frac{\pd}{\pd t}1 - [1 - F_X(t)]^n = n[1-F_X(t)]^{n-1}f_X(t) \\
+    &= ne^{-n(t-\theta)}I(t>\theta).
+    \end{align*}
+    
+    Now, suppose there exists a function $g(T)$ such that $Eg(T) = 0$ for all $\theta$. Then we have
+    \begin{align*}
+    0 &= \int_\theta^\infty g(t)ne^{n\theta}e^{-nt} dt 
+    = -ne^{n\theta}\int_{\infty}^\theta g(t)e^{-nt}dt
+    \end{align*}
+    
+    Taking the partial derivative with respect to $\theta$ on both sides, we get
+    \begin{align*}
+    0 &= n\int_\theta^\infty ng(t)e^{-n(t-\theta)} dt - ng(\theta).
+    \end{align*}
+    
+    The first term, $nEg(T)$, is equal to zero. But then we have that $g(t) = 0$ for all $\theta$. So by the definition of completeness, $T$ is a complete statistic. 
+    
+    Now that we have established that $T$ is complete and sufficient, we know that an unbiased estimator $\varphi(T)$ of $\theta^r$ which is a function of only $T$ will be the UMVUE for $\theta^r$. So we have
+    \begin{align*}
+    \theta^r &= E\varphi(T) \\
+    &= \int_\theta^\infty \phi(t) ne^{-n(t-\theta)}dt
+    \end{align*}
+    
+    Taking the derivative with respect to $\theta$ on both sides, we get
+    \begin{align*}
+    r\theta^{r-1} &= n\int_\theta^\infty \varphi ne^{-n(t-\theta)} dt - n\varphi(\theta) \\
+    &= \theta^r - n\varphi(\theta). 
+    \end{align*}
+    
+    We then have that $\varphi$ must satisfy $\varphi(\theta) = \frac{\theta^{r-1}(n\theta-r)}{n}$, so the UMVUE for $\theta^r$ must be 
+    \begin{align*}
+    \varphi(\minX) = \frac{\minX^{r-1}(n\minX - r)}{n}.
+    \end{align*}
+  
+\newpage
+
 (2) Suppose $\rsamp{X} \overset{iid}{\sim}$ Poisson$(\lambda)$, where
 $$P(X = x \mid \lambda) = \frac{e^{-\lambda}\lambda^x}{x!}; \quad x = 0, 1, \dots; \quad 0 \leq \lambda < \infty.$$
 Find the UMVUE of $\tau(\lambda) = \lambda^r$ for some positive integer $r$.
@@ -37,4 +112,4 @@ at the same time.
 
 Now consider replacing the equations in Definition 10.2.2 by
 $$\lim_{X_{(\lfloor ( 1- b)n \rfloor)} \to \infty } T_n < \infty \quad \text{ and } \quad \lim_{X_{(\lfloor (1 - (b + \epsilon))n \rfloor) \to \infty}} T_n = \infty,$$
-where $\lfloor b \rfloor$ is the greatest integer less than or equal to $b$, that is, the floor function of $b$. Show that, under the new definition, the sample median $M_n$ has a breakdown value of $\frac{\lfloor \frac{n-3}{2}\rfloor}{n}$ (assume $n\geq 3$). Obviously, this converges to $50\%$ as $n to \infty$.
+where $\lfloor b \rfloor$ is the greatest integer less than or equal to $b$, that is, the floor function of $b$. Show that, under the new definition, the sample median $M_n$ has a breakdown value of $\frac{\lfloor \frac{n-3}{2}\rfloor}{n}$ (assume $n\geq 3$). Obviously, this converges to $50\%$ as $n \to \infty$.

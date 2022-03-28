@@ -40,6 +40,46 @@
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -199,7 +239,60 @@ copy your answer to Problem 4a from Homework 6.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\textbf{Answer:}
+\textbf{Answer:} \[\bmY = \bmX\bmbeta + \bmepsilon,\] where
+\begin{align*}
+\bmY_{49\times 1} &= 
+\begin{bmatrix} 
+Y_1 \\ 
+\vdots \\ 
+Y_49 
+\end{bmatrix},
+& \bmX_{49\times 4} &=
+\begin{bmatrix}
+\bm1_{19} & \bm0_{19} & \bm0_{19} & \bm0_{19} \\
+\bm0_{10} & \bm1_{10} & \bm0_{10} & \bm0_{10} \\
+\bm0_{10} & \bm0_{10} & \bm1_{10} & \bm0_{10} \\
+\bm0_{10} & \bm0_{10} & \bm0_{10} & \bm1_{10}
+\end{bmatrix},
+& \bmbeta_{4\times 1} &= 
+\begin{bmatrix}
+\beta_1 \\
+\beta_2 \\
+\beta_3 \\
+\beta_4
+\end{bmatrix},
+& \bmepsilon_{49\times 1} &=
+\begin{bmatrix}
+\epsilon_1 \\
+\vdots \\
+\epsilon_{49}
+\end{bmatrix}
+\end{align*} and since we will be testing a hypothesis on \(\bmbeta\),
+we must make the distributional assumption \begin{align*}
+\bmepsilon \sim N(\bm0, \sigma^2\bmI_{49\times 49})
+\end{align*}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cw\_6 }\OtherTok{\textless{}{-}}\NormalTok{ ChickWeight }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(Time }\SpecialCharTok{==} \DecValTok{6}\NormalTok{)}
+
+\CommentTok{\# Response}
+\NormalTok{Y }\OtherTok{\textless{}{-}}\NormalTok{ cw\_6}\SpecialCharTok{$}\NormalTok{weight}
+
+\CommentTok{\# Design}
+\NormalTok{X }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(cw\_6}\SpecialCharTok{$}\NormalTok{Diet }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}
+\NormalTok{           , }\FunctionTok{as.numeric}\NormalTok{(cw\_6}\SpecialCharTok{$}\NormalTok{Diet }\SpecialCharTok{==} \DecValTok{2}\NormalTok{)}
+\NormalTok{           , }\FunctionTok{as.numeric}\NormalTok{(cw\_6}\SpecialCharTok{$}\NormalTok{Diet }\SpecialCharTok{==} \DecValTok{3}\NormalTok{)}
+\NormalTok{           , }\FunctionTok{as.numeric}\NormalTok{(cw\_6}\SpecialCharTok{$}\NormalTok{Diet }\SpecialCharTok{==} \DecValTok{4}\NormalTok{)}
+\NormalTok{           )}
+\FunctionTok{colnames}\NormalTok{(X) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"diet1"}
+\NormalTok{                 , }\StringTok{"diet2"}
+\NormalTok{                 , }\StringTok{"diet3"}
+\NormalTok{                 , }\StringTok{"diet4"}
+\NormalTok{                 )}
+\end{Highlighting}
+\end{Shaded}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -210,6 +303,41 @@ to this hypothesis.
 
 \textbf{Answer:}
 
+\begin{align*}
+\bmA &=
+\begin{bmatrix}
+1 & -1 & 0 & 0 \\
+0 & 1 & 0 & -1 
+\end{bmatrix}
+\end{align*}
+
+\(\bmA\bmbeta\) is testable because each row of \(\bmA\) is estimable
+(ie, each row of \(\bmA\) is a linear combination of the rows of
+\(\bmX\)).
+
+Note that with \(\bmA\), we are testing the null hypothesis
+\(H_0: \beta_1 = \beta_2\) AND \(\beta_2 = \beta_4\). If we fail to
+reject \(H_0\), then this is evidence to suggest that there is no
+difference between the 3 diets being tested. If we do reject \(H_0\),
+then further testing would be required to determine for which diets
+there is evidence of a difference. This is because there are three
+situations in which we should reject \(H_0\); (1)
+\(\beta_1 \neq \beta_2, \beta_2 = \beta_4\), (2)
+\(\beta_1 = \beta_2, \beta_2 \neq \beta_4\), and (3)
+\(\beta_1 \neq \beta_2, \beta_2 \neq \beta_4\). In the first two cases,
+we can infer that one diet differs from the other two which do not
+differ from each other, but in the third situation, it is not clear
+whether \(\beta_1 = \beta_4\) or not and further testing is needed.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Hypothesis: No difference between diets 1, 2, and 4}
+\NormalTok{A }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{           , }\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}
+\NormalTok{           )}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \textbf{c.} Compute \(RSS_H - RSS\) using only \(\bbh\), \(\bmA\), and
@@ -217,7 +345,29 @@ to this hypothesis.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\textbf{Answer:}
+\textbf{Answer:} By Proposition 5.4 in the notes, \emph{If
+\(H:\bmA\bmbeta = \bm0\) is a testable hypothesis, then}
+\[RSS_H - RSS = (\bmA\bbh)^T\left( \bmA(\bmX^T\bmX)^-\bmA^T\right)^{-1}(\bmA\bbh).\]
+Where \(\bbh = (\bmX^T\bmX)^-\bmX^T\bmY\). In R:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# (X\textquotesingle{}X)\^{}{-}}
+\NormalTok{XX\_inv }\OtherTok{\textless{}{-}} \FunctionTok{solve}\NormalTok{(}\FunctionTok{t}\NormalTok{(X) }\SpecialCharTok{\%*\%}\NormalTok{ X)}
+
+\CommentTok{\# Find beta estimate}
+\NormalTok{bh }\OtherTok{\textless{}{-}}\NormalTok{ XX\_inv }\SpecialCharTok{\%*\%}\NormalTok{ (}\FunctionTok{t}\NormalTok{(X) }\SpecialCharTok{\%*\%}\NormalTok{ Y)}
+
+\CommentTok{\# Compute difference in residual SS}
+\NormalTok{RSS\_diff }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(A }\SpecialCharTok{\%*\%}\NormalTok{ bh) }\SpecialCharTok{\%*\%} \FunctionTok{solve}\NormalTok{( A }\SpecialCharTok{\%*\%}\NormalTok{ XX\_inv }\SpecialCharTok{\%*\%} \FunctionTok{t}\NormalTok{(A) ) }\SpecialCharTok{\%*\%}\NormalTok{ (A }\SpecialCharTok{\%*\%}\NormalTok{ bh)}
+\NormalTok{RSS\_diff}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          [,1]
+## [1,] 1972.773
+\end{verbatim}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -226,7 +376,47 @@ statistic, p-value, and a conclusion statement.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\textbf{Answer:}
+\textbf{Answer:} Under the assumption of the null hypothesis
+\(\bmA\bmbeta = \bm0\), we know, by Corollary 5.5.1, that the \(F\)
+statistic is computed as \[F = \frac{(RSS_H - RSS)/q}{RSS/(n-r)},\] and
+is distributed as \({\cal F}(q, n-r, 0)\). Using this, we can test
+against and make a decision regarding \(H_0\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(Y)}
+\NormalTok{r }\OtherTok{\textless{}{-}} \FunctionTok{rankMatrix}\NormalTok{(X)[}\DecValTok{1}\NormalTok{]}
+\NormalTok{q }\OtherTok{\textless{}{-}} \FunctionTok{rankMatrix}\NormalTok{(A)[}\DecValTok{1}\NormalTok{]}
+
+\NormalTok{RSS\_full }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(Y }\SpecialCharTok{{-}}\NormalTok{ (X }\SpecialCharTok{\%*\%}\NormalTok{ bh)) }\SpecialCharTok{\%*\%}\NormalTok{ (Y }\SpecialCharTok{{-}}\NormalTok{ (X }\SpecialCharTok{\%*\%}\NormalTok{ bh))}
+
+\CommentTok{\# F statistic}
+\NormalTok{fstat }\OtherTok{\textless{}{-}}\NormalTok{ (RSS\_diff}\SpecialCharTok{/}\NormalTok{q)}\SpecialCharTok{/}\NormalTok{(RSS\_full}\SpecialCharTok{/}\NormalTok{(n}\SpecialCharTok{{-}}\NormalTok{r))}
+\FunctionTok{cat}\NormalTok{(fstat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 25.17208
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# P{-}value}
+\FunctionTok{cat}\NormalTok{(}\DecValTok{1} \SpecialCharTok{{-}} \FunctionTok{pf}\NormalTok{(fstat, q, n}\SpecialCharTok{{-}}\NormalTok{r))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 4.604304e-08
+\end{verbatim}
+
+With an F statistic = 25.17208 and a \(p\)-value of
+\(\approx 4.6 \times 10^{-8}\), we reject the null hypothesis that there
+is no difference between the average effects of diets 1, 2, and 4 on the
+weight of 6-day old chicks. In other words, there is evidence in the
+data to suggest that at least one diet has a different effect on average
+on the weight of 6-day old chicks.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -236,6 +426,48 @@ to the null hypothesis and calculating \(RSS_H\).
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \textbf{Answer:}
+
+Under the null hypothesis \(H_0: \beta_1 = \beta_2 = \beta_4\), we would
+set \begin{align*}
+\bmX_{H_0} &= 
+\begin{bmatrix}
+\bm1_{19} & \bm0_{19} \\
+\bm1_{10} & \bm0_{10} \\
+\bm0_{10} & \bm1_{10} \\
+\bm1_{10} & \bm0_{10}
+\end{bmatrix}
+ & \text{ and } &&
+\bmbeta &=
+\begin{bmatrix}
+\beta_{1,2,4} \\
+\beta_3
+\end{bmatrix}.
+\end{align*}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# C1 is diets 1, 2, or 4; C2 is diet 3}
+\NormalTok{X\_H0 }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(X[,}\DecValTok{1}\NormalTok{] }\SpecialCharTok{+}\NormalTok{ X[,}\DecValTok{2}\NormalTok{] }\SpecialCharTok{+}\NormalTok{ X[,}\DecValTok{4}\NormalTok{]}
+\NormalTok{              , X[,}\DecValTok{3}\NormalTok{]}
+\NormalTok{              )}
+
+\CommentTok{\# solve for b\_124 and b\_3}
+\NormalTok{b\_H0 }\OtherTok{\textless{}{-}} \FunctionTok{solve}\NormalTok{( }\FunctionTok{t}\NormalTok{(X\_H0)}\SpecialCharTok{\%*\%}\NormalTok{X\_H0 ) }\SpecialCharTok{\%*\%} \FunctionTok{t}\NormalTok{(X\_H0)}\SpecialCharTok{\%*\%}\NormalTok{Y}
+
+\CommentTok{\# Calculate estimated response under H0}
+\NormalTok{Y\_H0 }\OtherTok{\textless{}{-}}\NormalTok{ X\_H0 }\SpecialCharTok{\%*\%}\NormalTok{ b\_H0}
+
+\CommentTok{\# Calculate RSS under H0}
+\NormalTok{RSS\_H0 }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(Y }\SpecialCharTok{{-}}\NormalTok{ Y\_H0) }\SpecialCharTok{\%*\%}\NormalTok{ (Y }\SpecialCharTok{{-}}\NormalTok{ Y\_H0)}
+
+\CommentTok{\# Check difference}
+\FunctionTok{cat}\NormalTok{(RSS\_H0 }\SpecialCharTok{{-}}\NormalTok{ RSS\_full)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 1972.773
+\end{verbatim}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -248,7 +480,13 @@ proposition, show that
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\textbf{Answer:}
+\textbf{Answer:} \emph{(See Appendix for statement of Proposition 5.11)}
+
+\begin{align*}
+\frac{RSS_H - RSS}{RSS} &= \frac{\bmY^T(\bmP_{\bmX} - \bmP_{\bmX_H})\bmY}{\bmY^T(\bmI - \bmP_{\bmX})\bmY} \\
+&= \frac{\bmY^T(\bmP_{\bmX} - \bmJ_n)\bmY - \bmY^T(\bmP_{\bmX_H} - \bmJ_n)\bmY}{\bmY^T(\bmI - \bmJ_n)\bmY - \bmY^T(\bmP_{\bmX} - \bmJ_n)\bmY} \\
+&= \frac{RSS - RSS_H}{1 - \bmY^T(\bmP_{\bmX} - \bmJ_n)\bmY/\bmY^T(\bmI - \bmJ_n)\bmY}
+\end{align*}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -262,7 +500,24 @@ F-statistic for testing \(H : \beta_1 = \beta_2\).
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\textbf{Answer:}
+\textbf{Answer:} This is a paired test. Consider the model \[
+\bmY_{1} - \bmY_{2} = (\beta_1 - \beta_2)\bmx + (\bmepsilon_{1} - \bm\epsilon_{2}).
+\] Let \(\alpha = \beta_1 - \beta_2\) and
+\(\bmzeta = \bmepsilon_{1} - \bmepsilon_{2}.\) Then we have
+\(\bmzeta = \bmepsilon_1 - \bmepsilon_2 \sim N(0, 2\sigma^2\bmI)\).
+
+Now the null hypothesis can be reframed as \(H_0: \alpha = 0\) and for
+an \(F\) test we can find \(RSS_H - RSS\) as \[
+RSS_H - RSS = (\hat{\alpha} - 0 )^T(\bmx^T\bmx)^{-1}(\hat{\alpha} - 0) = \hat{\alpha}^2(\bmx^T\bmx)
+\] and \(RSS\) as \[
+RSS = ((\bmY_1 - \bmY_2) - \hat{\bmY})^T((\bmY_1 - \bmY_2) - \hat{\bmY}).
+\] where \(\hat{\bmY} = E[\alpha\bmx + \bmzeta]\).
+
+Since we are testing the value of 1 parameter, \(q=1\), and since we
+have only one predictor, \(r = \rank(X) = 1\). So
+\[F = \frac{\hat{\alpha}^2(\bmx^T\bmx)}{((\bmY_1 - \bmY_2) - \hat{\bmY})^T((\bmY_1 - \bmY_2) - \hat{\bmY})/(n-1)}.\]
+and under the assumption of \(H_0: \alpha = 0\),
+\(F \sim {\cal F}(1, n-1, 0)\).
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -278,7 +533,28 @@ recall that \(\rank(\bmB\bmB^\mT) = \rank(\bmB)\).)
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\textbf{Answer:}
+\textbf{Answer:} We can first use the property
+\(\rank(\bmA\bmB) \leq \min(\rank(\bmA), \rank(\bmB))\) to show that
+\begin{align*}
+\rank(\bmA(\bmX^T\bmX)^- \bmA^T) \le \min(\rank(\bmA), \rank((\bmX^T\bmX)^- \bmA^T)),
+\end{align*} So \(\rank(\bmA(\bmX^T\bmX)^- \bmA^T) \le q\). Then by
+Definition 5.1, we can write \(\bmA = \bmM\bmX\). So we have
+\begin{align*}
+\rank(\bmA(\bmX^T\bmX)^- \bmA^T) &= \rank(\bmM\bmX (\bmX^T\bmX)^- \bmX^T \bmM^T) \\
+&= \rank(\bmM \bmP_{\bmX} \bmM^T) \\
+&= \rank(\bmM \bmP_{\bmX} \bmP_{\bmX}^T\bmM^T) \\
+&= \rank(\bmM\bmP_{\bmX}(\bmM\bmP_{\bmX})^T) \\
+&= \rank(\bmM\bmP_{\bmX}).
+\end{align*} Then, again using the property
+\(\rank(\bmA\bmB) \leq \min(\rank(\bmA), \rank(\bmB))\), \begin{align*}
+\rank(\bmA) &= \rank(\bmM\bmX) \\
+&= \rank(\bmM\bmP_{\bmX}\bmX) \\
+&\leq \min(\rank(\bmM\bmP_{\bmX}), \rank(\bmX))
+\end{align*}
+
+So that
+\(\rank(\bmM\bmP_{\bmX}) = \rank(\bmA(\bmX^T\bmX)^- \bmA^T) \ge q\).
+Therefore, \(\rank(\bmA(\bmX^T\bmX)^- \bmA^T) = q\).
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -297,7 +573,13 @@ hypothesis.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\textbf{Answer:}
+\textbf{Answer:} \(H : \theta_1 - 2\theta_2\)
+
+the vector \(\bmg^T = \begin{bmatrix} 1 & -2 \end{bmatrix}\) is
+estimable (and hence \(\bma = \bmg^T\) is testable) because \[
+\bmg^T = \begin{bmatrix} 0 & -1/2 & -1 \end{bmatrix} \begin{bmatrix} 1 & 1 \\ 0 & 2 \\ -1 & 1\end{bmatrix} = \begin{bmatrix} 1 & -2 \end{bmatrix},
+\] where \(\begin{bmatrix} 1 & 1 \\ 0 & 2 \\ -1 & 1\end{bmatrix}\) is
+the design matrix \(\bmX\).
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -307,6 +589,46 @@ hypothesis.
 
 \textbf{Answer:}
 
+First finding the components of the \(F\)-statistic, we have \[
+(\bmX^T\bmX)^- = \begin{bmatrix} 2 & 0 \\ 0 & 6 \end{bmatrix}^{-1} = \begin{bmatrix} 1/2 & 0 \\ 0 & 1/6 \end{bmatrix}.
+\] Then \[
+\left(\bmA(\bmX^T\bmX)^- \bmA^T \right)^{-1} = \begin{bmatrix} 1 & -2 \end{bmatrix} \begin{bmatrix} 1/2 & 0 \\ 0 & 1/6 \end{bmatrix} \begin{bmatrix} 1 \\ -2 \end{bmatrix} = \frac{6}{7}
+\] Computing \(\bbh\) next, we have \[
+\bbh = (\bmX^T\bmX)^-\bmX^T\bmY = \begin{bmatrix} 1/2 & 0 \\ 0 & 1/6 \end{bmatrix} 
+\begin{bmatrix} 1 & 0 & -1 \\ 1& 2 & 1\end{bmatrix}
+\begin{bmatrix} Y_1 \\ Y_2 \\ Y_3\end{bmatrix}
+= \begin{bmatrix} 1/2 & 0 \\ 0 & 1/6 \end{bmatrix} 
+\begin{bmatrix} Y_1 - Y_3 \\ Y_1 + 2Y_2 + Y_3 \end{bmatrix}
+= \begin{bmatrix} \frac{1}{2}(Y_1 - Y_3) \\ \frac{1}{6}(Y_1 + 2Y_2 + Y_3) \end{bmatrix}.
+\] So \[
+\bma\bbh = \begin{bmatrix} 1 & -2 \end{bmatrix}\begin{bmatrix} \frac{1}{2}(Y_1 - Y_3) \\ \frac{1}{6}(Y_1 + 2Y_2 + Y_3) \end{bmatrix} 
+= \frac{1}{2}(Y_1 - Y_3) - \frac{1}{3}(Y_1 + 2Y_2 + Y_3)
+= \frac{1}{6}(Y_1 - 4Y_2 - 5Y_3).
+\] We can now compute \(RSS_H - RSS\): \[
+RSS_H - RSS = \frac{6}{7}\cdot\frac{1}{36}(Y_1 - 4Y_2 - 5Y_3)^2 = \frac{1}{42} (Y_1 - 4Y_2 - 5Y_3)^2
+\] To compute \(RSS\), we need to find \(\bmP_{\bmX}\): \begin{align*}
+\bmP_{\bmX} &= \bmX(\bmX^T\bmX)^-\bmX \\
+&= \frac{1}{3} 
+\begin{bmatrix} 
+2 & 1 & -1 \\
+1 & 2 & 1 \\
+-1 & 1 & 2
+\end{bmatrix},
+\end{align*} Then \begin{align*}
+RSS &= \bmY^T(\bmI - \bmP_{\bmX})\bmY \\
+&= \frac{1}{3}
+\begin{bmatrix} Y_1 & Y_2 & Y_3 \end{bmatrix}
+\begin{bmatrix}
+1 & -1 & 1 \\
+-1 & 1 & -1 \\
+1 & -1 & 1
+\end{bmatrix}
+\begin{bmatrix} Y_1 \\ Y_2 \\ Y_3 \end{bmatrix} \\
+&= \frac{1}{3}\left( Y_1^2 + Y_2^2 + Y_3^2 -2(Y_1Y_2 - Y_1Y_3 + Y_2Y_3) \right)
+\end{align*} Then we get \[
+F = \frac{\frac{1}{42} (Y_1 - 4Y_2 - 5Y_3)^2/1}{\frac{1}{3}\left( Y_1^2 + Y_2^2 + Y_3^2 -2(Y_1Y_2 - Y_1Y_3 + Y_2Y_3) \right)/(3-2)}
+\]
+
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \textbf{c.} If we assume the errors are normally distributed and the
@@ -314,8 +636,90 @@ null hypothesis is true, what is the distribution of \(F\)?
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\textbf{Answer:}
+\textbf{Answer:} By Corollary 5.5.1, \(F \sim {\cal F}_{1,1,0}\) under
+the assumption that \(H_0\) is true.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\newpage
+
+\hypertarget{appendix}{%
+\section{Appendix}\label{appendix}}
+
+\hypertarget{list-of-r-packages-used}{%
+\subsection{List of R packages used:}\label{list-of-r-packages-used}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\texttt{tidyverse}
+
+\texttt{ggplot2}
+
+\texttt{Matrix}
+
+\hypertarget{relevant-definitions}{%
+\subsection{Relevant Definitions}\label{relevant-definitions}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Definition 5.1.} The hypothesis \(H: \bmA\bmbeta = \bm0\) is
+\textbf{testable} if \(\bma_i^T\bmbeta\) is an estimable function, for
+each row \(\bma_i^T\) of \(\bmA\).
+
+\textbf{Definition 5.2.} The \textbf{residual sum of squares} for a
+model is
+\(RSS = \sum(Y_i-\hat{Y})^2 = (\bmY - \hat{\bmY})^T(\bmY - \hat{\bmY})\).
+
+\textbf{Definition 5.4.} The \textbf{sample multiple correlation
+coefficient} is the correlation between the pairs \((Y_i,\hat{Y_i})\).
+That is: \[
+R = \frac{\sum_i (Y_i - \bar{Y})(\hat{Y_i} - \bar{\hat{Y_i}})}{\sqrt{\sum_i (Y_i - \bar{Y})^2 \sum_i (\hat{Y_i} - \bar{\hat{Y_i}})^2}}
+\]
+
+\textbf{Definition 5.5.} The square of the sample multiple correlation
+coefficient is called the \textbf{coefficient of determination}.
+
+\hypertarget{relevant-propositions}{%
+\subsection{Relevant Propositions}\label{relevant-propositions}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Proposition 5.3} \emph{Consider the two models
+\(\bmY = \bmX_1\bmbeta_1 + \bmepsilon_1\) and
+\(\bmY = \bmX_2\bmbeta_2 + \bmepsilon_1\). The difference in RSS between
+these models is} \[
+RSS_1 - RSS_2 = \bmY^T(\bmP_{\bmX_2} - \bmP_{bmX_1})\bmY
+\]
+
+\textbf{Proposition 5.4} \emph{If \(H: \bmA\bmbeta = \bm0\) is a
+testable hypothesis, then}
+\[RSS_H - RSS = (\bmA\bbh)^T\left(\bmA(\bmX^T\bmX)^- \bmA^T\right)^{-1}(\bmA\bbh).\]
+
+\textbf{Proposition 5.5} \emph{If \(\bmY \sim N(\bmmu, \sigma^2\bmI)\)
+with \(\bmmu = \bmX\bmbeta\) and \(H: \bmA\bmbeta = \bm0\) is a testable
+hypothesis with \(\rank(\bmA) = q\), then:}
+\[F = \frac{(RSS_H - RSS)/q}{RSS/(n-r)} \sim {\cal F}\left( q, n-r, \frac{1}{2\sigma^2}\bmmu^T(\bmP_{\bmX} - \bmP_{\cal W})\bmmu \right),\]
+\emph{where \({\cal W} = {\cal N}(\bmM)\cap {\cal C}(\bmX)\) and
+\(\bmM\) is a matrix such that \(\bmA = \bmM\bmX\).}
+
+\textbf{Proposition 5.11} \emph{In the linear model
+\(\bmY = \bmX\bmbeta + \bmepsilon\), assume \(\bmx_1 = \bm1\). Then the
+test statistic for a hypothesis of the form
+\(H: \begin{bmatrix} \bm0 & \bmA' \end{bmatrix} \bmbeta = \bm0\) (that
+is, a hypothesis that does not involve the intercept \(\beta_1\)) can be
+written:} \[F = \frac{R^2 - R^2_H}{1 - R^2} \frac{n-p}{q},\] \emph{where
+\(R^2\) and \(R^2_H\) are the coefficients of determination for the full
+and reduced model, respectively.}
+
+\hypertarget{relevant-corollaries}{%
+\subsection{Relevant Corollaries}\label{relevant-corollaries}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Corollary 5.5.1} \emph{If
+\(\bmY sim N(\bmX\bmbeta, \sigma^2\bmI)\) and \(H: \bmA\bmbeta = \bm0\)
+is a testable hypothesis with \(\rank(\bmA) = q\), then
+\textbf{when $H$ is true},}
+\[F = \frac{(RSS_H - RSS)/q}{RSS/(n-r)} \sim {\cal F}(q, n-r, 0).\]
 
 \end{document}
