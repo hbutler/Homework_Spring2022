@@ -1,0 +1,165 @@
+---
+output: 
+  pdf_document: 
+    keep_tex: yes
+    includes:
+        in_header: preamble_common.tex
+---
+
+
+
+STAT 640: Homework 8
+===================
+Due **Wednesday, March 30, 11:59pm MT** on the course Canvas webpage. Please follow the homework guidelines on the syllabus.
+
+```{r, echo = FALSE, message = FALSE}
+library(tidyverse)
+library(kableExtra)
+```
+
+## Name: Hannah Butler
+##
+
+## Problem 1
+
+Researchers wish to study the effectiveness of different building materials for pig shelters. They obtain data on 9 pig farms, three that have shelters of straw, three that have shelters of wood, and three that have shelters of brick. 
+    For each farm, they have a measure of wolf attack severity, ranging from 0 (no attacks) to 10 (all pigs killed by wolves). The observed data, in the order of \texttt{("straw","straw","straw","wood","wood","wood","brick","brick","brick")}, are:
+```{r}
+Y <- cbind(9:1)
+```
+Define the categorical indicators
+```{r}
+straw <- rep(c(1, 0), times=c(3, 6))
+wood  <- rep(c(0, 1, 0), each=3)
+brick <- c(rep(0, 6), rep(1, 3))
+```
+
+**a.** Fit a linear model with no intercept and the predictors `straw`, `wood`, and `brick`--in that order (i.e., `lm(Y ~ 0 + straw + wood + brick)`). Construct the sum of squares (SS) and mean squares (MS) for a Sequential (Type I) ANOVA table using only basic matrix operations in R. Verify your numbers against `anova()`.
+
+*********************************************************************************
+
+**Answer:** 
+
+```{r}
+# design matrix
+X <- cbind(straw, wood, brick)
+bh <- solve( t(X)%*%X ) %*% (t(X)%*%Y); bh
+```
+
+```{r}
+RSS <- t(Y - X%*%bh) %*% (Y - X%*%bh); RSS
+# Type 1 SS: in order
+P_0 <- diag(0, 9)                                       
+# straw | nothing else
+P_x1 <- straw %*% solve(t(straw) %*% straw) %*% straw 
+SS_X1_0 <- t(Y) %*% (P_x1 - P_0) %*% Y
+
+# wood | straw
+X2 <- cbind(straw, wood)
+P_x2 <- X2 %*% solve(t(X2)%*%X2) %*% t(X2)
+SS_X2_X1 <- t(Y) %*% (P_x2 - P_x1) %*% Y
+
+# brick | straw, wood
+P_x3 <- X %*% solve( t(X)%*%X ) %*% t(X)
+SS_X3_X2 <- t(Y) %*% (P_x3 - P_x2) %*% Y
+```
+
+ Because each group accounts for 1 degree of freedom, the MSE values will be the same: $MS(\text{straw} \mid 0) = SS(\text{straw}\mid 0)/1$, $MS(\text{wood} \mid \text{straw}) = SS(\text{wood}\mid \text{straw})/1$, $MS(\text{brick} \mid \text{straw, wood}) = SS(\text{brick}\mid \text{straw, wood})/1$.
+ 
+```{r, echo = FALSE}
+tibble("Estimate" = c(bh, NA)
+      , "Degrees of Freedom" = c(1, 1, 1, 9-3) 
+      , "Sum of Squares" = c(SS_X1_0, SS_X2_X1, SS_X3_X2, RSS)
+      ) %>%
+  mutate("Mean Squares" = `Sum of Squares`/`Degrees of Freedom`) %>%
+  kable()
+```
+ 
+```{r}
+#check
+pig_df <- data.frame(Y, X)
+pig_lm <- lm(Y ~ 0 + straw + wood + brick)
+anova(pig_lm)
+```
+
+*********************************************************************************
+
+
+**b.** Repeat (a) but now *with* an intercept and a different ordering: `lm(Y ~ wood + brick + straw)`. Construct the sum of squares (SS) and mean squares (MS) for a Sequential (Type I) ANOVA table using only basic matrix operations in R. Verify your numbers against `anova()`.
+    
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+**c.** The ANOVA table in (b) looks strange. Explain why this happens.
+    
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+  
+
+
+## Problem 2
+
+Consider the linear model $\bmY = \bmX\bmbeta + \bmepsilon$ with $\bmepsilon \sim N(0, \sigma^2\bmI)$, $\bmbeta = \bbmx \beta_1 & \beta_2 & \beta_3 \ebmx^\mT$ and design matrix: \[\bmX = \bbmx 1 & 0 & 0 \\ 1 & 0 & 0 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 1 \ebmx.\]
+Letting $\bmJ_n = \frac{1}{n}\bm1_n\bm1_n^\mT$ and $\bm0_{j,k}$ be a $j \times k$ matrix of zeros, suppose we have the following projection matrices:
+\begin{align*}
+\bmP_1 &= \bbmx \bmJ_3 & \bm0_{3,3} & \bm0_{3,3}\\ \bm0_{3,3} & \bm0_{3,3} & \bm0_{3,3}\\ \bm0_{3,3} & \bm0_{3,3} & \bm0_{3,3}\ebmx & \bmP_2 &= \bbmx \bm0_{3,3} & \bm0_{3,3} & \bm0_{3,3}\\ \bm0_{3,3} & \bmJ_3 & \bm0_{3,3}\\ \bm0_{3,3} & \bm0_{3,3} & \bm0_{3,3}\ebmx & \bmP_3 &= \bbmx \bm0_{3,3} & \bm0_{3,3} & \bm0_{3,3}\\ \bm0_{3,3} & \bm0_{3,3} & \bm0_{3,3}\\ \bm0_{3,3} & \bm0_{3,3} & \bmJ_3\ebmx\\
+\bmP_4 &= \bbmx \bmJ_3 & \bm0_{3,3} & \bm0_{3,3}\\ \bm0_{3,3} & \bmJ_3 & \bm0_{3,3}\\ \bm0_{3,3} & \bm0_{3,3} & \bm0_{3,3}\ebmx & \bmP_5 &= \bbmx \bmJ_3 & \bm0_{3,3} & \bm0_{3,3}\\ \bm0_{3,3} & \bm0_{3,3} & \bm0_{3,3}\\ \bm0_{3,3} & \bm0_{3,3} & \bmJ_3\ebmx& \bmP_6 &= \bbmx \bm0_{3,3} & \bm0_{3,3} & \bm0_{3,3}\\ \bm0_{3,3} & \bmJ_3 & \bm0_{3,3}\\ \bm0_{3,3} & \bm0_{3,3} & \bmJ_3\ebmx\\
+\bmP_7 &= \bbmx \bmJ_3 & \bm0_{3,3} & \bm0_{3,3}\\ \bm0_{3,3} & \bmJ_3 & \bm0_{3,3}\\ \bm0_{3,3} & \bm0_{3,3} & \bmJ_3 \ebmx & \bmP_8 &= \bbmx \bm0_{3,3} & \bm0_{3,6}\\ \bm0_{6,3} &  \bmJ_6\ebmx&
+\end{align*}
+For each of the following quantities ((a) through (f)), provide the following information:
+\def\labelenumii{\roman{enumii}.}
+\begin{enumerate}
+\item Does this represent a valid F-statistic for an F-test? If yes, answer remaining questions; if no, explain why not and then skip remaining questions.
+\item What are the null and alternative hypotheses being tested?
+\item Does this F-statistic correspond to a GLRT? If no, why not?
+\item Would this F-statistic appear in a Type I ANOVA Table?
+\item Would this F-statistic appear in a Type III ANOVA Table?
+\end{enumerate}
+
+a. $\dfrac{\bmY^\mT(\bmP_4 - \bmP_1)\bmY/ \rank(\bmP_4 - \bmP_1)}{\bmY^\mT(\bmI - \bmP_4)\bmY/\rank(\bmI - \bmP_4)}$
+b. $\dfrac{\bmY^\mT(\bmP_4 - \bmP_1)\bmY/ \rank(\bmP_4 - \bmP_1)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
+c. $\dfrac{\bmY^\mT(\bmP_7 - \bmP_5)\bmY/ \rank(\bmP_7 - \bmP_5)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
+d. $\dfrac{\bmY^\mT(\bmP_3 - \bmP_2)\bmY/ \rank(\bmP_3 - \bmP_2)}{\bmY^\mT(\bmI - \bmP_6)\bmY/\rank(\bmI - \bmP_6)}$
+e. $\dfrac{\bmY^\mT(\bmP_6 - \bmP_8)\bmY/ \rank(\bmP_6 - \bmP_8)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
+f. $\dfrac{\bmY^\mT(\bmP_7 - \bmP_8)\bmY/ \rank(\bmP_7 - \bmP_8)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
+
+
+*********************************************************************************
+
+**Answers:** 
+
+
+
+*********************************************************************************
+
+
+## Problem 3
+From Montgomery, (1997):  An experiment is conducted to assess the effect of cotton content (percent) on tensile strength of men's shirts.  Five levels of cotton percentage are considered, with five shirts tested for strength at each level. The results are included in the following data:
+```{r}
+strength <- c(7, 7, 15, 11, 9, 12, 17, 12, 18, 18, 14, 18, 18, 19, 19, 19, 25, 
+              22, 19, 23, 7, 10, 11, 15, 11)
+cotton <- sort(rep(c(15, 20, 25, 30, 35), 5))
+```
+Using basic matrix operations in `R`, conduct a complete model utility test, which is the GLRT of the full model $Y_{ij}=\mu+\alpha_i+\epsilon_{ij}$, $i=1,\ldots,5$ versus the intercept-only reduced model,  $Y_{ij}=\mu+\epsilon_{ij}$. Your answer should reproduce each value in:
+```{r}
+fit<- lm(strength ~ factor(cotton))
+anova(fit)
+```
+
+
+*********************************************************************************
+
+**Answer:** 
+
+
+
+*********************************************************************************
+
