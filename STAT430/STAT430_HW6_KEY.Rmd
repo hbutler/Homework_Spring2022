@@ -86,9 +86,32 @@ Prove that if $Y_n \sim$ Binomial$(n,p)$ and $\hat{p}_n = Y_n /n$, $$ \frac{\hat
 
 *********************************************************************************
 
-**Answer:**
 \textcolor{red}{
-As was stated in class, convergence in probability is stronger than convergence in distribution. We know, by the Weak Law of Large Numbers, that $\hat{p}_n = \frac{1}{n}\sum_{i=1}^n Y_i$ is a consistent estimator for $p = EY_i$, and by the CLT $\hat{p}_n$ is approximately normally distributed with mean $p$ and variance $\frac{p(1-p)}{q}$.
+We first show that $\hat{p}_n$ is a consistent estimator $p$. We do this by showing that $E(\hat{p}_n) = p$ and $Var(\hat{p}_n) \to 0$ as $n\to \infty$.
+$$
+E(\hat{p}_n) = \frac{1}{n}E{Y_n} = \frac{np}{n} = p,
+$$
+and
+$$
+Var(\hat{p}_n) = \frac{1}{n^2}Var(Y_n) = \frac{np(1-p)}{n^2} = \frac{p(1-p)}{n}\overset{n\to\infty}{\longrightarrow}0.
+$$
+So $\hat{p}_n$ is consistent. Additionally, by the Central Limit Theorem, we know that
+$$
+\frac{\hat{p}_n - p}{\sqrt{p(1-p)/n}} \to_d N(0,1).
+$$
+These facts, in addition to Slutsky's Theorem (which maybe wasn't mentioned?) are going to be used.
+So starting with
+$$
+\frac{\hat{p}_n - p}{\sqrt{\hat{p}_n(1-\hat{p}_n)/n}},
+$$
+We multiply and divide by $\sqrt{p(1-p)}$ and rearrange the denominators to obtain
+$$
+\frac{\sqrt{p(1-p)}}{\sqrt{\hat{p}_n(1-\hat{p}_n)}} \cdot \frac{\hat{p}_n - p}{\sqrt{p(1-p)/n}}
+$$
+As was already stated above, the right-side ratio converges in distribution to $N(0,1)$, and using properties of consistent estimators, we know that the left-side ratio converges in probability to 1. Slutsky's theorem states that the product of something that converges to 1 in probability and something that converges to $N(0,1)$ in distribution will converge in distribution to $N(0,1)$. So we have established that
+$$
+\frac{\hat{p}_n - p}{\sqrt{\hat{p}_n (1-\hat{p}_n) / n}} = \frac{\sqrt{p(1-p)}}{\sqrt{\hat{p}_n(1-\hat{p}_n)}} \cdot \frac{\hat{p}_n - p}{\sqrt{p(1-p)/n}} \to_d N(0,1)
+$$
 }
 
 
@@ -117,7 +140,24 @@ If $Y = \log\left(\frac{X_1}{1-X_1}\right)$, use the first-order Taylor series t
 *********************************************************************************
 
 **Answer:**
-
+\textcolor{red}{
+The first order Taylor polynomial for $Y$ is
+$$
+T_1(X_1) \approx \log\left( \frac{p}{1-p} \right) + \frac{(X_1-p)}{p(1-p)}.
+$$
+Then the expectation and variance can be approximated as
+\begin{align*}
+EY \approx ET_1(X_1) &= E\left[\log\left( \frac{p}{1-p} \right) + \frac{(X_1-p)}{p(1-p)} \right] \\
+&= \log\left( \frac{p}{1-p} \right) + \frac{1}{1-p} - \frac{1}{1-p} \\
+&= \log\left( \frac{p}{1-p} \right)
+\end{align*}
+and
+\begin{align*}
+VarY \approx VarT_1(X_1) &= Var\left[\log\left( \frac{p}{1-p} \right) + \frac{(X_1-p)}{p(1-p)} \right] \\
+&= Var\left(\frac{X_1}{p(1-p)}\right) \\
+&= \frac{1}{p(1-p)}.
+\end{align*}
+}
 
 
 *********************************************************************************
@@ -127,7 +167,37 @@ b) Use the fact that you proved in Question 2 and the delta method to construct 
 
 *********************************************************************************
 
-**Answer:**
+\textcolor{red}{
+In problem 2, we proved that 
+$$
+\frac{\hat{p}_n - p}{\sqrt{\hat{p}_n (1-\hat{p}_n) / n}} \rightarrow_d N(0,1)
+$$
+and applying the Delta method, we can say that
+$$
+\frac{\log\left(\frac{\hat{p}_n}{1-\hat{p}_n}\right) - \log\left(\frac{p}{1-p}\right)}{\left(\sqrt{\hat{p}_n (1-\hat{p}_n) / n}\right)\big/{p(1-p)}} \to_d N(0,1),
+$$
+where $1/p(1-p) = Y'\big|_p$. Using a method similar to that used in problem 2, we know that we can replace $p(1-p)$ with $\hat{p}_n (1-\hat{p}_n)$, so that we get
+$$
+\frac{\log\left(\frac{\hat{p}_n}{1-\hat{p}_n}\right) - \log\left(\frac{p}{1-p}\right)}{\left(\sqrt{\hat{p}_n (1-\hat{p}_n) / n}\right)\big/{\hat{p}_n (1-\hat{p}_n)}} 
+= \frac{\log\left(\frac{\hat{p}_n}{1-\hat{p}_n}\right) - \log\left(\frac{p}{1-p}\right)}{1/\sqrt{n\hat{p}_n(1-\hat{p}_n)}} \to_d N(0,1)
+$$
+Using this, we can finally construct a $(1-\alpha)100\%$ confidence interval for the log odds $\log\left(\frac{p}{1-p}\right)$. And because the distribution above is asymptotically standard normal, we know that the quantity above has a $(1-\alpha)100\%$ probability of 
+$$
+z_{\alpha/2}\leq \frac{\log\left(\frac{\hat{p}_n}{1-\hat{p}_n}\right) - \log\left(\frac{p}{1-p}\right)}{1/\sqrt{n\hat{p}_n(1-\hat{p}_n)}} \leq - z_{\alpha/2}.
+$$
+Then solving for $\log\left(\frac{p}{1-p}\right)$, we get
+$$
+\log\left( \frac{\hat{p}_n}{1-\hat{p}_n}\right) - z_{\alpha/2}\sqrt{\frac{1}{n\hat{p}_n(1-\hat{p}_n)}} \leq \log\left( \frac{p}{1-p}\right)\leq \log\left( \frac{\hat{p}_n}{1-\hat{p}_n}\right) + z_{\alpha/2}\sqrt{\frac{1}{n\hat{p}_n(1-\hat{p}_n)}}.
+$$
+so the $(1-\alpha)100\%$ confidence interval for the log odds is constructed by
+$$
+\log\left( \frac{\hat{p}_n}{1-\hat{p}_n}\right) \pm z_{\alpha/2}\sqrt{\frac{1}{n\hat{p}_n(1-\hat{p}_n)}},
+$$
+or in terms of the statistic $W = \sum_{i=1}^n X_i/n$:
+$$
+\log\left( \frac{W/n}{1-W/n}\right) \pm z_{\alpha/2}\sqrt{\frac{1}{W(1-W/n)}}
+$$
+}
 
 
 
@@ -138,7 +208,14 @@ c) The *British Medical Journal* reported that, for 114 patients with spondyloar
 
 *********************************************************************************
 
-**Answer:**
+\textcolor{red}{
+We can directly plug these numbers into the confidence bounds above, where $W= 54$, $n=114$, and $z_{\alpha/2} = -1.96$. Our 95\% confidence interval for the log odds of a patient with spondyloarthropathies having the ABO secretor state is
+$$
+\log\left( \frac{54/114}{1-54/114}\right) \pm 1.96\sqrt{\frac{1}{54(1-54/114)}}
+= -0.105 \pm 0.368
+$$
+or $(-0.473, 0.0263)$.
+}
 
 
 
