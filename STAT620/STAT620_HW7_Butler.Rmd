@@ -1,0 +1,48 @@
+---
+title: "STAT 620 Homework 7"
+header-includes:
+  - \usepackage{mathrsfs}
+output: pdf_document
+date: '2022-03-30'
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newcommand{\cunion}[2]{\bigcup_{#2 = 1}^\infty #1_{#2}}
+\newcommand{\scr}[1]{\mathscr{#1}}
+\newcommand{\infseq}[2]{\{ #1_{#2} \}_{#2 = 1}^\infty}
+
+**Problem 1**
+
+**(5.19)** Prove that if $\{\mu_i\}_{i=1}^\infty$ is a collection of measure on a measurable space $(\mathbb{X}, \mathscr{M})$ and $\{a_i\}_{i=1}^\infty$ is a collection of numbers with $a_i\geq 0$ for all $i$, then $\sum_{i=1}^\infty a_i\mu_i$ is a measure on $(\mathbb{X}, \mathscr{M})$
+
+
+**Answer**: Define $M(A) = \sum_{i=1}^\infty a_i\mu_i(A)$ for $A \in \mathscr{M}$. Then $M(\emptyset) = \sum_{i=1}^\infty a_i\mu_i(\emptyset) = \sum_{i=1}^\infty 0 = 0.$ Let $\cunion{A}{j}$ be a sequence of disjoint sets in $\mathscr{M}$. Then
+\begin{align*}
+M \left( \bigcup_{j=1}^\infty A_j \right) &= \sum_{i=1}^\infty a_i\mu_i\left( \bigcup_{j=1}^\infty A_j \right) \\
+&= \sum_{i=1}^\infty a_i \sum_{j=1}^\infty \mu_i(A_j) \\
+&=\sum_{j=1}^\infty \sum_{i=1}^\infty a_i\mu_i(A_j) \\
+&= \sum_{j=1}^\infty M(A_j).
+\end{align*}
+So $M$ satisfies the requirements for a countable measure on $(\mathbb{X}, \mathscr{M})$.
+
+***
+
+**Problem 2**
+
+**a. (5.20)** Prove that if $(\mathbb{X}, \mathscr{M}, \mu)$ is a measure space, $B\in \mathscr{M}$, and we define $\nu(A) = \mu(A\cap B)$ for $A \in \mathscr{M}$, then $\nu$ is a measure on $(\mathbb{X}, \mathscr{M})$.
+
+
+**Answer**: First, $\nu(\emptyset) = \mu(\emptyset \cap B) = \mu(\emptyset) = 0$. Let $\infseq{A}{i}$ be a disjoint collection of sets in $\scr{M}$. Then
+\begin{align*}
+\nu\left( \cunion{A}{i} \right) &= \mu \left( \cunion{A}{i} \cap B \right) = \sum_{i=1}^\infty \mu(A_i\cap B) = \sum_{i=1}^\infty \nu(A_i).
+\end{align*}
+So $\nu$ satisfies the requirements to be a countable additive measure on $(\mathbb{X}, \scr{M})$.
+
+**b.** How does this problem relate to theorem 5.1.3? What is different? Suppose $A \in \scr{M}$ and $A\cap B = \emptyset$. Is $\nu(A)$ defined?
+
+
+**Answer**: This problem shows that all the set of the form $A\cap B$, given $B \in \scr{M}$ and $A$ is any set in $\scr{M}$ make up a new $\sigma$-algebra. However, in Theorem 5.1.3, $B$ need not be in the original $\sigma$-algebra, $\scr{M}$. $B$ can be any subset of the sample space $\mathbb{X}$. By this theorem, $\nu(A)$ where $A\cap B = \emptyset$ should be defined. 
