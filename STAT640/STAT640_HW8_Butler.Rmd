@@ -91,6 +91,7 @@ anova(pig_lm)
 
 *********************************************************************************
 
+\newpage
 
 **b.** Repeat (a) but now *with* an intercept and a different ordering: `lm(Y ~ wood + brick + straw)`. Construct the sum of squares (SS) and mean squares (MS) for a Sequential (Type I) ANOVA table using only basic matrix operations in R. Verify your numbers against `anova()`.
     
@@ -102,33 +103,50 @@ Since the design matrix $\bmX_{int}$ will no longer be one of full rank, we must
 
 ```{r}
 # design matrix with intercept
-X_int <- cbind(1, X)
-# inverse of full rank block
-XX_inv <- solve(t(X)%*%X)
+X_int <- cbind(intercept = 1, wood, brick, straw)
+# inverse of rank = 3 block
+XX_inv <- solve(t(X_int[,1:3])%*%X_int[,1:3])
 # Generalized inverse
-G <- diag(c(0, diag(XX_inv)))
+G <- bdiag(XX_inv, 0) %>% 
+  as.matrix()
 bh_int <- G %*% (t(X_int)%*%Y)
 
 # Check Generalized Inverse
-# (t(X_int) %*% X_int) %*% G %*% (t(X_int) %*% X_int)
+#(t(X_int) %*% X_int) %*% G %*% (t(X_int) %*% X_int)
 
-P_x0 <- X[,1] %*% solve(t(X[,1])%*%X[,1]) %*% t(X[,1])
+# Just the intercept
+P_x0 <- X_int[,1] %*% solve(t(X_int[,1])%*%X_int[,1]) %*% t(X_int[,1])
+# Wood | Intercept
 X1 <- X_int[,1:2]
-X2 <- X_int[,1:3]
 P_x1 <- X1 %*% solve(t(X1) %*% X1) %*% t(X1)
-P_x2 <- X2 %*% solve(t(X2)%*%X2) %*% t(X2)
-P_xfull <- X_int %*% G %*% t(X_int)
 SS_X1_int <- t(Y) %*% (P_x1 - P_x0) %*% Y
+# Brick | Intercept + Wood
+X2 <- X_int[,1:3]
+P_x2 <- X2 %*% solve(t(X2)%*%X2) %*% t(X2)
 SS_X2_X1 <- t(Y) %*% (P_x2 - P_x1) %*% Y
+# Straw | Intercept + Wood + Brick
+P_xfull <- X_int %*% G %*% t(X_int)
 SS_Xfull_X1X2 <- t(Y) %*% (P_xfull - P_x2) %*% Y
+# Residual Sum of Squares
+RSS <- t(Y) %*% (diag(1, 9) - P_xfull) %*% Y
+```
 
+```{r, echo = FALSE}
+tibble(Source = c("Wood", "Brick", "Straw", "Residuals")
+      , Estimate = c(bh_int[2:4],NA)
+      , "Degrees of Freedom" = c(1, 1, 1, 6)
+      , "Sum of Squares (I)" = c(SS_X1_int, SS_X2_X1, SS_Xfull_X1X2, RSS)
+      ) %>%
+  mutate("Mean Squares" = `Sum of Squares (I)` / `Degrees of Freedom`) %>%
+  select(-`Degrees of Freedom`) %>%
+  kable() %>%
+  kable_styling(latex_options = "striped")
+```
+
+```{r}
 #check
-pig_lm_2 <- lm(Y~.
-               , pig_df
-               )
+pig_lm_2 <- lm(Y~ wood + brick + straw, pig_df)
 anova(pig_lm_2)
-
-summary(pig_lm_2)
 ```
 
 *********************************************************************************
@@ -139,6 +157,7 @@ summary(pig_lm_2)
 *********************************************************************************
 
 **Answer:** 
+I'm not entirely sure. However, the intercept term represents the average wolf attack severity when the pig shelter is none of the three tested. However, we did not have any observations which did not fall into one of the three shelter categories, so when considering the variables sequentially, the sum of squares for wood given the intercept
 
 *********************************************************************************
   
@@ -175,7 +194,45 @@ f. $\dfrac{\bmY^\mT(\bmP_7 - \bmP_8)\bmY/ \rank(\bmP_7 - \bmP_8)}{\bmY^\mT(\bmI 
 
 **Answers:** 
 
+$\dfrac{\bmY^\mT(\bmP_4 - \bmP_1)\bmY/ \rank(\bmP_4 - \bmP_1)}{\bmY^\mT(\bmI - \bmP_4)\bmY/\rank(\bmI - \bmP_4)}$
 
+  1. Yes this represents a valid $F$ test
+
+  2. $H_0: \beta_2 = 0$, $H_a: \beta_2 \neq 0$
+
+  3. Yes, there is a difference of one degree of freedom between the models being compared
+
+  4. Yes
+  
+  5. Not sure, look up
+  
+$\dfrac{\bmY^\mT(\bmP_4 - \bmP_1)\bmY/ \rank(\bmP_4 - \bmP_1)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
+
+  1. No, I don't think so
+
+$\dfrac{\bmY^\mT(\bmP_7 - \bmP_5)\bmY/ \rank(\bmP_7 - \bmP_5)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
+
+  1. Yes, this represents a valid $F$ test
+  
+  2. $H_0: \beta_2 = 0$, $H_a: \beta_2 \neq 0$
+  
+  3. Yes, I think so
+  
+  4. No. In a type I ANOVA table, and this design matrix, we would only see quantities for $X_2 \mid X_1$, but no $X_2 \mid X_1, X_3$.
+  
+  5. Maybe, I'm not sure so I need to look it up
+  
+$\dfrac{\bmY^\mT(\bmP_3 - \bmP_2)\bmY/ \rank(\bmP_3 - \bmP_2)}{\bmY^\mT(\bmI - \bmP_6)\bmY/\rank(\bmI - \bmP_6)}$
+
+  1. No, these models are not nested
+
+$\dfrac{\bmY^\mT(\bmP_6 - \bmP_8)\bmY/ \rank(\bmP_6 - \bmP_8)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
+
+  1. No
+  
+$\dfrac{\bmY^\mT(\bmP_7 - \bmP_8)\bmY/ \rank(\bmP_7 - \bmP_8)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
+
+  1. No?
 
 *********************************************************************************
 
@@ -197,6 +254,26 @@ anova(fit)
 *********************************************************************************
 
 **Answer:** 
+
+```{r}
+# Design Matrix
+X_c <- cbind(intercept = 1
+             , c15 = rep(c(1,0), times = c(5, 20))
+             , c20 = rep(c(0,1,0), times = c(5, 5, 15))
+             , c25 = rep(c(0,1,0), times = c(10, 5, 10))
+             , c30 = rep(c(0,1,0), times = c(15, 5, 5))
+             , c35 = rep(c(0,1), times = c(20, 5))
+             )
+
+# Projection Matrix
+H <- bdiag(solve( t(X_c[,-6])%*%X_c[,-6] ), 0) %>%
+  as.matrix() 
+P_int <- X_c[,1] %*% solve( t(X_c[,1])%*%X_c[,1]) %*% t(X_c[,1])
+P_X <- X_c %*% H %*% t(X_c)
+RSS <- t(strength) %*% (diag(1, 25) - P_X) %*% strength
+SS <- t(strength) %*% (P_X - P_int) %*% strength
+```
+
 
 
 
