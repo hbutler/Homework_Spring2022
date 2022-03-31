@@ -15,6 +15,7 @@ Due **Wednesday, March 30, 11:59pm MT** on the course Canvas webpage. Please fol
 ```{r, echo = FALSE, message = FALSE}
 library(tidyverse)
 library(kableExtra)
+library(Matrix)
 ```
 
 ## Name: Hannah Butler
@@ -82,7 +83,9 @@ tibble("Source" = c("Straw", "Wood", "Brick", "Residuals")
 ```{r}
 #check
 pig_df <- data.frame(Y, X)
-pig_lm <- lm(Y ~ 0 + straw + wood + brick)
+pig_lm <- lm(Y ~ 0 + straw + wood + brick
+             , pig_df
+             )
 anova(pig_lm)
 ```
 
@@ -95,7 +98,38 @@ anova(pig_lm)
 *********************************************************************************
 
 **Answer:** 
-Since the design matrix $\bmX_{int}$ will no longer be one of full rank, we must use a generalized inverse to compute $\hat{\bbh}$. This can be found by partitioning $\bmX_{int} = \begin{bmatrix} \bm1 & \bmX \end{bmatrix}$ and finding the generalized inverse as $\bmG = \begin{bmatrix} \bm0 & \bm0 \\ \bm0 & (\bmX^T\bmX)^{-1} \end{bmatrix}$
+Since the design matrix $\bmX_{int}$ will no longer be one of full rank, we must use a generalized inverse to compute $\bbh$. This can be found by partitioning $\bmX_{int} = \begin{bmatrix} \bm1 & \bmX \end{bmatrix}$ and finding the generalized inverse as $\bmG = \begin{bmatrix} \bm0 & \bm0 \\ \bm0 & (\bmX^T\bmX)^{-1} \end{bmatrix}$
+
+```{r}
+# design matrix with intercept
+X_int <- cbind(1, X)
+# inverse of full rank block
+XX_inv <- solve(t(X)%*%X)
+# Generalized inverse
+G <- diag(c(0, diag(XX_inv)))
+bh_int <- G %*% (t(X_int)%*%Y)
+
+# Check Generalized Inverse
+# (t(X_int) %*% X_int) %*% G %*% (t(X_int) %*% X_int)
+
+P_x0 <- X[,1] %*% solve(t(X[,1])%*%X[,1]) %*% t(X[,1])
+X1 <- X_int[,1:2]
+X2 <- X_int[,1:3]
+P_x1 <- X1 %*% solve(t(X1) %*% X1) %*% t(X1)
+P_x2 <- X2 %*% solve(t(X2)%*%X2) %*% t(X2)
+P_xfull <- X_int %*% G %*% t(X_int)
+SS_X1_int <- t(Y) %*% (P_x1 - P_x0) %*% Y
+SS_X2_X1 <- t(Y) %*% (P_x2 - P_x1) %*% Y
+SS_Xfull_X1X2 <- t(Y) %*% (P_xfull - P_x2) %*% Y
+
+#check
+pig_lm_2 <- lm(Y~.
+               , pig_df
+               )
+anova(pig_lm_2)
+
+summary(pig_lm_2)
+```
 
 *********************************************************************************
 
