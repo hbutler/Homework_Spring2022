@@ -161,7 +161,7 @@ I'm not entirely sure. However, the intercept term represents the average wolf a
 
 *********************************************************************************
   
-
+\newpage
 
 ## Problem 2
 
@@ -192,47 +192,53 @@ f. $\dfrac{\bmY^\mT(\bmP_7 - \bmP_8)\bmY/ \rank(\bmP_7 - \bmP_8)}{\bmY^\mT(\bmI 
 
 *********************************************************************************
 
+\newpage
+
 **Answers:** 
+To have a valid $F$ statistic, the three conditions below must be met:
+
+1. The numerator must be distributed as a $\chi^2$ random vector
+2. The denominator must be distributed as a *central* $\chi^2$ random vector
+3. The numerator must be independent of the denominator.
 
 $\dfrac{\bmY^\mT(\bmP_4 - \bmP_1)\bmY/ \rank(\bmP_4 - \bmP_1)}{\bmY^\mT(\bmI - \bmP_4)\bmY/\rank(\bmI - \bmP_4)}$
 
-  1. Yes this represents a valid $F$ test
-
-  2. $H_0: \beta_2 = 0$, $H_a: \beta_2 \neq 0$
-
-  3. Yes, there is a difference of one degree of freedom between the models being compared
-
-  4. Yes
-  
-  5. Not sure, look up
+  1. This is not a valid $F$ statistic, because the denominator is not a central $\chi^2$ random variable. This has to do with $\bmP_4$ projecting onto a subspace of ${\cal C}(\bmX)$, rather than ${\cal C}(\bmX)$ itself.
   
 $\dfrac{\bmY^\mT(\bmP_4 - \bmP_1)\bmY/ \rank(\bmP_4 - \bmP_1)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
 
-  1. No, I don't think so
+  1. This is a valid $F$ statistic, according to the three conditions listed above. Since $(\bmP_4 - \bmP_1)$ **is** a projection matrix, we can use Proposition 3.18 to confirm that it is distributed as a $\chi^2$ random vector. Since $\bmP_7$ projects onto the full column space of $\bmX$, the centrality parameter for $\frac{1}{\sigma^2}\bmY^T(\bmI-\bmP_7)\bmY$ will be zero. Finally, because $\bmP_4$ projects onto a subspace of $\bmP_7$, the numerator and denominator will be independent (not sure why??)
+  
+  2. $H_0: \beta_2 = 0$, $H_a: \beta_2 \neq 0$.
 
 $\dfrac{\bmY^\mT(\bmP_7 - \bmP_5)\bmY/ \rank(\bmP_7 - \bmP_5)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
 
-  1. Yes, this represents a valid $F$ test
+  1. Using the same justifications as we did for b. above, we can see that this is a valid $F$ statistic.
   
-  2. $H_0: \beta_2 = 0$, $H_a: \beta_2 \neq 0$
+  2. $H_0: \beta_2 = 0$, $H_a: \beta_2 \neq 0$.
   
-  3. Yes, I think so
+  3. This is a GLRT, since $\bmP_7$ is in both the numerator and denominator.
   
-  4. No. In a type I ANOVA table, and this design matrix, we would only see quantities for $X_2 \mid X_1$, but no $X_2 \mid X_1, X_3$.
-  
-  5. Maybe, I'm not sure so I need to look it up
   
 $\dfrac{\bmY^\mT(\bmP_3 - \bmP_2)\bmY/ \rank(\bmP_3 - \bmP_2)}{\bmY^\mT(\bmI - \bmP_6)\bmY/\rank(\bmI - \bmP_6)}$
 
-  1. No, these models are not nested
+  1. No, this is not a valid $F$ statistic, since $\bmP_8$ does not project onto ${\cal C}(\bmX)$. (Although I do think it projects onto a subspace of ${\cal C}(\bmX)$, where the first three components are 0 and the last 6 components of the elements are the same).
 
 $\dfrac{\bmY^\mT(\bmP_6 - \bmP_8)\bmY/ \rank(\bmP_6 - \bmP_8)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
 
-  1. No
+  1. Yes, this is a valid $F$ statistic, since we have a central $\chi^2$ random variable in the denominator, $\bmP_8$ projects onto a subspace of $\bmP_6$ ($\bmP_6 - \bmP_8$ is itself a projection matrix), and $\bmP_6$ projects onto a subspace of $\bmP_7$ (The numerator is independent of the denominator).
+  
+  2. $H_0: \beta_2 = \beta_3$, $H_a: \beta_2 \neq \beta_3$
+  
+  3. This is not a GLRT, since we are not utilizing all of the information available to test the hypothesis.
   
 $\dfrac{\bmY^\mT(\bmP_7 - \bmP_8)\bmY/ \rank(\bmP_7 - \bmP_8)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
 
-  1. No?
+  1. This is also a valid $F$ statistic.
+  
+  2. $\boldsymbol{H_0}: \beta_1 = 0$ *and* $\beta_2 = \beta_3$, $\boldsymbol{H_a}: \beta_1 \neq$ *or* $\beta_2\neq \beta_3$.
+  
+  3. This is a GLRT.
 
 *********************************************************************************
 
