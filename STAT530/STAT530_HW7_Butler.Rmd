@@ -1,0 +1,83 @@
+---
+title: "STAT 530 Homework 7"
+output: pdf_document
+header-includes:
+  - \usepackage{mathrsfs}
+date: '2022-04-01'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newcommand{\rsamp}[1]{#1_1, \dots , #1_n}
+\newcommand{\orderstats}[1]{#1_{(1)} < \dots < #1_{(n)}}
+\newcommand{\minX}{X_{(1)}} 
+\newcommand{\maxX}{X_{(n)}}
+\newcommand{\pd}{\partial}
+\newcommand{\var}{\text{Var}}
+\newcommand{\bias}{\text{Bias}}
+
+(1) Problem 10.1, Casella & Berger.
+
+10.1 A random sample $\rsamp{X}$ is drawn from a population with pdf
+$$
+f(x|\theta) = \frac{1}{2}(1 + \theta x), \quad -1< x < 1, \quad -1 < \theta < 1.
+$$
+Find a consistent estimator of $\theta$ and show that it is consistent.
+
+**Answer:**
+Finding the MLE (if it exists) is too hard. However, the expectation of this distribution is $\theta/3$. So consider the Method of Moments estimator for $\theta$, $T = 3 \bar{X}$. This estimator is unbiased for $\theta$, so it is also asymptotically unbiased. If we can show that $Var(T) \to 0$ as $n\to \infty$, then by Theorem 10.1.3 in Casella and Berger, $T$ will be a consistent estimator of $\theta$. So, finding the variance of $T$, we have
+\begin{align*}
+\var(T) &= Var(3\bar{X}) \\
+&= \frac{9}{n^2}Var(X) \\
+&= \frac{9}{n^2} n\left( \frac{1}{2}\int_{-1}^1 x + \theta x^2 dx - \frac{\theta^2}{9}\right) \\
+&= \frac{9}{n} \left( \frac{x}{2} + \frac{\theta x^3}{3} \Big|_{-1}^1 - \frac{\theta^2}{9} \right)
+\end{align*}
+Since no other $n$'s are going to pop out in the numerator, we can see that the variance of $T$ will approach 0. Therefore, $T = 3\bar{X}$ is a consistent estimator of $\theta$.
+
+(2) Consider the linear model $X_{ij} = \mu_i + \epsilon_{ij}$ where $i = 1,\dots, n$, $j = 1, \dots, r > 1$, and $\epsilon_{ij}$ are *i.i.d.* random samples from $N(0, \sigma^2)$. Find the MLE of $\boldsymbol{\theta} = (\mu_1, \dots, \mu_n, \sigma^2)$, and show that the MLE of $\sigma^2$ is NOT a consistent estimator as $n\to \infty$.
+
+Putting this in slightly easier-to-understand terms, we have $r$ *i.i.d.* observations drawn from each of $n$ $N(\mu_i, \sigma^2)$ distributions. The likelihood function would be
+\begin{align*}
+{\cal L}(\boldsymbol{\theta} \mid \boldsymbol{x}) &= \prod_{i=1}^n\prod_{j=1}^r (2\pi\sigma^2)^{-1/2}\exp{\left\{ -\frac{1}{2\sigma^2}(x_{ij} - \mu_i)^2\right\}} \\
+&= (2\pi\sigma^2)^{-nr/2} \exp{\left\{ -\frac{1}{2\sigma^2}\sum_{i=1}^n\sum_{j=1}^r (x_{ij} - \mu_i)^2 \right\} }
+\end{align*}
+and the log likelihood function would be
+\begin{align*}
+l(\boldsymbol{\theta} \mid \boldsymbol{x}) 
+&= -\frac{nr}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^n\sum_{j=1}^r(x_{ij}-\mu_i)^2.
+\end{align*}
+Taking the partial derivative of $l$ with respect to each parameter, we get
+\begin{align*}
+\frac{\pd l}{\pd \mu_i} &= \frac{1}{\sigma^2}\sum_{j=1}^r(x_{ij} - \mu_i) \\
+\frac{\pd l}{\pd \sigma^2} &= -\frac{nr}{2\sigma^2} + \frac{1}{2\sigma^4}\sum_{i=1}^n\sum_{j=1}^r (x_{ij} - \mu_i)^2
+\end{align*}
+Solving the corresponding likelihood equations, we would get
+\begin{align*}
+\hat{\mu_i} &= \frac{1}{r}\sum_{j=1}^r X_{ij} = \bar{X}_i, \\
+\hat{\sigma}^2 &= \frac{1}{nr}\sum_{i=1}^n\sum_{j=1}^r(X_{ij} - \bar{X}_i)^2 
+\end{align*}
+Because this lines up well with MLE results for $n$ *i.i.d* samples from $N(\mu,\sigma^2)$, I am not going to check that these are a maximum. I am fairly certain that they probably are.
+
+The bias for $\hat{\sigma}^2$ is
+\begin{align*}
+\bias(\hat{\sigma}^2) &= \frac{1}{nr}\sum_{i=1}^n E\left[ \sum_{j=1}^r (X_{ij}-\bar{X}_i)^2 \right] - \sigma^2 \\
+&= \frac{\sigma^2n(r-1)}{nr} - \sigma^2 \\
+&= -\frac{\sigma^2}{nr}
+\end{align*}
+Taking the limit as $n\to\infty$, we see that the bias of $\hat{\sigma}^2$ goes to zero. 
+
+\newpage
+
+# Appendix
+
+## I. Theorems
+
+**Theorem 10.1.3** *If $W_n$ is a sequence of estimators of a parameter $\theta$ satisfying* 
+
+i. $\lim_{n\to\infty}\var_{\theta}W_n = 0$,
+ii. $\lim_{n\to\infty}\bias_{\theta}W_n = 0$,
+
+*for every $\theta \in \Theta$, then $W_n$ is a consistent sequence of estimators of $\theta$.*
+

@@ -1,0 +1,305 @@
+---
+output: 
+  pdf_document: 
+    keep_tex: yes
+    includes:
+        in_header: preamble_common.tex
+---
+
+
+
+STAT 640: Homework 9
+===================
+Due **Friday, April 8, 11:59pm MT** on the course Canvas webpage. Please follow the homework guidelines on the syllabus.
+
+
+
+## Name: Hannah Butler
+##
+
+```{r, echo=FALSE, message=FALSE}
+library(tidyverse)
+```
+
+
+
+## Problem 1
+
+Consider the two regression models in which response variables $Y_i$, for $i=1, \dots, n$, satisfy
+\begin{align*}
+Y_i &= \beta_0 + X_i\beta_1 + \epsilon_i \\
+Y_i &= \gamma_0 + X_i\gamma_1 + Z_i\gamma_2 + \delta_i
+\end{align*}
+You may assume:
+\begin{itemize}
+\item The corresponding design matrices are full rank.
+\item  $\E[\epsilon_i]=0$ and $\Var(\epsilon_i) = \sigma^2$ 
+\item $\E[\delta_i]=0$ and $\Var(\delta_i) = \tau^2$
+\item The values of $X_i$ and $Z_i$ are fixed and known.
+\end{itemize}
+
+
+**a.** Under what condition(s) are the LSEs $\hat\beta_1$ and $\hat\gamma_1$ equal?
+
+*********************************************************************************
+
+**Answer:** 
+
+When $X$ and $Z$ are independent/orthogonal, or their covariance is zero.
+
+*********************************************************************************
+
+
+**b.** Under what condition(s) is $\hat\beta_1$ BLUE for $\gamma_1$?
+
+*********************************************************************************
+
+**Answer:** 
+
+Because the design matrices for both models are full rank, we can assume that the BLUE for $\gamma_1$ is unique. So, similar to part a, the BLUE for $\beta_1$ will be the BLUE for $\gamma_1$ if the covariance between $X$ and $Z$ is zero.
+
+*********************************************************************************
+
+
+**c.** Suppose that $\gamma_1 = 0$ and $\gamma_2 \ne 0$. What is the impact of this situation on the distribution of $\hat\beta_1$, and how would $\hat\beta_1$ compare to $\hat\gamma_1$? 
+
+*********************************************************************************
+
+**Answer:** 
+
+In this situation, we take the second model to be the true model, in which case, the first model, containing $X$ as the only regressor would be underfit. We have not made any distributional assumptions, so we don't know what the distribution of the LSE would be, but we can see that the expectation of $\hat\beta_1$ will be biased since
+
+$$
+E\hat\beta_1 = E( (\bmX^T\bmX)^{-1}\bmX^T\bmY) = (\bmX^T\bmX)^{-1}\bmX^T E\bmY = (\bmX^T\bmX)^{-1}\bmX^T\bmZ\gamma_2.
+$$
+
+Had we fit the latter model, we would have 
+$$
+E\hat\bmgamma 
+= (\bbmx \bmX & \bmZ \ebmx^T \bbmx \bmX & \bmZ \ebmx)^{-1}\bbmx \bmX & \bmZ \ebmx^T \bbmx \bmX & \bmZ \ebmx \bmgamma 
+= \bmgamma,
+$$
+So that $\hat\gamma_1$ is an unbiased estimator of $\gamma_1$. We can similarly compare the variances of the two. The variance of $\hat\beta_1$, had we underfit the model, would be
+
+$$
+\Var(\hat\beta_1)
+= (\bmX^T\bmX)^{-1}\bmX^T \sigma^2\bmI ( (\bmX^T\bmX)^{-1}\bmX^T)^T
+= \sigma^2 (\bmX^T\bmX)^{-1}\bmX^T \bmX(\bmX^T\bmX)^{-1}
+= \sigma^2 (\bmX^T\bmX)^{-1}
+$$
+versus fitting model 2, 
+$$
+\Var(\hat\gamma_1) = \tau^2(\bbmx \bmX & \bmZ \ebmx^T \bbmx \bmX & \bmZ \ebmx)^{-1}
+= \tau^2 \bbmx \bmX^T\bmX & \bmX^T\bmZ \\ \bmZ^T\bmX & \bmZ^T\bmZ \ebmx^{-1}
+$$
+So the variance of $\hat\gamma_1$ would be 
+\begin{align*}
+\Var(\hat\gamma_1) &= \left( \tau^2(\bmX^T\bmX)^{-1}+(\bmX^T\bmX)^{-1}\bmX^T\bmZ(\bmZ^T\bmZ - \bmZ^T\bmX(\bmX^T\bmX)^{-1}\bmX^T\bmZ)^{-1} \bmZ^T\bmX(\bmX^T\bmX)^{-1} \right)\\
+&= \tau^2 \left( (\bmX^T\bmX)^{-1}+(\bmX^T\bmX)^{-1}\bmX^T\bmZ( \bmZ^T(\bmI - \bmP_{\bmX})\bmZ )^{-1}\bmZ^T\bmX(\bmX^T\bmX)^{-1} \right)
+\end{align*}
+
+*********************************************************************************
+
+
+**d.** Repeat (c), but now with $\gamma_1 \ne 0$ and $\gamma_2 = 0$.
+
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+**e.** A colleague wants to know the impact of $X_i$ on $Y_i$. Which model would you recommend they fit, and why?
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+
+
+## Problem 2
+
+
+For this question, the phrase "$p$-value of the $j$th variable in the linear model" refers to the $p$-value associated with the $F$-test (or equivalent $t$-test) for $H_0: \beta_j = 0$.  
+Create two sets (i.e. one for (a) and one for (b)) of $p$ variables $\bmx_1, \dots, \bmx_p$ and a response vector $\bmy$ of length $n$ such that the following properties hold:  
+    
+a. The $j$th variable has a $p$-value less than 0.05 in the linear model involving
+$\bmy$ and all $p$ features, but its $p$-value increases above 0.05 if the $k$th variable
+is removed from the model.  
+b. The $j$th variable has a $p$-value above 0.05 in the linear model involving $\bmy$
+and all $p$ features, but its $p$-value decreases below 0.05 if the $k$th variable
+is removed from the model.  
+
+You can choose any value of $p \ge 2$, and any value of $n$, in constructing solutions to (a) and (b). For (a) and (b), explain how you constructed $\bmx_1, \dots, \bmx_p$ and $\bmy$ to achieve the desired property, and why this property holds. In other words, do not just provide an answer, but explain why your answer works.
+
+*********************************************************************************
+
+**Answers:** 
+
+For part a, I visualized the space spanned by columns of $X$ as a flat 2D surface. It can be seen that for $Y$ very close to the plane would be well explained by both vectors, but not as well explained by any single vector.
+
+part b: correlation between X1 and X2 is greater than the correlation between X2 and Y and the correlation between X1 and Y. Here, there is a causal relationship between X1 and X2, but a weaker (or no) causal relationship between either of X1 or X2 and Y.
+
+```{r}
+set1 <- data.frame(Y = c(1, 1, .1)
+           , X1 = c(1,0,0)
+           , X2 = c(0,1,0)
+           )
+summary(lm(Y ~ 0 + X1 + X2, set1))
+summary(lm(Y ~ 0 + X1, set1))
+summary(lm(Y ~ 0 + X2, set1))
+
+set.seed(80085)
+X1 <- 1:10
+X2 <- X1 + rnorm(10, 0, 1)
+Y <- X2 + rnorm(10, 0, 2)
+set2 <- data.frame(Y, X1, X2)
+
+set2 %>%
+  summarize(X1xX2 = cor(X1, X2)
+            , X1xY = cor(X1, Y)
+            , X2xY = cor(X2, Y))
+summary(lm(Y ~ 0 + X1 + X2, set2))
+summary(lm(Y ~ 0 + X1, set2))
+summary(lm(Y ~ 0 + X2, set2))
+```
+
+*********************************************************************************
+
+
+
+
+## Problem 3
+This question asks you to perform a simulation to compare the variability of slope estimates in simple linear regression under three different data generating models for the relationship between $Y$ and $x$, and three different study designs.  
+
+Simulate 2000 data sets, each with 120 observations, using the same seed for each of the nine combinations of:  
+\textbf{3 models:}
+\begin{itemize}
+\item Linear model: $Y = x + \epsilon$, where $\epsilon \sim N(0, (0.4)^2)$
+\item Linear model with heteroscedasticity: $Y = x + \epsilon$, where $\epsilon \sim N(0, (0.4)^2e^{|x|})$
+\item Quadratic model: $Y = x^{2} + \epsilon$, where $\epsilon \sim N(0, (0.4)^2)$
+\end{itemize}
+\textbf{3 designs for x:}
+\begin{itemize}
+\item Observational data, continuous distribution: $ x \sim N(0, 1)$
+\item  Observational data, discrete distribution: $ x \sim $ a shifted and scaled trinomial distribution, where $ \Pr[x = -\sqrt{2}] = .25, \Pr[x = 0]  = .5, \Pr[x = \sqrt{2}] = .25$.
+	\item Designed experimental data, where there are \begin{tabular}[t]{lr} 30 observations at x = & $-\sqrt{2}$ \\ 60 observations at x = & 0 \\ 30 observations at x = & $\sqrt{2} $\end{tabular}
+	\end{itemize}
+Note that for the two discrete distributions, $x$ takes on the same three possible values, and for all three distributions, the variance of $x$ is one.	
+
+For each replication in each of the nine settings, fit the linear regression model
+\[ \E[Y] = \beta_0 + \beta_1 x \]
+and obtain: the estimate $\hat\beta_1$, a model-based standard error estimate for $\hat\beta_1$, and a sandwich standard error estimate for $\hat\beta_1$. Note the model being fit is the correct model for 2/3 of the settings, and it is a misspecified model for 1/3 of the settings.
+
+**a.**
+Complete the following table summarizing the simulation (round to 3 decimal places):
+\begin{center}
+\begin{tabular}{llcccc}
+\FL
+Model & Design & ${\rm E}(\hat\beta_1)$ & ${\rm SD}(\hat\beta_1)$ & $\widehat{\rm SE}_{Model}(\hat\beta_1)$ & $\widehat{\rm SE}_{Sand}(\hat\beta_1)$ \ML
+Linear & Observational, continuous 		&  	& & \NN
+ & Observational, categorical 	&  	&  &  \NN
+ & Designed experiment 			&  	&   &  	 \ML
+Linear& Observational, continuous 		&  	&   	& \NN
+Heteroscedastic & Observational, categorical 	&  &  	& \NN
+  & Designed experiment 			&  	&   & \ML
+Quadratic & Observational, continuous 		&   &  	& \NN
+ & Observational, categorical &  	&  	& \NN
+ & Designed experiment 			&  	&   	& \LL
+\end{tabular}
+\end{center}
+
+*********************************************************************************
+
+**Answer:** 
+
+```{r}
+nsim <- 2000
+obs <- 120
+
+set.seed(80085)
+e1 <- replicate(2000, rnorm(120, 0, 0.4))
+X1 <- replicate(2000, rnorm(120, 0,1))
+X1_e2 <- lapply(1:2000, function(x) {rnorm(120, 0, .4*sqrt(exp(abs(X1[,x]))))}) %>% do.call(cbind, .)
+
+X2 <- replicate(2000, sample(c(-sqrt(2), sqrt(2), 0, 0), 120, T))
+X2_e2 <- lapply(1:2000, function(x) {rnorm(120, 0, .4*sqrt(exp(abs(X2[,x]))))}) %>% do.call(cbind, .)
+
+X3 <- replicate(2000, sample(rep(c(-sqrt(2), sqrt(2), 0), times = c(30, 30, 60)), 120, F))
+X3_e2 <- lapply(1:2000, function(x) {rnorm(120, 0, .4*sqrt(exp(abs(X3[,x]))))}) %>% do.call(cbind, .)
+
+com1 <- lapply(1:2000, function(x) {
+  data.frame(X = X1[,x], Y = X1[,x] + e1[,x])
+  })
+com2 <- lapply(1:2000, function(x) {
+  data.frame(X = X2[,x], Y = X2[,x] + e1[,x])
+  })
+com3 <- lapply(1:2000, function(x) {
+  data.frame(X = X3[,x], Y = X3[,x] + e1[,x])
+  })
+com4 <- lapply(1:2000, function(x) {
+  data.frame(X = X1[,x], Y = X1[,x] + X1_e2[,x])
+  })
+com5 <- lapply(1:2000, function(x) {
+  data.frame(X = X2[,x], Y = X2[,x] + X2_e2[,x])
+  })
+com6 <- lapply(1:2000, function(x) {
+  data.frame(X = X3[,x], Y = X3[,x] + X3_e2[,x])
+  })
+com7 <- lapply(1:2000, function(x) {
+  data.frame(X = X1[,x]^2, Y = X1[,x]^2 + e1[,x])
+  })
+com8 <- lapply(1:2000, function(x) {
+  data.frame(X = X2[,x]^2, Y = X2[,x]^2 + e1[,x])
+  })
+com9 <- lapply(1:2000, function(x) {
+  data.frame(X = X3[,x]^2, Y = X3[,x]^2 + e1[,x])
+  })
+
+df_list <- list(com1, com2, com3, com4, com5, com6, com7, com8, com9)
+fits <- list()
+for(i in 1:9) {
+  fit <- lapply(df_list[[i]], function(x) {
+    m <- summary(lm(Y ~ X, x))$coefficients[2, 1:2]
+    }) %>% do.call(rbind, .)
+  fits[[i]] <- fit
+}
+
+lapply(fits, colMeans)
+lapply(fits, function(x) {
+  apply(x, 2, sd)
+})
+```
+
+*********************************************************************************
+
+**b.**  Compare the slope standard deviations for each of the nine settings.  What trends and differences do you see?
+
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+**c.** How well does the model-based standard error estimate the true variability of the coefficient estimate in each of these settings, with this sample size?
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+**d**  How well does the sandwich standard error estimate the true variability of the coefficient estimate in each of these settings, with this sample size?
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
