@@ -1,0 +1,80 @@
+---
+title: "STAT 530 Homework 4"
+author: "Hannah Butler"
+date: "2/25/2022"
+output: pdf_document
+---
+
+\newcommand{\rsamp}[1]{#1_1, \dots, #1_n}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+(1) Let $\rsamp{X} \overset{iid}{\sim}$ Unif$(\theta, 2\theta)$, where $\theta > 0$. Find the MLE of $\theta$. Is it an unbiased estimator of $\theta$? If not, make some adjustments to get an unbiased estimator of $\theta$.
+
+The likelihood function for $\theta$ is
+$${\cal L}(\theta|\boldsymbol{x}) = \prod_{i=1}^n \frac{1}{\theta} I(\theta < x_i)I(x_i < 2\theta) = \left(\frac{1}{\theta} \right)^n I(\theta < x_{(1)})I(x_{(n)}/2 < \theta).$$
+
+Note that if $x_{(n)}/2 > x_{(1)}$, then this likelihood is zero. However, if $x_{(1)} \geq x_{(n)}/2$, then ${\cal L}(\theta|\boldsymbol{x})$ is monotonically decreasing in $\theta$, so the MLE $\hat{\theta}$ of $\theta$ is $X_{(n)}/2 = \frac{1}{2}\max_i(X_i)$.
+
+To determine whether it is unbiased, we first find the distribution of $T = \max_i(X_i)$:
+\begin{align*}
+F_T(t) &= \prod_{i=1}^n F_{X_i}(2t) = \left( F_{X_1}(2t) \right)^n I(\theta/2 < t < \theta)\\
+\text{and }\\
+f_T(t) &= \frac{d}{dt}\left( F_{X_1}(2t) \right)^n = 2n\left( F_{X_1}(2t) \right)^{n-1}f_{X}(2t)I(\theta/2 < t < \theta) \\
+&=  \frac{2n(2t - \theta)^{n-1}}{\theta^n} I(\theta/2 < t < \theta)
+\end{align*}
+Then finding the expectation, we have
+\begin{align*}
+E(T) &= \int_{\theta/2}^\theta \frac{2nt(2t - \theta)^{n-1}}{\theta^n} dt \\
+\text{and setting } u = 2t - \theta, \\
+&= \frac{n}{2\theta^n} \int_{0}^{\theta} u^n + \theta u^{n-1} du \\
+&= \frac{n}{2\theta^n} \left( \frac{u^{n+1}}{n+1} + \frac{\theta u^n}{n} \right)\Big|_{0}^{\theta} \\
+&= \frac{n}{2\theta^n} \left( \frac{n\theta^{n+1} + (n+1)\theta^{n+1}}{n(n+1)} \right) \\
+&= \frac{\theta ( 2n + 1)}{2n(n+1)}
+\end{align*}
+So $\hat{\theta} = T(\boldsymbol{X}) = \max_{i}(X_i)$ is a biased estimator of $\theta$, but if we multiply $T(\boldsymbol{X})$ by $\frac{2n(n+1)}{2n+1}$, we will have an unbiased estimator.
+
+\newpage
+
+(2) Suppose $\rsamp{X} \overset{iid}{\sim} N(\theta, 1)$. Show that there is no unbiased estimator of $\tau(\theta) = |\theta|$.
+
+Assume that an unbiased estimator $W(\boldsymbol{X})$ exists for $\tau(\theta) = |\theta|$. Then for all $\theta$,
+\begin{align*}
+E(W(\boldsymbol{X})) = |\theta|.
+\end{align*}
+
+$E(W)$ is a function of $\theta$, so taking partial derivatives, we have
+\begin{align*}
+\frac{dE(W)}{d\theta} &= \frac{d}{d\theta}|\theta| \quad \text{for all } \theta.
+\end{align*}
+
+However, the right-hand side is not defined at $\theta = 0$, while the left-hand side is presumably continuous, so there must not be an estimator $W(\boldsymbol{X})$ which is unbiased for $|\theta|$.
+
+\newpage
+
+(3) Suppose $\rsamp{X} \overset{iid}{\sim} N(\mu, \sigma^2)$. Show that the sample mean and variance, $\bar{X}$ and $S^2$, are respectively UMVUEs of $\mu$ and $\sigma^2$ by showing that they are uncorrelated with all unbiased estimators.
+
+$T_1 = \bar{X}$ and $T_2 = S^2$ are independent random variables with respective pdfs
+
+$$f(t_1 \mid \mu, \sigma^2) = \left( \frac{2\pi\sigma^2}{n} \right)^{-1/2} \exp\left( \frac{n}{2\sigma^2}(t_1 - \mu)^2 \right)$$
+and
+$$f(t_2 \mid \mu, \sigma^2) = \frac{(n-1)^{\frac{n-1}{2}}}{2^{\frac{n-1}{2}} \Gamma \left( \frac{n-1}{2} \right) \sigma^{n-1}}t_2^{\frac{n-3}{2}}\exp \left( \frac{-t_2(n-1)}{2\sigma^2} \right)$$
+and joint distribution
+$$f(t_1, t_2 \mid\mu, \sigma^2) = f(t_1 \mid \mu, \sigma^2)f(t_2 \mid \mu, \sigma^2)I(t_2 \geq 0).$$
+
+Wet $U(T_1, T_2)$ be an arbitrary unbiased estimator of 0. Then 
+\begin{align}
+E(U) = \int_{-\infty}^{\infty} \int_{0}^{\infty} U(t_1, t_2)f(t_1, t_2 \mid \mu, \sigma^2) dt_2 dt_1 = 0.
+\end{align}
+
+Taking partial derivatives of the second and third expression above with respect to $\mu$, we have
+$$\int_{-\infty}^{\infty} \int_{0}^{\infty} U(t_1, t_2)\frac{-n(t_1 - \mu)}{\sigma^2}f(t_1, t_2 \mid \mu, \sigma^2) dt_2 dt_1 = 0$$ 
+Which becomes
+$$\int_{-\infty}^{\infty} \int_{0}^{\infty} U(t_1, t_2)t_1f(t_1, t_2 \mid \mu, \sigma^2) dt_2 dt_1 = \mu\int_{-\infty}^{\infty} \int_{0}^{\infty} U(t_1, t_2) f(t_1, t_2 \mid \mu, \sigma^2) dt_2 dt_1.$$
+The right-hand side is zero though, so we have that the left-hand side, $E(UT_1) = 0$ which establishes that Cov$(U, T_1) = 0$.
+
+Now, taking the partial derivative of both sides of (1) with respect to $\sigma$, we get a really complex expression on the left hand side, but it can essentially be simplified down to
+$$C_1\int \int u t_1^2 f(t_1, t_2) + C_2\int\int u t_1 f(t_1, t_2) + C_3\int\int u f(t_1, t_2) + C_4\int\int u t_2 f(t_1, t_2) = 0.$$
+Where $C_1, C_2, C_3, C_4$ are constants. We have already established that the second and third quantities are zero. To show that the first quantity, $E(UT_1^2)$, is zero, we can simply take the partial derivative of $E(UT_1)$ with respect to $\mu$ and solve for $E(UT_1^2)$. Therefore, $E(UT_2)$ must also be zero, and $T_2$ and $U$ must be uncorrelated.

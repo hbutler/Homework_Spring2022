@@ -1,0 +1,421 @@
+---
+output: 
+  pdf_document: 
+    keep_tex: yes
+    includes:
+        in_header: preamble_common.tex
+---
+
+
+
+STAT 640: Homework 3
+===================
+Due **Wednesday, February 9, 11:59pm MT** on the course Canvas webpage. Please follow the homework guidelines on the syllabus.
+
+## Name: Hannah Butler
+##
+
+
+
+## Problem 1
+Show Proposition 2.10: if $\bmA$ is nonsingular, then the unique generalized inverse of $\bmA$ is $\bmA^{-1}$. (In other words, if $\bmG$ is any generalized inverse of $\bmA$, then $\bmG = \bmA^{-1}$.)
+
+
+*********************************************************************************
+
+**Answer:** 
+If $\bmA$ is nonsingular, then by definition 2.6, there exists a matrix $\bmA^{-1}$ such that $\bmA \bmA^{-1} = \bmA^{-1}\bmA = \bmI$. Therefore, to show that a generalized inverse $\bmG$ of $\bmA$ is the unique inverse $\bmA^{-1}$, we must show that $\bmG \bmA = \bmA \bmG = \bmI$.
+
+$\bmI = \bmA\bmA^{-1} = \bmA\bmG\bmA\bmA^{-1} = \bmA\bmG$. 
+
+Similarly, $\bmI = \bmA^{-1}\bmA = \bmA^{-1}\bmA\bmG\bmA = \bmG\bmA.$
+
+Therefore, $\bmG$ is a matrix which satisfies the properties of $\bmA^{-1}$. To Show that $\bmG$ is the unique inverse of $\bmA$, consider the difference $\bmA^{-1} - \bmG$. (Note: $\bmA^{-1}$ and $\bmG$ must be the same dimension if they are conformable with $\bmA$ on either side). Then
+
+\begin{align*}
+\bmA (\bmA^{-1} - \bmG) \bmA & = \bmA\bmA^{-1}\bmA - \bmA\bmG\bmA \\
+&= \bmA - \bmA \\
+&= \bm0
+\end{align*}
+
+Since $\bmA \neq \bm0$ (because it is nonsingular), then we must conclude that $\bmG = A^{-1}$ is the only matrix which is an inverse of $\bmA$. 
+
+*********************************************************************************
+
+\newpage
+
+## Problem 2
+Let $\bmA$ be a positive definite matrix. 
+
+a. Show that all diagonal elements of $\bmA$ are positive.
+
+*********************************************************************************
+
+**Answer:** 
+Since $\bmA$ is positive definite, there exists an $n\times n$ matrix $\bmR$ such that $\bmA = \bmR\bmR^T$. We have
+
+\begin{align*}
+\bmA = \bmR\bmR^T = \begin{bmatrix} r_{11} & \dots & r_{1n} \\
+\vdots & \ddots & \vdots \\
+r_{n1} & \dots & r_{nn} \end{bmatrix}
+\begin{bmatrix} r_{11} & \dots & r_{n1} \\
+\vdots & \ddots & \vdots \\
+r_{1n} & \dots & r_{nn} \end{bmatrix}
+\end{align*}
+
+The first diagonal element of this matrix will be the sum of squares of the first row of $\bmR$, the second will be the sum of squares of the second row of $\bmR$ and so on. Sums of squares are always non-negative values, so every diagonal element of $\bmA$ will be non-negative. Furthermore, the determinant of the diagonal elements of $\bmA$ can be computed as their product. Since $\bmA$ is non-singular, $\det(\diag(a_1, \dots, a_n))\neq 0$. This implies that no diagonal elements of $\bmA$ are zero, so they must all be positive.
+
+*********************************************************************************
+
+b. Show that $\det(\bmA)>0$.
+
+*********************************************************************************
+
+**Answer:** 
+A positive-definite matrix is symmetric, so we can define the eigendecomposition $\bmA = \bmQ\bmLambda\bmQ^T$. Then $\det(\bmA) = \det(\bmQ\bmLambda\bmQ^T) = \det(\bmQ\bmQ^T)\det(\bmLambda) = \det(\bmLambda) = \prod_{i=1}^n \lambda_i$. Because $\bmA$ is positive-definite, all eigenvalues of $\bmA$, $\lambda_i > 0$, so $\det(\bmA) >0$.
+
+*********************************************************************************
+
+\newpage
+
+## Problem 3    
+Let $\bmX$ be any $n\times p$ matrix. Show that $\bmX^T\bmX$ and $\bmX\bmX^T$ are nonnegative definite.
+
+*********************************************************************************
+
+**Answer:** 
+Define $\bmR = \bmX^T$. Then $\bmX^T\bmX = \bmR\bmR^T$. By proposition 2.14, $\bmX^T\bmX$ is non-negative definite. Similarly, define $\bmR = \bmX$. Then $\bmX\bmX^T = \bmR\bmR^T$, so $\bmX\bmX^T$ is also non-negative definite.
+
+*********************************************************************************
+
+
+## Problem 4
+
+Let $\bmX \in \mathbb{R}^{n \times p}$ have rank $p$, with $n > p$. Denote the SVD of $\bmX$ as $\bmU\bmD\bmV^\mT$. Show that $\bmP = \bmX(\bmX^\mT\bmX)^{-1}\bmX^\mT$ can be written $\bmU\bmA\bmU^\mT$ for some matrix $\bmA$, \emph{which does not involve the values of  $\bmX$, $\bmV$, or $\bmD$}. Write out the values of $\bmA$ (in terms of numbers you can compute, not an algebraic expression).
+
+*********************************************************************************
+
+**Answer:** 
+
+\begin{align*}
+\bmP &= \bmX(\bmX^T\bmX)^{-1}\bmX^T \\
+&= \bmU\bmD\bmV^T \left( (\bmU\bmD\bmV^T)^T (\bmU\bmD\bmV^T) \right)^{-1} (\bmU\bmD\bmV^T)^T \\
+&= \bmU\bmD\bmV^T (\bmV\bmD^T\bmU^T\bmU\bmD\bmV^T)^{-1} (\bmU\bmD\bmV^T)^T \\
+&= \bmU\bmD\bmV^T (\bmV\bmD^T\bmD\bmV^T)^{-1}(\bmU\bmD\bmV^T)^T \\
+&= \bmU\bmD\bmV^T (\bmV \text{diag}(\sigma_1^2 , \dots, \sigma_p^2) \bmV^T) ^{-1} \bmV \bmD \bmU^T \\
+&= \bmU\bmD\bmV^T (\bmV^T)^{-1} \text{diag}(\sigma_1^2 , \dots, \sigma_p^2) \bmV^{-1} \bmV \bmD \bmU^T \\
+&= \bmU\bmD \text{diag}(\sigma_1^2 , \dots, \sigma_p^2) \bmD \bmU^T \\
+&= \bmU \begin{bmatrix} \bmI_{p\times p} & \bm0 \\ \bm0 & \bm0 \end{bmatrix} \bmU^T
+\end{align*}
+
+The values of $\bmA$ are 0's and 1's.
+
+*********************************************************************************
+
+
+## Problem 5
+
+Consider vectors in $\mathbb{R}^3$ and the subspaces $\mathcal{V} = \vecspan\left(\left\{ \bbmx 1 \\ 0 \\ 0 \ebmx\bbmx 0 \\ 0 \\ 1 \ebmx \right\}\right)$ and $\mathcal{W} = \vecspan\left(\left\{ \bbmx 1 \\ 0 \\ 2 \ebmx \right\}\right)$
+
+a. In words, describe the geometry of the spaces $\mathcal{V}$ and $\mathcal{W}$. You can reference the standard $x$-, $y$-, and $z$-axes canonically used for representing $\mathbb{R}^3$.
+
+*********************************************************************************
+
+**Answer:** 
+
+${\cal V}$ is the $xz$-plane in $\mathbb{R}^3$. ${\cal W}$ is a line embedded in the $xz$-plane. Specifically, it is the line $z = 2x$, with $y$ fixed at 0.
+
+*********************************************************************************
+
+b. Compute $\Pv$.
+
+*********************************************************************************
+
+**Answer:** 
+
+The projection matrix $\bmP_{\cal V}$ can be computed as $\bmP_{\cal V} = \bmX(\bmX^T\bmX)^{-1}\bmX$. However, since both columns of $\bmX$ are already normalized, we can forgo the normalization bit $(\bmX^T\bmX)^{-1}$ and just compute $\bmP_{\cal V} = \bmX\bmX^T$:
+
+\begin{align*}
+\bmP_{\cal V} &= \begin{bmatrix} 1 & 0 \\ 0 & 0 \\ 0 & 1\end{bmatrix} \begin{bmatrix} 1 & 0 & 0 \\ 0 & 0 & 1\end{bmatrix} 
+= \begin{bmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix}
+\end{align*}
+
+
+*********************************************************************************
+
+c. Compute $\Pw$.
+
+*********************************************************************************
+
+**Answer:** 
+We can first normalize the vector $\bmw = [1, 0, 2]^T$, then compute the projection matrix $P_{\cal W} = \hat{\bmw}\hat{\bmw}^T$, where $\hat{\bmw}$ is the vector in the direction of $\bmw$ with unit length.
+
+First, $\hat{\bmw} = \begin{bmatrix} 1/\sqrt{5} \\ 0 \\ 2/\sqrt{5} \end{bmatrix}$. Then
+
+\begin{align*}
+\bmP_{\cal W} = \left[ \frac{1}{\sqrt{5}}, 0, \frac{2}{\sqrt{5}} \right] \begin{bmatrix} 1/\sqrt{5} \\ 0 \\ 2/\sqrt{5} \end{bmatrix} 
+= \begin{bmatrix} \frac{1}{5} & 0 & \frac{2}{5} \\ 0 & 0 & 0 \\ \frac{2}{5} & 0 & \frac{4}{5} \end{bmatrix}
+\end{align*}
+
+*********************************************************************************
+
+d. Verify that $\Pv\Pw=\Pw\Pv=\Pw$.
+
+*********************************************************************************
+
+**Answer:** 
+
+\begin{align*}
+\Pv\Pw = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix}
+\begin{bmatrix} \frac{1}{5} & 0 & \frac{2}{5} \\ 0 & 0 & 0 \\ \frac{2}{5} & 0 & \frac{4}{5} \end{bmatrix}
+= \begin{bmatrix} \frac{1}{5} & 0 & \frac{2}{5} \\ 0 & 0 & 0 \\ \frac{2}{5} & 0 & \frac{4}{5} \end{bmatrix} 
+= \Pw
+\end{align*} 
+
+and
+\begin{align*}
+\Pw\Pv = \begin{bmatrix} \frac{1}{5} & 0 & \frac{2}{5} \\ 0 & 0 & 0 \\ \frac{2}{5} & 0 & \frac{4}{5} \end{bmatrix}
+\begin{bmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix}
+= \begin{bmatrix} \frac{1}{5} & 0 & \frac{2}{5} \\ 0 & 0 & 0 \\ \frac{2}{5} & 0 & \frac{4}{5} \end{bmatrix} = \Pw
+\end{align*}
+
+*********************************************************************************
+
+e. In words, describe the geometry of the spaces ${\mathcal{V} \cap \mathcal{W}^\perp}$ and $\mathcal{W}^\perp$.
+
+*********************************************************************************
+
+**Answer:** 
+Since ${\cal W}$ is a line in the $xz$-plane, then ${\cal V} \cap {\cal W}^\perp$ must be the perpendicular line in the $xz$-plane. Namely, the line $z = -\frac{1}{2}x$ with $y$ fixed at 0. in $\mathbb{R}^3$, ${\cal W}^\perp$ is the plane $z = -\frac{1}{2}x$ with varying $y$, or the plane in $\mathbb{R}^3$ defined with the normal vector $[1, 0, 2]^T$.
+
+*********************************************************************************
+
+
+f. Compute $\bmP_{\mathcal{V} \cap \mathcal{W}^\perp}$.
+
+*********************************************************************************
+
+**Answer:** 
+$\mathcal{V} \cap \mathcal{W}^\perp$ is spanned by the vector $\bmu = \begin{bmatrix} -2 \\ 0 \\ 1 \end{bmatrix}$, so we can compute the projection matrix $\bmP_{\mathcal{V} \cap \mathcal{W}^\perp}$ by normalizing and finding the outer product.
+
+The norm of $\bmu = \begin{bmatrix} -2 \\ 0 \\ 1 \end{bmatrix}$ is $\sqrt{5}$, so $\hat{\bmu} = \begin{bmatrix} -2/\sqrt{5} \\ 0 \\ 1/\sqrt{5} \end{bmatrix}$. The outer product is then
+
+\begin{align*}
+\bmu \bmu^T &= \begin{bmatrix} -2/\sqrt{5} \\ 0 \\ 1/\sqrt{5} \end{bmatrix} \begin{bmatrix} -2/\sqrt{5} & 0 & 1/\sqrt{5} \end{bmatrix} = 
+\begin{bmatrix} \frac{4}{5}  & 0 & -\frac{2}{5}  \\ 0 & 0 & 0 \\ -\frac{2}{5} & 0 & \frac{1}{5} \end{bmatrix}
+\end{align*}
+
+*********************************************************************************
+
+g. Compute $\bmP_{\mathcal{W}^\perp}$.
+
+*********************************************************************************
+
+**Answer:** 
+A basis for ${\cal W}^\perp$ can be found by identifying a vector in $\mathbb{R}^3$ that is perpendicular to every element in ${\cal W} = \left\{ \begin{bmatrix} a \\ 0 \\ 2a \end{bmatrix} : a \in \mathbb{R} \right\}$. Using the inner product, we have
+
+\begin{align*}
+0 &= \begin{bmatrix} x & y & z \end{bmatrix} \begin{bmatrix} a \\ 0 \\ 2a \end{bmatrix} = 
+a(x + 2z)
+\end{align*}
+For $a\neq 0$, we must have that $x = -2z$. $y$ is a free parameter and can be equal to anything. So a normalized basis for ${\cal W}^\perp$ is $\left\{ \begin{bmatrix} -\frac{2}{\sqrt{5}} \\ 0 \\ \frac{1}{\sqrt{5}} \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 0\end{bmatrix} \right\}$.
+
+Now we can compute a projection matrix onto this space by defining the column space $\bmW^\perp = \begin{bmatrix} -\frac{2}{\sqrt{5}} & 0 \\ 0 & 1 \\ \frac{1}{\sqrt{5}} & 0 \end{bmatrix}$ and finding $\bmP_{{\cal W}^\perp}$ as
+
+\begin{align*}
+\bmP_{{\cal W}^\perp} &= \bmW^\perp (\bmW^\perp)^T
+= \begin{bmatrix} -\frac{2}{\sqrt{5}} & 0 \\ 0 & 1 \\ \frac{1}{\sqrt{5}} & 0 \end{bmatrix} \begin{bmatrix} -\frac{2}{\sqrt{5}} & 0 & \frac{1}{\sqrt{5}} \\
+0 & 1 & 0 \end{bmatrix} = \begin{bmatrix} \frac{4}{5} & 0 & -\frac{2}{5} \\
+0 & 1 & 0 \\
+-\frac{2}{5} & 0 & \frac{1}{5} \end{bmatrix}
+\end{align*}
+
+*********************************************************************************
+
+h. For the vector $\bma = \bbmx 1 \\ 2 \\ 3 \ebmx$, compute $\Pv\bma$, $\Pw\bma$, $\bmP_{\mathcal{V} \cap \mathcal{W}^\perp}\bma$, and $\bmP_{\mathcal{W}^\perp}\bma$.
+
+*********************************************************************************
+
+**Answer:** 
+
+\begin{align*}
+\Pv \bma = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 1 \\ 2 \\ 3\end{bmatrix}
+= \begin{bmatrix} 1 \\ 0 \\ 3 \end{bmatrix}
+\end{align*}
+
+\begin{align*}
+\Pw \bma = \begin{bmatrix} \frac{1}{5} & 0 & \frac{2}{5} \\ 0 & 0 & 0 \\ \frac{2}{5} & 0 & \frac{4}{5} \end{bmatrix} \begin{bmatrix} 1 \\ 2 \\ 3\end{bmatrix}
+= \begin{bmatrix} \frac{7}{5} \\ 0 \\ \frac{1}{5} \end{bmatrix}
+\end{align*}
+
+\begin{align*}
+\bmP_{{\cal V}\cap{\cal W}^\perp} \bma = \begin{bmatrix} \frac{4}{5} & 0 & -\frac{2}{5} \\ 0 & 0 & 0 \\ -\frac{2}{5} & 0 & \frac{1}{5} \end{bmatrix} \begin{bmatrix} 1 \\ 2 \\ 3\end{bmatrix}
+= \begin{bmatrix} -\frac{2}{5} \\ 0 \\ \frac{1}{5} \end{bmatrix}
+\end{align*}
+
+\begin{align*}
+\bmP_{{\cal W}^\perp} \bma = \begin{bmatrix} \frac{4}{5} & 0 & -\frac{2}{5} \\ 0 & 1 & 0 \\ -\frac{2}{5} & 0 & \frac{1}{5} \end{bmatrix} \begin{bmatrix} 1 \\ 2 \\ 3\end{bmatrix}
+= \begin{bmatrix} -\frac{2}{5} \\ 2 \\ \frac{1}{5} \end{bmatrix}
+\end{align*}
+
+*********************************************************************************
+
+i. For the vector $\bmb = \bbmx -1 \\ -2 \\ 3 \ebmx$, compute $\Pv\bmb$, $\Pw\bmb$, $\bmP_{\mathcal{V} \cap \mathcal{W}^\perp}\bmb$, and $\bmP_{\mathcal{W}^\perp}\bmb$.
+
+
+*********************************************************************************
+
+**Answer:** 
+\begin{align*}
+\Pv \bmb = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} -1 \\ -2 \\ 3\end{bmatrix}
+= \begin{bmatrix} -1 \\ 0 \\ 3 \end{bmatrix}
+\end{align*}
+
+\begin{align*}
+\Pw \bmb = \begin{bmatrix} \frac{1}{5} & 0 & \frac{2}{5} \\ 0 & 0 & 0 \\ \frac{2}{5} & 0 & \frac{4}{5} \end{bmatrix} 
+\begin{bmatrix} -1 \\ -2 \\ 3\end{bmatrix}
+= \begin{bmatrix} 1 \\ 0 \\ 2 \end{bmatrix}
+\end{align*}
+
+\begin{align*}
+\bmP_{{\cal V}\cap{\cal W}^\perp} \bmb = \begin{bmatrix} \frac{4}{5} & 0 & -\frac{2}{5} \\ 0 & 0 & 0 \\ -\frac{2}{5} & 0 & \frac{1}{5} \end{bmatrix} \begin{bmatrix} -1 \\ -2 \\ 3\end{bmatrix}
+= \begin{bmatrix} -2 \\ 0 \\ 1 \end{bmatrix}
+\end{align*}
+
+\begin{align*}
+\bmP_{{\cal W}^\perp} \bmb = \begin{bmatrix} \frac{4}{5} & 0 & -\frac{2}{5} \\ 0 & 1 & 0 \\ -\frac{2}{5} & 0 & \frac{1}{5} \end{bmatrix} \begin{bmatrix} -1 \\ -2 \\ 3\end{bmatrix}
+= \begin{bmatrix} 0 \\ -2 \\ 1 \end{bmatrix}
+\end{align*}
+
+*********************************************************************************
+
+\newpage
+
+## Problem 6
+Consider the matrix $\bmJ_n = \frac{1}{n}\bbmx 1 & 1 & \cdots & 1 \\ 1 & 1 & \cdots & 1 \\ \vdots &\vdots & & \vdots \\ 1 & 1 & \cdots & 1 \ebmx \in \mathbb{R}^{n \times n}$.
+
+a. Write $\bmJ_n$ as the product of a column vector and row vector. That is, find $\bmu,\bmv \in \Rn$ such that $\bmJ_n = \bmu\bmv^\mT$.
+
+*********************************************************************************
+
+**Answer:** 
+We can write $\boldsymbol{J}_n$ as the outer product $\hat{\boldsymbol{j}}\hat{\boldsymbol{j}}^T$, where $\hat{\boldsymbol{j}} = (1/\sqrt{n}, \dots 1/\sqrt{n})^T$. (In other words, it is a vector $\boldsymbol{j}$ of all ones that has been normalized).
+
+\begin{align*}
+\hat{\boldsymbol{j}}\hat{\boldsymbol{j}}^T 
+= \begin{bmatrix} \frac{1}{\sqrt{n}} \\ \vdots \\ \frac{1}{\sqrt{n}} \end{bmatrix} \begin{bmatrix} \frac{1}{\sqrt{n}} & \dots & \frac{1}{\sqrt{n}} \end{bmatrix} 
+= \begin{bmatrix} \sum_{i = 1}^n \frac{1}{n} & \dots & \sum_{i = 1}^n \frac{1}{n} \\ \vdots & \ddots & \vdots \\ \sum_{i = 1}^n \frac{1}{n} & \dots & \sum_{i = 1}^n \frac{1}{n}
+\end{bmatrix} 
+= \frac{1}{n}\begin{bmatrix} 1 & 1 & \dots & 1 \\ 1 & 1 & \dots & 1 \\ \vdots & \vdots & & \vdots \\ 1 & 1 & \dots & 1 \end{bmatrix}
+= \boldsymbol{J}_n 
+\end{align*}
+
+*********************************************************************************
+
+
+b. Show that $\bmJ_n$ is idempotent.
+
+*********************************************************************************
+
+**Answer:** 
+\begin{align*}
+\boldsymbol{J}_n\boldsymbol{J}_n = \frac{1}{5}\begin{bmatrix} 1 & 1 & \dots & 1 \\ 1 & 1 & \dots & 1 \\ \vdots & \vdots & & \vdots \\ 1 & 1 & \dots & 1 \end{bmatrix}
+\frac{1}{n}\begin{bmatrix} 1 & 1 & \dots & 1 \\ 1 & 1 & \dots & 1 \\ \vdots & \vdots & & \vdots \\ 1 & 1 & \dots & 1 \end{bmatrix}
+= \frac{1}{n^2} \begin{bmatrix} n & n & \dots & n \\ n & n & \dots & n \\ \vdots & \vdots & & \vdots \\ n & n & \dots & n \end{bmatrix} 
+= \frac{1}{n}\begin{bmatrix} 1 & 1 & \dots & 1 \\ 1 & 1 & \dots & 1 \\ \vdots & \vdots & & \vdots \\ 1 & 1 & \dots & 1 \end{bmatrix}
+= \boldsymbol{J}_n
+\end{align*}
+
+
+*********************************************************************************
+
+c. Since it is both symmetric and idempotent, $\boldsymbol{J}_n$ is a projection matrix.  Describe the subspace of $\mathbb{R}^n$ onto which it projects (either a formal 
+definition of the elements of the subspace, or a geometric description).
+
+
+*********************************************************************************
+
+**Answer:** 
+$\boldsymbol{J}_n$ has only one linearly independent vector, so $\boldsymbol{J}_n$ projects onto a line in $\mathbb{R}^n$ where all components are the same. Given an arbitrary vector $\bma$ in $\mathbb{R}^n$, the projection $\boldsymbol{J}_n \bma = \begin{bmatrix} \frac{1}{n}\sum_{i=1}^n a_i, &  \dots, & \frac{1}{n}\sum_{i=1}^n a_i\end{bmatrix}^T$. The components of the projection $\boldsymbol{J}_n \bma$ will all be the sample average of the components in $\bma$.
+
+*********************************************************************************
+
+\newpage
+
+## Problem 7
+
+
+Consider the matrix $\bmA = \bbmx 8 & 4 & 0 \\ 4 & 18 & 4 \\ 0 & 4 & 1 \ebmx$. 
+
+a. Find a square matrix $\bmR$ such that $\bmA = \bmR\bmR^\mT$. You can use base `R`.
+
+*********************************************************************************
+
+**Answer:** 
+
+```{r}
+A <- cbind(c(8,4,0), c(4,18,4), c(0,4,1))
+
+# Find eigenvalues and eigenvectors
+eigs <- eigen(A)
+Q <- eigs$vectors
+Lambda <- diag(eigs$values)
+
+R <- Q %*% sqrt(Lambda) %*% t(Q)
+print(R)
+
+# Check that RR^T = A
+round(R %*% t(R), 5)
+```
+
+*********************************************************************************
+
+
+b. We know that if $\Var(\bmZ) = \bmI$, then $\Var(\bmR\bmZ) = \bmR\bmI\bmR^\mT = \bmA$. Use the following code (set `eval=TRUE`), and the $\bmR$ from part (a), to simulate 10,000 random 3-vectors. Is their empirical covariance matrix close to $\bmA$?
+
+
+```{r echo=TRUE, eval=TRUE}
+set.seed(2021640)
+N <- 10000
+Z <- matrix(rnorm(N*3), 3, N) # N 3x1 vectors in 3xN matrix
+Y <- R %*% Z
+cov(t(Y))
+```
+
+*********************************************************************************
+
+**Answer:** 
+Yeah it's pretty close
+
+*********************************************************************************
+
+
+
+
+
+c. Find a vector $\bma$ such that $\Var(\bma^\mT\bmY) = 0$ for $\bmY=\bmR\bmZ$ as in (b). Check this empirically using your sample from (b).
+
+
+
+*********************************************************************************
+
+**Answer:** 
+The matrix $\bmA$ has rank 2 and is non-negative definite (see Proposition 2.14). This means that all of the eigenvalues are greater than or equal to zero. In fact, there are as many positive eigenvalues as the $\rank{A}$. This means that the third eigenvalue $\lambda_3$ must be zero with eigenvalue $\bmq_3$. So we have $\bmA \bmq_3 = \lambda_3\bmq_3 = \bm0$. 
+
+So 
+$$\Var(\bma^T\bmY) = \Var(\bma^T\bmR\bmZ) = \bma^T \bmA \bma.$$
+
+If we let $\bma = \bmq_3$, then we have
+$$\bmq_3^T \bmA \bmq_3 = \bmq_3^T \lambda_3 \bmq_3 = \bmq_3^T \bm0 = 0$$
+
+```{r}
+# eigenvector corresponding to zero eigenvalue
+a <- eigs$vectors[,3]
+# Pretty close to zero
+cov(t(Y) %*% a)
+```
+
+This is pretty close to zero.
+
+*********************************************************************************
+

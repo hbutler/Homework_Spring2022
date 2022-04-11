@@ -1,0 +1,111 @@
+---
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+
+STAT430 Homework #5: Due Friday, March 11, 2022. 
+========================================================
+
+#### Name: KEY
+
+*********************************************************************************
+
+Submit this homework as a pdf file to Canvas. 
+
+## Question 1
+
+Suppose $S^2$ is the sample variance based on a sample size $n$ from a normal population with unknown mean and variance.  Derive a $100(1-\alpha)\%$
+
+a) upper confidence bound for $\sigma^2$.
+
+b) lower confidence bound for $\sigma^2$.
+
+c) Arik the astronaut decides to prepare for his upcoming trip by experimenting with homemade rockets (using Alka-Seltzer tablets and water to launch them into the air)!  He wants to understand the variability of peak height for his rocket design so he constructs 8 rockets, launches each off the top of the LSC and records the peak height.  The sample standard deviation of the heights was 3.4 meters.  Using this information and your results in the previous parts, provide a 95\% upper confidence bound on the true standard deviation of peak heights for Arik's design.
+
+
+*********************************************************************************
+
+**Answer:**
+
+
+
+*********************************************************************************
+
+
+
+## Question 2
+
+Suppose that $Y_1,Y_2,...,Y_n$ denote a random sample of size $n$ from an Exponential(mean=$\theta$) distribution, where $E[Y_i] = \theta$.  Let $\widehat{\theta}_1 = n Y_{(1)}$, where $Y_{(1)} = min(Y_1,...,Y_n)$, and $\widehat{\theta}_2 = \overline{Y}$.  
+
+a) Show $\widehat{\theta}_1$ is an unbiased estimator of $\theta$.
+
+b) Show $\widehat{\theta}_2$ is an unbiased estimator of $\theta$.
+
+c) Compare the MSE of $\widehat{\theta}_1$ to $\widehat{\theta}_2$ by computing their relative efficiency.
+
+
+*********************************************************************************
+
+**Answer:**
+
+
+
+
+*********************************************************************************
+
+
+## Question 3
+Suppose $V \sim \chi^2_7$ and $U \sim \chi^2_9$ be independent random variables.  
+
+a) Using numerical calculations, determine whether the ratio $V/U$ is more likely to be in the interval $(1.95,2.56)$ or $(2.56,3.26)$.
+
+b) Verify your answer in part (b) using simulation.
+
+
+*********************************************************************************
+
+**Answer:**
+
+
+
+*********************************************************************************
+
+## Question 4
+a) Suppose $U_n\sim \frac{1}{n} Bin(n,0.3)$.  In other words, $nU_n \sim Bin(n,0.3)$.  From the definition of convergence in probability, show $U_n \rightarrow_p 0.3$.
+
+
+*********************************************************************************
+
+**Answer:**
+
+
+
+*********************************************************************************
+
+
+b) Let $V \sim$ Uniform$(0,1)$.   Suppose $V_n \sim \frac{1}{n} Bin(n,V)$.  From the definition of convergence in probability, show $V_n \rightarrow_p V$.
+
+*********************************************************************************
+
+**Answer:**
+
+
+
+*********************************************************************************
+
+## Question 5
+Let $Y_1,Y_2,...,Y_n$ denote a random sample from the the probability density function
+$$ f(y) = \theta y^{\theta -1} \hspace{.4in} 0 < y < 1,$$
+where $\theta >0$.  Show $\overline{Y}$ is a consistent estimator of $\theta/(\theta + 1)$.
+
+
+*********************************************************************************
+
+**Answer:**
+
+
+
+*********************************************************************************
+

@@ -1,0 +1,46 @@
+---
+title: "STAT 620 Homework 1"
+author: "Hannah Butler"
+date: "1/22/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Do exercise 2.1 from the textbook (page 21): Show that the set of polynomials with rational coefficients is countable.
+
+***
+
+Consider a polynomial of degree $\leq N \in \mathbb{N}$ defined as 
+$$\sum_{i=0}^N a_ix^i \quad \text{for } a_i \in \mathbb{Q}.$$
+Then the polynomial can be defined by an ordered tuple of $N$ coefficients: $(a_0, a_1, \dots, a_n)$ for $a_i \in \mathbb{Q}$. The set of ordered $N$-tuples can be defined by the Cartesian product
+$$ \mathbb{Q}^N = \mathbb{Q} \times \mathbb{Q} \times \dots \times \mathbb{Q},$$
+ie, the Cartesian product of a finite number of $\mathbb{Q}$, which is itself countable, by theorem 2.3.4.
+
+***
+
+2. Prove the following, which is one of the many relationships in Theorem 2.1.1.
+$$\left( \bigcap_{\alpha \in {\cal B}} A_\alpha \right)^C = \bigcup_{\alpha \in {\cal B}} A_\alpha^C$$
+
+*** 
+
+\begin{align*}
+& \text{Let } a \in \left( \bigcap_{\alpha \in {\cal B}} A_\alpha \right)^C. 
+\text{ Then } a \notin \bigcap_{\alpha \in {\cal B}} A_\alpha, 
+ \text{ so } a \text{ not in at least one } A_\alpha. \\
+& \text{This implies that } a \in A_\alpha^C, \text{so } a \in \bigcup_{\alpha \in {\cal B}} A_\alpha^C. 
+\text{ Therefore, } \left( \bigcap_{\alpha \in {\cal B}} A_\alpha \right)^C \subset \bigcup_{\alpha \in {\cal B}} A_\alpha^C. \\
+& \text{Reversing these steps, we can show that } \bigcup_{\alpha \in {\cal B}} A_\alpha^C \subset \left( \bigcap_{\alpha \in {\cal B}} A_\alpha \right)^C, \\
+& \text{so } \left( \bigcap_{\alpha \in {\cal B}} A_\alpha \right)^C = \bigcup_{\alpha \in {\cal B}} A_\alpha^C.
+& \square
+\end{align*}
+
+3. Do exercise 2.2: Define $A_i = \{ a_ix^i : a_i \in \mathbb{R}\}$ for $i= 0,1,2,\dots$. Construct an increasing sequence of sets that produces $\bigcup_{i=1}^\infty A_i$.
+
+***
+
+$A_i$ is the set of all monomials of degree $i$, so $\bigcup_{i=1}^\infty A_i$ is the set of all monomials. Define $B_i = \{ a_i x^j: a_i \in \mathbb{R} \text{ and } j \leq i \}$. Ie, $B_i$ is the set of all monomials with real number coefficients of degree $i$ or less. This constitutes an increasing sequence of sets such that $\lim_{i \to \infty}B_i =  \bigcup_{i=1}^\infty A_i$.
+
+***

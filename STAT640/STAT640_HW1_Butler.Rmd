@@ -1,0 +1,291 @@
+---
+output: 
+  pdf_document
+header-includes:
+- \usepackage{bm}
+---
+
+STAT 640: Homework 1
+===================
+Due **Wednesday, January 26, 11:59pm MT** on the course Canvas webpage. Please follow the homework guidelines on the syllabus.
+
+## Name: Hannah Butler
+##
+
+
+## Problem 1
+Recall that ${\cal V}^\perp=\{\bm{a}\in\mathbb{R}^n:\langle\bm{a},\bm{v}\rangle=0\;\mbox{for all}\;\bm{v}\in{\cal V}\}$.  Prove that ${\cal V}^\perp$ is a subspace of $\mathbb{R}^n$.
+
+*********************************************************************************
+
+**Answer:** 
+To show that ${\cal V}^\perp$ is a subspace of $\mathbb{R}^n$, we need to show that ${\cal V}^\perp$ contains the zero vector and is closed under addition and scalar multiplication. To show that the zero vector is in ${\cal V}$ is trivial, since the inner product $\langle \bm{0}, \bm{v} \rangle$ is always zero regardless of $\bm{v}$. Then to show closure under addition and scalar multiplication, we must show that for $\bm{a}_1$ and $\bm{a}_2$ in ${\cal V}^\perp$ and $\bm{v}$ in ${\cal V}$, we have that $\langle \alpha_1\bm{a}_1 + \alpha_2\bm{a}_2, \bm{v} \rangle = 0$ for $\alpha_1, \alpha_2$ in $\mathbb{R}$. Using properties of the inner product, we have
+
+\begin{align*}
+\langle \alpha_1\bm{a}_1 + \alpha_2\bm{a}_2, \bm{v} \rangle &= \alpha_1 \langle \bm{a}_1, \bm{v} \rangle + \alpha_2 \langle \bm{a}_2, \bm{v} \rangle \\
+&= \alpha_1 0 + \alpha_2 0 = 0.
+\end{align*}
+
+So ${\cal V}^\perp$ is a subspace of $\mathbb{R}^n$.
+
+
+*********************************************************************************
+
+\newpage
+
+## Problem 2
+Let $\mathcal{V}=\{\bm{v}\in\mathbb{R}^2:\bm{v}=[3v,v]^T, v \in \mathbb{R}\}$.  
+
+
+a. Show that $\mathcal{V}$ is a subspace of $\mathbb{R}^2$
+
+*********************************************************************************
+
+**Answer:** 
+Again, we must show that the zero vector is contained in ${\cal V}$ and that ${\cal V}$ is closed under addition and scalar multiplication. It is easy to see that $\bm{0} = (3\cdot 0, 0)^T$ is in ${\cal V}$. To show closure under addition and scalar multiplication, consider $\bm{u}, \bm{v}$ in ${\cal V}$, and $\alpha_1, \alpha_2$ in $\mathbb{R}$:
+
+\begin{align*}
+\alpha_1 \bm{u} + \alpha_2 \bm{v} &= \alpha_1 \begin{bmatrix} 3u \\ u \end{bmatrix} + \alpha_2 \begin{bmatrix} v \\ v \end{bmatrix} 
+= \begin{bmatrix} 3\alpha_1 u \\ \alpha_1 u \end{bmatrix} + \begin{bmatrix} \alpha_2 v \\ \alpha_2n v \end{bmatrix} 
+= \begin{bmatrix} 3 (\alpha_1 u + \alpha_2 v) \\ \alpha_1 u + \alpha_2 v \end{bmatrix}.
+\end{align*}
+
+This is of the form for elements in ${\cal V}$, showing that ${\cal V}$ is closed under addition and scalar multiplication. So ${\cal V}$ is a subspace of $\mathbb{R}^2$.
+
+*********************************************************************************
+
+b. Find $\mathcal{V}^\perp$. For your answer, provide the general form of vectors in $\mathcal{V}^\perp$. 
+(e.g., $\left\{\begin{bmatrix} a_1 \\ a_2 \end{bmatrix} \in \mathbb{R}^2 \right\}$ or $\left\{\bm{a} \in \mathbb{R}^2 : a_1 = \dots, a_2 = \dots\right\}$) 
+
+
+*********************************************************************************
+
+**Answer:** 
+The orthogonal compliment of ${\cal V}$ is the set of vectors in $\mathbb{R}^2$ whose inner product with any vector $\bm{v}$ in ${\cal V}$ is zero. To find such a vector, for $\bm{v} \neq \bm{0}$ in ${\cal V}$, we set
+
+\begin{align*}
+0 &= \langle \bm{w}, \bm{v} \rangle = 3w_1v + w_2v, 
+\end{align*}
+
+from which we get
+
+\begin{align*}
+0 = 3w_1 + w_2
+\end{align*}
+
+and set $w_2 = -3 w_1$. Therefore, the general form of vectors in ${\cal V}^\perp$ is $(w, -3w)^T \in \mathbb{R}^2$ for $w$ in $\mathbb{R}$.
+
+
+*********************************************************************************
+
+\newpage
+
+## Problem 3
+Consider the set of vectors 
+\[\bm{v}_1 = \begin{bmatrix} 1\\ -1\\ 1\end{bmatrix}, \quad \bm{v}_2 = \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}\]
+Use Gram-Schmidt orthogonalization to find an orthonormal basis for $\mathrm{span}(\{\bm{v}_1, \bm{v}_2\})$. (Show your work, not just the result).
+
+*********************************************************************************
+
+**Answer:** 
+To find an orthonormal basis for a 2-dimensional space, we only need to find one vector orthogonal to one of those in the span of the space. We can start by normalizing both of the given vectors by dividing by their respective Euclidean norms:
+
+\begin{align*}
+\hat{\bm{v}}_1 &= \bm{v}_1 / \sqrt{3}  = ( 1/\sqrt{3}, -1/\sqrt{3}, 1/\sqrt{3})^T \\
+\hat{\bm{v}}_2 &= \bm{v}_2 / \sqrt{2} = ( 1/\sqrt{2}, 0, 1/\sqrt{2})^T.
+\end{align*}
+
+Next, we find the vector projection of $\hat{\bm{v}}_2$ onto $\hat{\bm{v}}_1$. This can be explained as taking the horizontal component of $\hat{\bm{v}}_2$ with respect to $\hat{\bm{v}}_1$ and constructing a vector of that length in the direction of $\hat{\bm{v}}_1$.
+
+To find the length of the projection of $\hat{\bm{v}}_2$ onto $\hat{\bm{v}}_1$, we simply take the inner product $\langle \hat{\bm{v}}_1, \hat{\bm{v}}_2 \rangle$. Then we multiply that by $\hat{\bm{v}}_1$ to cast a shadow of that length in the direction of $\hat{\bm{v}}_1$.
+
+\begin{align*}
+\bm{v}_{\text{proj}} = \langle \hat{\bm{v}}_1, \hat{\bm{v}}_2 \rangle \cdot \hat{\bm{v}}_1 &= 
+\left( \frac{1}{\sqrt{3}}\frac{1}{\sqrt{2}} + \frac{1}{\sqrt{3}}\frac{1}{\sqrt{2}} \right) \begin{bmatrix} 1/\sqrt{3} \\ - 1/\sqrt{3} \\ 1/\sqrt{3} \end{bmatrix} = \frac{2}{\sqrt{6}} \begin{bmatrix} 1/\sqrt{3} \\ - 1/\sqrt{3} \\ 1/\sqrt{3} \end{bmatrix} 
+= \begin{bmatrix} \sqrt{2}/3 \\ - \sqrt{2}/3 \\ \sqrt{2}/3 \end{bmatrix}.
+\end{align*}
+
+Next, we must find the difference between $\hat{\bm{v}}_2$ and $\bm{v}_{\text{proj}}$:
+
+\begin{align*}
+\bm{v}_\perp = \hat{\bm{v}}_2 - \bm{v}_{\text{proj}} = \begin{bmatrix} \sqrt{2}/6 \\ \sqrt{2}/3 \\ \sqrt{2}/6 \end{bmatrix}
+\end{align*}
+
+Finally, we normalize this new vector: 
+
+\begin{align*}
+\| \bm{v}_\perp \| &= \sqrt{ \left( \frac{\sqrt{2}}{6} \right)^2 +  \left( \frac{\sqrt{2}}{3} \right)^2 + \left( \frac{\sqrt{2}}{6} \right)^2 } \\
+&= \sqrt{\frac{2}{36} + \frac{8}{36} + \frac{2}{36} }
+= \sqrt{\frac{12}{36}} = \frac{1}{\sqrt{3}}
+\end{align*}
+
+\begin{align*}
+\hat{\bm{v}}_\perp = \sqrt{3} \begin{bmatrix} \sqrt{2}/6 \\ \sqrt{2}/3 \\ \sqrt{2}/6 \end{bmatrix} = \begin{bmatrix} \sqrt{6}/6 \\ \sqrt{6}/3 \\ \sqrt{6}/6 \end{bmatrix}
+\end{align*}
+
+Therefore, the orthonormal basis for the space $\mathrm{span}(\{\bm{v}_1, \bm{v}_2\})$ is
+
+$$\mathrm{span}(\{\hat{\bm{v}}_1, \hat{\bm{v}}_\perp\})$$
+
+*********************************************************************************
+
+\newpage
+
+## Problem 4
+Consider the set of vectors 
+\[\bm{v}_1 = \begin{bmatrix} 1\\ -1\\ 1\\ -1\end{bmatrix}, \quad \bm{v}_2 = \begin{bmatrix} 1 \\ 0 \\ 1 \\ 0 \end{bmatrix} \quad \bm{v}_3=\begin{bmatrix} 2 \\ 2\\ 0\\0 \end{bmatrix}, \quad \bm{v}_4 = \begin{bmatrix} 0 \\ 1\\ 0\\ 1 \end{bmatrix}\]
+
+a. Is $\{\bm{v}_1, \bm{v}_2, \bm{v}_3, \bm{v}_4\}$ a basis for $\mathbb{R}^4$? Prove why (not).  
+
+*********************************************************************************
+
+**Answer:** 
+No. The set is not linearly independent since $\bm{v}_1 = \bm{v}_2 - \bm{v}_4$.
+
+*********************************************************************************
+
+b. Let $\mathcal{V} = \mathrm{span}(\{\bm{v}_1, \bm{v}_2, \bm{v}_3\})$. What is the general form of vectors in $\mathcal{V}$?
+
+*********************************************************************************
+
+**Answer:** 
+Taking an arbitrary linear combination of the three vectors, we have
+
+\begin{align*}
+\alpha_1\bm{v}_1 + \alpha_2\bm{v}_2 + \alpha_3\bm{v}_3 = \begin{bmatrix} \alpha_1 + \alpha_2 + 2\alpha_3 \\ -\alpha_1 + 2\alpha_3 \\ \alpha_1 + \alpha_2 \\ -\alpha_1 \end{bmatrix}
+\end{align*}
+
+as the general form for vectors in ${\cal V}$ for $\alpha_1, \alpha_2, \alpha_3$ in $\mathbb{R}$.
+
+*********************************************************************************
+
+c. What is the general form of vectors in $\mathcal{V}^\perp$?
+
+*********************************************************************************
+
+**Answer:**
+Consider a vector $\bm{w}$ in $\mathbb{R}^4$. If this vector is orthogonal to the vectors that make up the basis for the space in ${\cal V}$, then it will be orthogonal to any linear combination of those vectors and thus will be a basis for the orthogonal compliment ${\cal V}^\perp$. So we have the system of equations from taking the inner products:
+
+\begin{align*}
+\langle \bm{w}, \bm{v}_1 \rangle &= w_1 - w_2 + w_3 - w_4 = 0 \\
+\langle \bm{w}, \bm{v}_2 \rangle &= w_1 + w_3 = 0 \\
+\langle \bm{w}, \bm{v}_3 \rangle &= 2w_1 + 2w_2 = 0.
+\end{align*}
+
+This produces the constraints:
+\begin{align*}
+w_3 &= - w_1 \\
+w_1 &= -w_1.
+\end{align*}
+
+Substituting into the first equation, we have
+\begin{align*}
+w_1 + w_1 - w_1 - w_4 &= 0 \\
+w_1 &= w_4.
+\end{align*}
+
+Therefore, the orthogonal compliment to ${\cal V}$ is 
+$${\cal V}^\perp = \left\{ \bm{w}: \bm{w} = (w, -w, -w, w)^T, w \in \mathbb{R} \right\}.$$
+
+We can check that the inner product of any element of ${\cal V}^\perp$ and any element of ${\cal V}$ is indeed 0.
+
+*********************************************************************************
+
+
+d.  What is a basis for $\mathcal{V}^\perp$?
+
+*********************************************************************************
+
+**Answer:** 
+We can set $w = 1$ to get $\left\{ \begin{bmatrix} 1 \\ -1 \\ -1 \\ 1\end{bmatrix} \right\}$ as a basis for ${\cal V}^\perp$.
+
+*********************************************************************************
+
+
+e.  Let $\mathcal{W} = \mathrm{span}(\{\bm{v}_1, \bm{v}_2, \bm{v}_4\})$. What is the general form of vectors in $\mathcal{W}^\perp$?
+
+*********************************************************************************
+
+**Answer:** 
+solving this the same as before, we have the system of equations:
+
+\begin{align*}
+\langle \bm{w}, \bm{v}_1 \rangle &= w_1 - w_2 + w_3 - w_4 = 0 \\
+\langle \bm{w}, \bm{v}_2 \rangle &= w_1 + w_3 = 0 \\
+\langle \bm{w}, \bm{v}_4 \rangle &= w_2 + w_4 = 0,
+\end{align*}
+
+from which we have the constraints
+\begin{align*}
+w_3 &= -w_1 \\
+w_4 &= -w_2
+\end{align*}
+
+and substituting these into the first equation:
+\begin{align*}
+w_1 - w_2 - w_1 + w_2 &= 0 \\
+0 &= 0
+\end{align*}
+
+Which will be satisfied for any $w_1, w_2$ in $\mathbb{R}$. Therefore, the general form of vectors in ${\cal W}^\perp$ is vectors of the form $(w_1, w_2, -w_1, -w_2)^T$, for $w_1, w_2 \in \mathbb{R}$.
+
+*********************************************************************************
+
+f.  What is a basis for $\mathcal{W}^\perp$?
+
+*********************************************************************************
+
+**Answer:** 
+setting $w_1 = w_2 = 1$, a basis for ${\cal W}^\perp$ could be $\left\{ (1, 1, -1, -1)^T \right\}$.
+
+*********************************************************************************
+
+\newpage
+
+## Problem 5
+Using `R`, numerically apply the Gram-Schmidt orthogonalization procedure to $\{\bm{v}_1,\bm{v}_2, \bm{v}_3\}$ (from the previous question) to obtain an orthonormal basis  $\{\bm{u}_1,\bm{u}_2, \bm{u}_3\}$ for $\mathcal{V}$. Show numerically that the vectors are orthonormal.
+
+* Please write your own code, rather than using an existing package.
+* Please set `echo=TRUE` to show your code.
+
+*********************************************************************************
+
+**Answer:** 
+
+
+```{r echo=TRUE}
+# Put your code here
+V <- cbind(c(1, -1, 1, -1)
+           , c(1, 0, 1, 0)
+           , c(2, 2, 0, 0)
+           )
+
+gramschmidt <- function(V) {
+  p <- ncol(V)
+  
+  U <- V
+  ustar <- V[,1]
+  
+  for (i in 1:p) {
+    if (i > 1) {
+      ustar <- V[,i] - rowSums(sapply(1:(i-1)
+                              , function(x) { c(V[,i] %*% U[,x]) * U[,x] }))
+    }
+    U[,i] <- c(ustar) / sqrt(c(c(ustar) %*% c(ustar)))
+  }
+  return(U)
+}
+
+U <- gramschmidt(V)
+U
+
+# verify orthonormality
+# cycles thru each column and inner-products it with each column
+for (i in 1:3) {
+  print(sapply(1:3, function(x) {U[,i] %*% U[,x]}))
+}
+
+```
+
+*********************************************************************************
+

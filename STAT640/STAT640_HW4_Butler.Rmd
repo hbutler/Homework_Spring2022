@@ -1,0 +1,418 @@
+---
+output: 
+  pdf_document: 
+    keep_tex: yes
+    includes:
+        in_header: preamble_common.tex
+---
+
+
+
+STAT 640: Homework 4
+===================
+Due **Wednesday, February 16, 11:59pm MT** on the course Canvas webpage. Please follow the homework guidelines on the syllabus.
+
+## Name: Hannah Butler
+##
+
+
+
+## Problem 1 
+Suppose  that $\bmY \sim N(\bmmu, \sigma^2\bmSigma)$ where 
+\[\bmSigma = (1 - \rho)\bmI + \rho n\bmJ_n = \bbmx 1 & \rho & \cdots & \rho \\
+\rho & 1 & \ddots & \vdots\\
+\vdots & \ddots & \ddots & \rho\\
+\rho & \cdots & \rho & 1 \ebmx \text{ where } \rho > -1/(n-1)\]
+In Example 3.4, we show that if $\rho=0$, then $\overline{Y} = \frac{1}{n}\sum_{i=1}^n Y_i$ is independent of $(Y_1 - \overline{Y}, Y_2 - \overline{Y}, \dots, Y_n - \overline{Y})$. Prove whether or not they are independent when $\rho \ne 0$.
+
+*********************************************************************************
+
+**Answer:** 
+Consider the transformation $\bmW = \bmD \bmY$ where
+
+$$\bmD = \frac{1}{n}\begin{bmatrix} 1 & 1 & \dots & 1 \\ n & 0 & \dots & 0 \end{bmatrix}$$
+resulting in the random vector 
+$$\bmW = \begin{bmatrix} \bar{Y} \\ Y_1 \end{bmatrix}$$ where the first component is $\bar{Y}$ and the second component is $Y_1$.
+
+The covariance matrix of $\bmW$ is 
+
+\begin{align*}
+\bmSigma_{\bmW} &= \sigma^2 \bmD \bmSigma \bmD^T \\
+&= \frac{\sigma^2}{n^2}\begin{bmatrix} 
+1 & 1 & \dots & 1 \\ 
+n & 0 & \dots & 0 
+\end{bmatrix} 
+\begin{bmatrix} 1 & \rho & \dots & \rho \\ 
+\rho & 1 & \ddots & \vdots \\ 
+\vdots & \ddots & \ddots & \rho \\ 
+\rho & \dots & \rho & 1 
+\end{bmatrix} 
+\begin{bmatrix} 1 & n \\ 
+1 & 0 \\ \vdots & \vdots \\ 
+1 & 0 
+\end{bmatrix} \\
+&= \frac{\sigma^2}{n^2} 
+\begin{bmatrix} 
+1 + (n-1)\rho & 1 + (n-1)\rho & \dots & 1 + (n-1)\rho \\
+n             & n\rho         & \dots & n\rho
+\end{bmatrix}
+\begin{bmatrix} 1 & n \\ 
+1 & 0 \\ 
+\vdots & \vdots \\ 
+1 & 0 
+\end{bmatrix} \\
+&= \frac{\sigma^2}{n^2} \begin{bmatrix}
+n + n(n-1)\rho & n + n(n-1)\rho \\
+n + n(n-1)\rho & n^2
+\end{bmatrix}
+\end{align*}
+
+This result can easily be extended to $\bmW_i = \begin{bmatrix} \bar{Y} \\ Y_i \end{bmatrix}$ for $i = 1,2, \dots, n$.
+
+Now consider the transformation $\bmU = \bmD_2 \bmW_i$ where
+$$\bmD_2 = \begin{bmatrix} 1 & 0 \\ -1 & 1\end{bmatrix}$$
+Then we have $\bmU = \begin{bmatrix} \bar{Y} \\ Y_i - \bar{Y} \end{bmatrix}$. Again we can compute the variance matrix for $\bmU$:
+
+\begin{align*}
+\bmSigma_{\bmU} &= \frac{\sigma^2}{n^2}
+\begin{bmatrix} 
+1 & 0 \\
+-1 & 1
+\end{bmatrix}
+\begin{bmatrix}
+n + n(n-1)\rho & n + n(n-1)\rho \\
+n + n(n-1)\rho & n^2
+\end{bmatrix}
+\begin{bmatrix} 
+1 & -1 \\
+0 & 1
+\end{bmatrix} \\
+&= \frac{\sigma^2}{n^2}
+\begin{bmatrix}
+n+n(n-1)\rho & n+n(n-1)\rho \\
+0 & n^2 - n - n(n-1)\rho
+\end{bmatrix}
+\begin{bmatrix} 
+1 & -1 \\
+0 & 1
+\end{bmatrix} \\
+&= \frac{\sigma^2}{n^2}
+\begin{bmatrix}
+n + n(n-1)\rho & 0 \\
+0 & n^2 - n - n(n-1)\rho
+\end{bmatrix}
+\end{align*}
+
+The off-diagonal elements are zero, and $\bmU = \begin{bmatrix} \bar{Y} \\ Y_i - \bar{Y} \end{bmatrix}$ is multivariate normal, so $\bar{Y}$ is independent of $Y_i$.
+
+*********************************************************************************
+
+## Problem 2
+Suppose $\bmS=\bbmx 3 & s_2 \\ s_3 & 1 \ebmx$. For what values of $s_2$ and $s_3$ is $\bmS$ a valid variance matrix for a MVN random vector? 
+
+
+*********************************************************************************
+
+**Answer:** 
+For $\bmS$ to be a valid variance matrix, it must be symmetric ($s_2 = s_3$) and $\bmS$ must be non-negative definite. Therefore, the roots of the quadratic polynomial $(3-\lambda)(1-\lambda) - s_2^2 = \lambda^2 - 4\lambda + (3-s_2^2)$ must be non-negative. Using the quadratic formula, we have
+
+\begin{align*}
+0 & \leq 4 \pm \sqrt{16 - 4(3-s_2)} 
+= 4 \pm 2\sqrt{1 + s_2^2}
+\end{align*}
+Then $2 \leq \sqrt{1 + s_2^2}$ so $s_2, s_3$ must be between (or equal to) -3 and 3.
+
+*********************************************************************************
+
+ \newpage
+ 
+## Problem 3  
+Let $\bmX = \bbmx X_1 \\ X_2 \\ X_3\ebmx \sim N\left(\bbmx 3 \\ -1 \\ 2 \ebmx, \bbmx 5 & 2 & 0 \\ 2 & 3 & -1 \\ 0 & -1 & 4 \ebmx\right)$ and define $\bmY = \bbmx X_1 - X_2 \\ 2X_1 + X_2 -X_3\ebmx$.
+
+a. What are the distribution, variance, and expected value of $\bmY$?
+
+*********************************************************************************
+
+**Answer:** 
+To get $\bmY$, we apply the linear transformation 
+$$\bmD = \begin{bmatrix} 1 & -1 & 0 \\ 2 & 1 & -1 \end{bmatrix}.$$
+Since $\bmY$ is a linear transformation of a multivariate normal random variable, $\bmY$ will also be multivariate normal.
+
+We can then find the expectation $E[\bmY]$:
+\begin{align*}
+\bmmu_{\bmY} = \bmD \bmmu &= \begin{bmatrix} 1 & -1 & 0 \\ 2 & 1 & -1 \end{bmatrix} 
+\begin{bmatrix}
+3 \\
+-1 \\
+2
+\end{bmatrix}
+= \begin{bmatrix} 
+4 \\
+3
+\end{bmatrix}
+\end{align*}
+
+and variance
+\begin{align*}
+\bmSigma_{\bmY} = \bmD \bmSigma \bmD^T 
+&= \begin{bmatrix} 
+1 & -1 & 0 \\ 
+2 & 1 & -1 
+\end{bmatrix}
+\begin{bmatrix}
+5 & 2 & 0 \\
+2 & 3 & -1 \\
+0 & -1 & 4
+\end{bmatrix}
+\begin{bmatrix}
+1 & 2 \\
+-1 & 1 \\
+0 & -1
+\end{bmatrix} \\
+&= \begin{bmatrix}
+3 & -1 & 1 \\
+12 & 8 & -5
+\end{bmatrix}
+\begin{bmatrix}
+1 & 2 \\
+-1 & 1 \\
+0 & -1
+\end{bmatrix}
+= \begin{bmatrix}
+4 & 4 \\
+4 & 37
+\end{bmatrix}
+\end{align*}
+
+*********************************************************************************
+
+\newpage
+
+b. Find $\bmV = \Var\left(\bbmx \bmX \\ \bmY\ebmx\right)$. 
+
+*********************************************************************************
+
+**Answer:** 
+Here we again are applying a linear transformation $\bmD_1$ to $\bmX$ with 
+$$\bmD_1 = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & -1 & 0 \\ 2 & 1 & -1 \end{bmatrix}.$$
+The variance $\bmV$ is
+\begin{align*}
+\bmV &=
+\begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & -1 & 0 \\ 2 & 1 & -1 \end{bmatrix}
+\begin{bmatrix}
+5 & 2 & 0 \\
+2 & 3 & -1 \\
+0 & -1 & 4
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & 0 & 1 & 2 \\
+0 & 1 & 0 & -1 & 1 \\
+0 & 0 & 1 & 0 & -1
+\end{bmatrix} \\
+&= \begin{bmatrix}
+5 & 2 & 0 \\
+2 & 3 & -1 \\
+0 & -1 & 4 \\
+3 & -1 & 1 \\
+12 & 8 & -5
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & 0 & 1 & 2 \\
+0 & 1 & 0 & -1 & 1 \\
+0 & 0 & 1 & 0 & -1
+\end{bmatrix} \\
+&= \begin{bmatrix}
+5 & 2 & 0 & 3 & 12 \\
+2 & 3 & -1 & -1 & 8 \\
+0 & -1 & 4 & 1 & -5 \\
+3 & -1 & 1 & 4 & 4 \\
+12 & 8 & -5 & 4 & 37
+\end{bmatrix}
+\end{align*}
+
+*********************************************************************************
+
+c. What are $\rank(\bmV)$ and $\nullity(\bmV)$? Can you provide a conceptual explanation for why this makes sense?
+
+*********************************************************************************
+
+**Answer:** 
+$\rank(\bmV) = 3$, and $\nullity(\bmV) = 2$. This makes conceptual sense since the transformation $\bmD_1$ also has $\rank(\bmD_1) = 3$.
+
+*********************************************************************************
+
+\newpage
+
+d. What is the distribution of  $\bbmx X_1 \\ X_3 \ebmx \Bigg| X_2 = x_2$?
+
+
+*********************************************************************************
+
+**Answer:** 
+First, let $\bmY_1 = \begin{bmatrix} X_1 \\ X_3\end{bmatrix}$ and $\bmY_2 = [X_2]$. Then we can assign $\bmmu_1 = \begin{bmatrix} 3 \\ 2 \end{bmatrix}$, $\bmmu_2 = [-1]$, $\bmSigma_{12} = \begin{bmatrix} 2 \\ -1 \end{bmatrix}$, $\bmSigma_{11} = \begin{bmatrix} 5 & 0 \\ 0 & 4\end{bmatrix}$, $\bmSigma_{21} = \begin{bmatrix} 2 & -1 \end{bmatrix}$ and $\bmSigma_{22} = 3$.
+
+Then we can compute the expectation $\bmmu$ as
+\begin{align*}
+\bmmu &= \bmmu_1 + \bmSigma_{12}\bmSigma_{22}^{-1}(x_2 - \bmmu_2) \\
+&= \begin{bmatrix} 3 \\ 2 \end{bmatrix} + \frac{x_2-1}{3}\begin{bmatrix} 2 \\ -1 \end{bmatrix} \\
+&= \begin{bmatrix} 3 + 2(x_2 - 1)/3 \\ 2 + (x_2 - 1)/3 \end{bmatrix} 
+= \begin{bmatrix} (2x_2 + 7)/3 \\ (x_3 + 7)/3\end{bmatrix}
+\end{align*}
+and the variance
+\begin{align*}
+\bmSigma &= \bmSigma_{11} - \bmSigma_{12} \bmSigma_{22}^{-1} \bmSigma_{21} \\
+&= \begin{bmatrix} 5 & 0 \\ 0 & 4\end{bmatrix} 
+- \frac{1}{3}\begin{bmatrix} 2 \\ -1 \end{bmatrix}
+\begin{bmatrix} 2 & -1 \end{bmatrix} \\
+&= \begin{bmatrix} 5 & 0 \\ 0 & 4\end{bmatrix} 
+- \frac{1}{3} \begin{bmatrix} 4 & -2 \\ -2 & 1 \end{bmatrix}
+= \begin{bmatrix} 5 - 4/3 & 2/3 \\ 2/3 & 4 - 1/3 \end{bmatrix} \\
+&= \begin{bmatrix} 11/3 & 2/3 \\ 2/3 & 11/3 \end{bmatrix}
+\end{align*}
+
+So $\begin{bmatrix} X_1 \\ X_3 \end{bmatrix} \Bigg| X_2 = x_2 \sim N\left(\begin{bmatrix} (2x_2 + 7)/3 \\ (x_3 + 7)/3\end{bmatrix}, \begin{bmatrix} 11/3 & 2/3 \\ 2/3 & 11/3 \end{bmatrix} \right)$ 
+
+*********************************************************************************
+
+\newpage
+
+## Problem 4
+A colleague asks for your help in generating samples from the following MVN distribution:
+\[\bmY \sim N\left(\bbmx 5 \\ 10 \\15 \ebmx, \bbmx 5 & 1 & 2\\1 & 5 & 1\\ 2 & 1 & 5\ebmx \right)\]
+However, they are on computer whose R installation only includes the `base` and `stats` packages (note: `eigen()` is in `base` and `rnorm()` is in `stats`, but `mvrnorm()` is in neither). Do one of the following:
+      (i) Provide a brief algorithm and example code for how your colleague can generate the desired sample, OR
+      (ii) Explain why it is impossible with only these tools.
+
+
+*General Algorithm*
+
+1. Eigen-decompose $\bmSigma$
+2. Set $\bmD = \bmQ \bmLambda^{1/2}$ (from eigen decomposition) and $\bmc = (\mu_1, \dots, \mu_n)$
+3. Simulate $n$-dimensional $\bmX \sim N(\bm0, \bmI)$
+4. Apply transformation $\bmD \bmX + \bmc$
+
+*Example*
+
+```{r}
+# Set desired covariance structure
+Sigma = cbind(c(5, 1, 2), c(1, 5, 1), c(2, 1, 5))
+
+# Eigen decompose Sigma
+Sigma_eig = eigen(Sigma)
+
+# Set D = QL^1/2
+D = Sigma_eig$vectors %*% diag(sqrt(Sigma_eig$values))
+
+# Set mean vector
+c = c(5, 10, 15)
+
+# simulate N(0,1) random variables
+X1 <- rnorm(10000, 0, 1)
+X2 <- rnorm(10000, 0, 1)
+X3 <- rnorm(10000, 0, 1)
+X <- rbind(X1, X2, X3)
+
+# Apply transformation
+Y = D %*% X + c 
+
+# Check sample means and variances:
+colMeans(t(Y))
+cov(t(Y))
+```
+
+\newpage
+
+## Problem 5
+
+Prove Proposition 3.11: Suppose 
+\begin{equation}
+\label{eq:mvn_partitioned}
+\bmY = \bbmx \bmY_1 \\ \bmY_2 \ebmx = N\left(\bbmx \bmmu_1 \\ \bmmu_2\ebmx, \bbmx \bmSigma_{11} & \bmSigma_{12}\\ \bmSigma_{21} & \bmSigma_{22}\ebmx\right).
+\end{equation}
+If $|\bmSigma_{22}| > 0$, then the conditional distribution of $\bmY_1$ given $\bmY_2 = \bmy_2$ is MVN with mean and variance:
+\begin{equation}
+\bmY_1 | \bmY_2  = \bmy_2 \sim N\left(\bmmu_1 + \bmSigma_{12}\bmSigma_{22}^{-1}(\bmy_2 - \bmmu_2), \bmSigma_{11} - \bmSigma_{12}\bmSigma_{22}^{-1}\bmSigma_{21}\right).
+\end{equation}
+Do this in the following steps.
+
+a. Let $\bmX = (\bmY_1 - \bmmu_1) - \bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2)$. Find $\E[\bmX]$, $\Var(\bmX)$, and $\Cov(\bmX, \bmY_2)$. 
+
+*********************************************************************************
+
+**Answer:** 
+To find the expectation of $\bmX$, we have
+\begin{align*}
+E(\bmX) &= E(\bmY_1 - \bmmu_1 - \bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2)) \\
+&= \bmmu_1 - \bmmu_1 - \bmSigma_{12}\bmSigma_{22}^{-1}\bm0 \\
+&= \bm0.
+\end{align*}
+
+For the variance, we have
+\begin{align*}
+\Var(\bmX) &= E(\bmX^2) - E(\bmX)^2 \\
+&= E(\bmX^2) \\
+&= E \left( (\bmY_1 - \bmmu_1 - \bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2))(\bmY_1 - \bmmu_1 - \bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2))^T \right) \\
+&= E \Big( \bmY_1\bmY_1^T - \bmY_1\bmmu_1^T - \bmY_1(\bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2))^T 
+- \bmmu_1\bmY_1^T + \bmmu_1\bmmu_1^T + \bmmu_1(\bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2))^T \\
+&\quad - (\bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2)\bmY_1^T + (\bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2))\bmmu_1 + (\bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2))(\bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2))^T
+\Big) \\
+&= \bmSigma_{11} - \bmSigma_{12}\bmSigma_{22}^{-1}\bmSigma_{21} - \bm0 + \bm0 - \bmSigma_{12}\bmSigma_{22}^{-1}\bmSigma_{21} + \bm0 + \bmSigma_{12}\bmSigma_{22}^{-1}\bmSigma_{21} \\
+&= \bmSigma_{11} - \bmSigma_{12}\bmSigma_{22}^{-1}\bmSigma_{21}.
+\end{align*}
+
+The covariance of $\bmX$ and $\bmY_2$ is
+\begin{align*}
+\Cov(\bmX, \bmY_2) &=  E(\bmX\bmY_2^T) - E(\bmX)E(\bmY_2)^T \\
+&= E(\bmX\bmY_2^T) \\
+&= E\left( (\bmY_1 - \bmmu_1 - \bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2) ) \bmY_2^T \right) \\
+&= E(\bmY_1\bmY_2^T - \bmmu_1\bmY_2^T - \bmSigma_{12}\bmSigma_{22}(\bmY_2 - \bmmu_2)\bmY_2^T ) \\
+&= \bmSigma_{12} - \bmSigma_{12} \\
+&= \bm0.
+\end{align*}
+
+*********************************************************************************
+
+b. Provide the joint distribution of $\bmX$ and $\bmY_2$ and explain why they are independent.
+
+*********************************************************************************
+
+**Answer:** 
+Since $\bmX$ is multivariate normal and $\bmY_2$ is multivariate normal, the joint distribution for $\begin{bmatrix} \bmX \\ \bmY_2 \end{bmatrix}$ is 
+$$N\left( \begin{bmatrix} \bm0 \\ \bmmu_2 \end{bmatrix}, \begin{bmatrix} \bmSigma_{11} - \bmSigma_{12}\bmSigma_{22}^{-1}\bmSigma_{21} & \bm0 \\ \bm0 & \bmSigma_{22} \end{bmatrix} \right).$$
+
+Since $\bmX$ is multivariate normal and $\bmY_2$ is multivariate normal, $\Cov(\bmX, \bmY_2) = \bm0$ implies that they are independent.
+
+*********************************************************************************
+
+
+c. Write $\bmY_1$ in terms of $\bmX$ and $\bmY_2$.
+
+*********************************************************************************
+
+**Answer:** 
+Since $\bmX = \bmY_1 - \bmmu_1 - \bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2)$, we have 
+$$\bmY_1 = \bmX + \bmmu_1 + \bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2).$$
+
+*********************************************************************************
+
+
+d. Show that the mgf of $\bmY_1 | \bmY_2 = \bmy_2$ has the desired form for the result to hold.
+
+*********************************************************************************
+
+**Answer:** 
+\begin{align*}
+M_{\bmY_1|\bmY_2}(\bmt) &= E(\exp(\bmY_1^T \bmt) | \bmY_2 = \bmy_2) \\
+&= E\left( \exp(\bmX^T\bmt) \exp(\bmmu_1^T\bmt) \exp((\bmSigma_{12}\bmSigma_{22}^{-1}(\bmY_2 - \bmmu_2))^T\bmt) | \bmY_2 = \bmy_2 \right) \\
+&= \exp((\bmmu_1 + \bmSigma_{12}\bmSigma_{22}^{-1}(\bmy_2 - \bmmu_2))^T\bmt) E(\exp(\bmX^T\bmt)) & (\bmX \textit{ and } \bmY_2 \textit{ are independent}) \\
+&= \exp((\bmmu_1 + \bmSigma_{12}\bmSigma_{22}^{-1}(\bmy_2 - \bmmu_2))^T\bmt)
+\exp\left( \bm0^T\bmt + \frac{1}{2}\bmt^T(\bmSigma_{11} - \bmSigma_{12}\bmSigma_{22}^{-1}\bmSigma_{21})\bmt \right) \\
+&= \exp \left( (\bmmu_1 + \bmSigma_{12}\bmSigma_{22}^{-1}(\bmy_2 - \bmmu_2))^T\bmt + \frac{1}{2}\bmt^T(\bmSigma_{11} - \bmSigma_{12}\bmSigma_{22}^{-1}\bmSigma_{21})\bmt \right)
+\end{align*}
+
+This is the MGF for a random vector with multivariate normal distribution
+$$ N\left( \bmmu_1 + \bmSigma_{12}\bmSigma_{22}^{-1}(\bmy_2 - \bmmu_2), \bmSigma_{11} - \bmSigma_{12}\bmSigma_{22}^{-1}\bmSigma_{21} \right).$$
+
+
+*********************************************************************************
+

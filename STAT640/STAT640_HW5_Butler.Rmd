@@ -1,0 +1,256 @@
+---
+output: 
+  pdf_document: 
+    keep_tex: yes
+    includes:
+        in_header: preamble_common.tex
+---
+
+```{r, echo=FALSE, message=FALSE}
+library(tidyverse)
+library(kableExtra)
+library(ggplot2)
+```
+
+
+STAT 640: Homework 5
+===================
+Due **Thursday, February 24, 11:59pm MT** on the course Canvas webpage. Please follow the homework guidelines on the syllabus.
+
+*Note: This assignment is due after the midterm exam on Tuesday, February 22, but you are encouraged to attempt parts of this assignment before the exam as part of your exam preparation, even if you delay your formal response write-up until after the exam.*
+
+
+## Name: Hannah Butler
+##
+
+
+## Problem 1 
+Your colleague with a deficient R installation, impressed by your algorithm from Homework 4, now challenges you to demonstrate your skill by generating a sample of size $N=1,000$ from a $\chi^2\left(10, \frac{1}{2}\sum_{i=1}^{10} i^2\right)$ distribution in R. However, your colleague has overwritten `stats::rchisq()` so that function is not available to you. 
+
+a. Simulate the requested sample using realizations of normal random variables. Compare the empirical mean and variance of the distribution to the theoretical quantities. (Provide your R code).
+
+*********************************************************************************
+
+**Answer:** 
+Generate 1000 samples from $N(i,1)$ for $i=1,\dots,10$.
+
+```{r}
+set.seed(80085)
+N = 1000
+d <- 10
+mu <- 1:d
+
+normal_sample <- lapply(mu, function(x) rnorm(N, x, 1)) %>%
+  do.call(cbind, .)
+
+chisq_sample <- apply(normal_sample, 1, function(x) sum(x^2))
+```
+
+```{r, echo = FALSE}
+results <- data.frame(Sample = c(mean(chisq_sample), var(chisq_sample))
+                      , Theoretical = c(d + (mu%*%mu), 2*d + 4*(mu%*%mu))
+                      ) 
+row.names(results) <- c("Mean", "Variance")
+
+kable(results) %>%
+  kable_styling(latex_options = "striped"
+                , full_width = TRUE 
+                )
+```
+
+*********************************************************************************
+
+\newpage
+
+b.  Simulate the requested sample using the conditional approach that involves sampling from a Poisson distribution. Compare the empirical mean and variance of the distribution to the theoretical quantities. (Provide your R code).
+
+*********************************************************************************
+
+**Answer:** 
+
+```{r}
+ncp <- sum(mu^2)/2
+# Sample from Poisson
+k <- rpois(1000, ncp)
+chisq_sample_2 <- sapply(k, function(x) sum(rnorm(d + 2*x, 0, 1)^2) )
+```
+
+```{r, echo = FALSE}
+results <- data.frame(Sample = c(mean(chisq_sample_2), var(chisq_sample_2))
+                      , Theoretical = c(d + (mu%*%mu), 2*d + 4*(mu%*%mu))
+                      ) 
+row.names(results) <- c("Mean", "Variance")
+
+kable(results) %>%
+  kable_styling(latex_options = "striped"
+                , full_width = TRUE 
+                )
+```
+
+*********************************************************************************
+ 
+    
+c. Provide a nicely-formatted Q-Q plot comparing your two samples.
+
+
+*********************************************************************************
+
+**Answer:** 
+
+```{r, echo = FALSE}
+sample_1_percentiles <- sapply(chisq_sample, function(x) sum(chisq_sample < x)/1000)
+chisq_percentiles_1 <- pchisq(chisq_sample, d, ncp*2)
+
+sample_2_percentiles <- sapply(chisq_sample_2, function(x) sum(chisq_sample_2 < x)/1000)
+chisq_percentiles_2 <- pchisq(chisq_sample_2, d, ncp*2)
+
+qq_plot <- data.frame(S = c(sample_1_percentiles
+                            , sample_2_percentiles)
+                      , Q = c(chisq_percentiles_1
+                              , chisq_percentiles_2)
+                      , Label = c(rep("Sample From (A)", 1000)
+                                  , rep("Sample From (B)", 1000)) 
+                      , guide = c(pchisq(seq(0, 300, .3)[1:1000], d, ncp)
+                                  , pchisq(seq(0, 300, .3)[1:1000], d, ncp))
+                      )
+qq_plot %>%
+  ggplot(aes(guide, guide)) +
+  geom_line(alpha = 0.5) +
+  geom_point(aes(S, Q), alpha = 0.1
+             , shape = 1
+             , color = "blue") +
+  facet_grid(~ Label) +
+  xlab("Empirical Percentiles") +
+  ylab("Theoretical Percentiles") +
+  theme_minimal()
+```
+
+*********************************************************************************
+
+\newpage
+
+## Problem 2
+
+Suppose $\E[\bmZ] = \bm0_n$ and $\Var(\bmZ)= \bmI_n$. Find the mean of each of the following quadratic forms:
+
+a. $\bmZ^\mT\bmJ_n\bmZ$, where $\bmJ_n = \frac{1}{n}\bm1\bm1^\mT$
+b. $\bmZ^\mT(\bmI-\bmJ_n)\bmZ$
+c. $\bmZ^\mT(n\bmJ_n - \bmI)\bmZ$
+d. $(\bmZ + \bm1)^\mT\bmJ_n(\bmZ + \bm1)$
+e. $(\bmZ + \bm1)^\mT\bmJ_n(\bmZ - \bm1)$
+f. $(\bmZ + b\bm1)^\mT\bmJ_n(\bmZ + c\bm1)$ for $b,c \in \mathbb{R}$
+
+*********************************************************************************
+
+**Answers:** 
+
+\textit{Note that since $\bmJ_n = \frac{1}{n}\bm1 \bm1^T$, $\bmJ_n$ is populated with $\frac{1}{n}$ in every component, including the diagonals. So we have $\trace(\bmJ_n) = 1$.}
+
+$\bmZ^T\bmJ_n\bmZ$. $\bmJ_n$ is symmetric, so we can apply Proposition 3.15 to find the expectation of this quadratic form.
+\begin{align*}
+E(\bmZ^T\bmJ_n\bmZ) &= \trace(\bmJ_n \bmSigma) + \bmmu^T \bmJ_n \bmmu \\
+&= \trace(\bmJ_n) + 0 \\
+&= 1
+\end{align*}
+
+$\bmZ^\mT(\bmI-\bmJ_n)\bmZ$. $(\bmI-\bmJ_n)$ is again a symmetric matrix (Proposition 2.27), so we can again find the expectation of the quadratic form:
+\begin{align*}
+E(\bmZ^\mT(\bmI-\bmJ_n)\bmZ) &= \trace((\bmI-\bmJ_n)\bmSigma) + \bmmu^T\bmJ_n \bmmu\\
+&= \trace(\bmSigma - \bmJ_n\bmSigma) + 0 \\
+&= \trace(\bmSigma) - \trace(\bmJ_n) \\
+&= n - 1
+\end{align*}
+
+$\bmZ^\mT(n\bmJ_n - \bmI)\bmZ$. $n\bmJ_n - \bmI = \bm1\bm1^T - \bmI$ is a matrix of all ones, except for the diagonal, which is populated by zeros. This is still symmetric though, so we have
+\begin{align*}
+E(\bmZ^\mT(n\bmJ_n - \bmI)\bmZ) &= \trace((n\bmJ_n - \bmI)\bmSigma) + 0 \\
+&= \trace(n\bmJ_n - \bmI) \\
+&=0
+\end{align*}
+
+$(\bmZ + \bm1)^\mT\bmJ_n(\bmZ + \bm1)$. $\bmZ+\bm1$ is simply a shifted version of the original random variable $\bmZ$. So $\bmmu = E(\bmZ + \bm1) = \bm1$. Then we have
+\begin{align*}
+E( (\bmZ + \bm1)^\mT\bmJ_n(\bmZ + \bm1) ) &= \trace(\bmJ_n\bmSigma) + \bmmu^T\bmJ_n\bmmu \\
+&= 1 + \bm1^T \bmJ_n \bm1 \\
+&= 1 + \frac{1}{n} \bm1^T \bm1 \bm1^T \bm1 \\
+&= 1 + \frac{1}{n} n^2 \\
+&= 1 + n
+\end{align*}
+
+$(\bmZ + \bm1)^\mT\bmJ_n(\bmZ - \bm1)$. Expanding this out, we have
+\begin{align*}
+(\bmZ + \bm1)^\mT\bmJ_n(\bmZ - \bm1) &= \bmZ^T\bmJ_n(\bmZ - \bm1) + \bm1^T\bmJ_n(\bmZ - \bm1) \\
+&= \bmZ^T\bmJ_n\bmZ - \bmZ^T\bmJ_n\bm1 + \bm1^T\bmJ_n\bmZ - \bm1^T\bmJ_n\bm1
+\end{align*}
+Now taking the expectation, we have
+\begin{align*}
+E(\bmZ^T\bmJ_n\bmZ - \bmZ^T\bmJ_n\bm1 + \bm1^T\bmJ_n\bmZ - \bm1^T\bmJ_n\bm1) &= 1 - 0 + 0 - n \\
+&= 1-n
+\end{align*}
+
+$(\bmZ + b\bm1)^\mT\bmJ_n(\bmZ + c\bm1)$. Expanding, we have
+\begin{align*}
+(\bmZ + b\bm1)^\mT\bmJ_n(\bmZ + c\bm1) &= \bmZ^T\bmJ_n\bmZ + c\bmZ^T\bmJ_n\bm1 + b\bm1^T\bmJ_n\bmZ + bc\bm1^t\bmJ_n\bm1.
+\end{align*}
+With expectation
+\begin{align*}
+E(\bmZ^T\bmJ_n\bmZ + c\bmZ^T\bmJ_n\bm1 + b\bm1^T\bmJ_n\bmZ + bc\bm1^t\bmJ_n\bm1) &= 1 + 0 + 0 + nbc \\
+&= 1 + nbc
+\end{align*}
+
+*********************************************************************************
+
+\newpage
+
+## Problem 3
+
+Suppose $\bmZ \sim N(\bm0_n, \bmI_n)$. Using the results in Section 3.10 of the class notes, find the distribution of the following quadratic forms **OR** state why the distribution cannot be found using what we know (i.e. why none of the propositions apply). 
+
+a. $\bmZ^\mT\bmJ_n\bmZ$, where $\bmJ_n = \frac{1}{n}\bm1\bm1^\mT$
+b. $\bmZ^\mT(\bmI-\bmJ_n)\bmZ$
+c. $\bmZ^\mT(n\bmJ_n - \bmI)\bmZ$
+d. $(\bmZ + \bm1)^\mT\bmJ_n(\bmZ + \bm1)$
+e. $(\bmZ + \bm1)^\mT\bmJ_n(\bmZ - \bm1)$
+
+*********************************************************************************
+
+**Answers:** 
+
+a. $\bmZ^\mT\bmJ_n\bmZ$. $\bmJ_n$ is symmetric and idempotent with rank 1, so $\bmZ^\mT\bmJ_n\bmZ \sim \chi^2_{1}.$
+
+b. $\bmZ^\mT(\bmI-\bmJ_n)\bmZ$. $\bmI-\bmJ_n$ is symmetric and idempotent with rank $n-1$, so $\bmZ^\mT(\bmI-\bmJ_n)\bmZ \sim \chi^2_{n-1}.$
+
+c. $\bmZ^\mT(n\bmJ_n - \bmI)\bmZ$. $n\bmJ_n - \bmI$ is symmetric but not idempotent. We don't have a rule for the distribution of this quadratic form. We are only equipped to find the expectation of such a random variable.
+
+d. $(\bmZ + \bm1)^\mT\bmJ_n(\bmZ + \bm1)$. $J_n$ is symmetric and idempotent, and $\bmZ + \bm1 \sim N(\bm1, \bmI)$, so  $(\bmZ + \bm1)^\mT\bmJ_n(\bmZ + \bm1) \sim \chi^2(1, n/2).$
+
+e. $(\bmZ + \bm1)^\mT\bmJ_n(\bmZ - \bm1)$. $\bmZ + \bm1$ and $\bmZ - \bm1$ are not identically distributed, so we don't have a rule to find the full distribution of $(\bmZ + \bm1)^\mT\bmJ_n(\bmZ - \bm1)$.
+
+*********************************************************************************
+
+## Problem 4
+Let $\bmZ \sim N(\bm0_3, \bmI_3)$. 
+
+a. Find the mgf of $W = 2(Z_1Z_2 + Z_2Z_3 - Z_1Z_3)$.
+
+*********************************************************************************
+
+**Answer:** 
+Consider the matrix $\bmA = \begin{pmatrix} 0 & 1 & -1 \\ 1 & 0 & 1 \\ -1 & 1 & 0\end{pmatrix}$. This matrix is symmetric, but not idempotent, which is a requirement to use any of the propositions from the notes to assume that $W$ is distributed as $\chi^2$. 
+
+However, if we make the transformation $\bmA\bmZ$, we get
+$$\begin{bmatrix} Z_2 - Z_3 \\ Z_1 + Z_3 \\ Z_2 - Z_1 \end{bmatrix} \sim N\left( \bm0, \begin{bmatrix} 2 & -1 & 1 \\ -1 & 2 & -1 \\ 1 & -1 & 2 \end{bmatrix} \right),$$
+So then from there, it feels like the right thing to do to take the inner product of this new vector $/\sqrt{2}$ and $\bmZ$, then show that the resulting terms are independent and say that the sum is $\chi^2_3$ distributed or something, but I can't figure out how to do any of this and I keep messing up an eigendecomposition of $\bmA$ which is was what I was trying to do earlier and I don't really have the energy to keep doing this tonight because this whole week has been a nightmare so I'll probably just try to figure it out tomorrow or during office hours or something and take the L on this assigment.
+
+*********************************************************************************
+
+
+b. Show that $W$ has the same distribution as $V = U_1 + U_2 - 2U_3$, where $U_j$ are independent $\chi^2$ random variables.
+
+*********************************************************************************
+
+**Answer:** 
+I'm skipping this one too because I couldn't figure out the first part and I'm too tired.
+
+*********************************************************************************
+

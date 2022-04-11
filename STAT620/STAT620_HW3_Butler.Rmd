@@ -1,0 +1,35 @@
+---
+title: "STAT 620 Homework 3"
+author: "Hannah Butler"
+date: "2/14/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Suppose you have an initial stake of \$1 and bet on a sequence of coin tosses for a fair coin where at each toss you win \$1 if it is heads and lose \$1 if it is tails. Show that the probability that you eventually end up losing everything is greater than or equal to 2/3. 
+
+For $i = 1, 2, \dots$, losing everything after $i$ turns corresponds to sequences with a prespecified number and the positions of heads and tails. Specifying the first $i$ flips of a coin, we have $2^i$ disjoint intervals of equal length $2^{-i}$, which we assign as the probability of obtaining that sequence of flips. For $i$ odd, if one has not already lost everything, then there is no way to lose everything on the next (even) flip. However, for every odd $i$, there is at least one sequence in which the proportion of heads and tails is equal for the first $i-1$ flips such that the proportion of tails never exceeds 1/2 in the first $i-1$ flips and we get a tails for the $i$th flip. So we can say that there is at least a $\frac{1}{2^i}$ probability that we lose everything on the $i$th flip. Therefore, the probability of losing everything is the sum
+
+$$P(\text{lose everything}) \geq \sum_{i=1}^\infty \left( \frac{1}{2} \right)^{2i+1} = \sum_{i=1}^\infty \frac{1}{2} \left( \frac{1}{4} \right)^i = \frac{1}{2} \left( \frac{1}{1-\frac{1}{4}} \right) = \frac{1}{2} \cdot \frac{4}{3} = \frac{2}{3}$$
+
+***
+
+2. Consider a spinner with three equal sections: (-1, 0, 1). We spin the spinner at random and move a particle on the integer number line $\{\dots, -3, -2, -1, 0, 1, 2, 3, \dots \}$ according to the value, so -1 is a step to the left, 0 remains at the same spot or pauses, and 1 moves a step to the right. The particle initially starts at 0. Let ${\cal S}$ be the sample space for this process. 
+
+  (a) Create a measure theory model for ${\cal S}$ by identifying ${\cal S}$ with $I = (0,1]$. 
+  
+  Similarly to how we dealt with Bernoulli sequences, we can represent almost all sequences of the spinner options as ternary decimal representations which can then be mapped to the interval $(0,1]$.  *A countable subset of the sequences will be excluded so that the mapping may be one-to-one.*
+  
+  We can represent the -1 (left step) as 0, the 0 (pause) as 1, and the 1 (right step) as 2. Then all sequences can be represented as a ternary sequence $0.a_1 a_2 a_3 \dots$ with $a_i \in \{0, 1, 2\}$.
+  
+  (b) Compute the probability of a pause at step 5. (That is, use your model to compute this probability. Using the model implies finding the interval corresponding to this event and then finding the length of this interval.)
+  
+  With the model stated above, a prespecified value at any one location will result in a partition of the unit interval into 3 parts, each with length $\frac{1}{3}$. This we can associate with the probability of spinning a zero on the wheel. 
+  
+  (c) Compute the probability of forward motion at times 2 and 4. 
+  
+  Prespecifying the values at two positions will result in a partition of the unit interval into $3^2 = 9$ equal intervals each with length $\frac{1}{3^2} = \frac{1}{9}$, which we can associate with the probability of a sequence where we move forward at times 2 and 4. 
+  

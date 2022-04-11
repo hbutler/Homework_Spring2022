@@ -1,0 +1,68 @@
+---
+title: "STAT 530 Homework 2"
+author: "Hannah Butler"
+date: "2/5/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+(1) (10 pts) Find the method of moment estimators of the unknown parameters based on a random sample $X_1, \dots, X_n$ of size $n$ from the following distributions. *(See "Table of Common Distributions" in Casella & Berger for definitions and properties of these distributions)*:
+
+(a) (5 pts) Negative-binomial$(3,p)$, unknown $p$;
+
+***
+
+*Note about notation: I am using $\widehat{E(X^k)}$ to denote the $k$th population moment for the distribution with the method of moments estimator $\hat{\theta}$. Also, I will use $M_1$ to denote $\frac{1}{n}\sum_{i=1}^n X_i$ and $M_2$ to denote $\frac{1}{n}\sum_{i=1}^n X_i^2$.*
+
+Set $M_1 = \widehat{E(X)}$, where $\widehat{E(X)} = \frac{3(1-\hat{p})}{\hat{p}}$ (the mean of the negative-binomial distribution). Then solving for the method of moments estimator, $\hat{p}$, we have
+
+$$\hat{p} = \frac{3}{M_1 + 3} = \frac{3}{\bar{X} + 3}.$$
+
+(b) (5 pts) Double-exponential$(\mu, \sigma)$, unknown $\mu$ and $\sigma$.
+
+To find the method of moments estimators for parameters $\mu$ and $\sigma$, we begin with the system of equations:
+
+\begin{align*}
+M_1 &= \widehat{E(X)} = \hat{\mu} \\
+M_2 &= \widehat{E(X^2)} = \widehat{\text{Var}(X)} + \widehat{E(X)}^2 = 2\hat{\sigma}^2 + \hat{\mu}^2
+\end{align*}
+
+The M.o.M. estimator for $\mu$ is $\hat{\mu} = \bar{X}$, and substituting this into the second equation and solving for $\hat{\sigma}$ we get
+
+$$\hat{\sigma} = \sqrt{\frac{M_2 - M_1^2}{2}}$$
+As the M.o.M. estimator for $\sigma$.
+
+(2) (14 pts) Suppose we have a random sample of size $n$, $X_1, \dots, X_n \sim  f(x|\theta)$, where 
+$$f(x|\theta)= 2\sqrt{\frac{\theta}{\pi}}\exp(-\theta x^2)\cdot\mathbb{I}(x>0). $$
+
+(a) (7 pts) Find the method of moment estimator of $\theta$ by matching the 1st sample moment with the first population moment. 
+
+We first equate the 1st sample moment, $M_1$, with the estimated 1st population moment. We can then integrate $f$ to compute the estimated population moment. 
+
+\begin{align*}
+M_1 &= \widehat{E(X)} = \sqrt{\frac{\hat{\theta}}{\pi}}\int_0^\infty 2xe^{-\hat{\theta}x^2} dx \\
+&= \sqrt{\frac{\hat{\theta}}{\pi}}\int_0^\infty e^{-\hat{\theta}u} du & \textit(u-substitution) \\
+&= \sqrt{\frac{\hat{\theta}}{\pi}} \left( -\frac{1}{\hat{\theta}} e^{-\hat{\theta}u} \right)_0^\infty \\
+&= \frac{1}{\sqrt{\hat{\theta}\pi}}
+\end{align*}
+
+Solving for $\hat{\theta}$, we get
+$$\hat{\theta} = \frac{1}{\pi M_1^2}$$
+
+(b) (7 pts) Now, suppose we instead match the 2nd sample moment $\left(\frac{1}{n}\sum_{i=1}^n X_i^2 \right)$ with the 2nd population moment moment ($E(X_1^2)$). We can obtain another estimator of $\theta$. What is this estimator? Is it the same as your answer in (a)?
+
+(3) (8 pts) Problem 7.1, Casella & Berger:
+
+(4) (8 pts) Let $\mathbb{I}(A)$ denote the indicator function of an event $A$, where $\mathbb{I}(A) = 1$ if event $A$ holds true and $\mathbb{I}(A) = 0$ otherwise. Suppose that $A_1, \dots, A_n$ are $n$ separate events, and $B$ is the event that "events $A_1, \dots, A_n$ hold true at the same time." Use your knowledge in STAT 520, rigorously show that 
+$$\prod_{i=1}^n \mathbb{I}(A_i) = \mathbb{I}(B).$$
+
+(5) (18 pts) Given a random sample $X_1, \dots, X_n$ from a pdf/pmf $f(x|\theta)$, $\theta \in \Theta \subset \mathbb{R}$, we know that the likelihood function is
+$$L(\theta|x) = \prod_{i=1}^n f(x_i|\theta), \quad \theta \in \Theta,$$
+but there exists one subtle point to highlight about how to exactly write the likelihood expression depending on the support of $f(x|\theta)$.
+
+- Recall the support of $f(x|\theta)$ is $S_\theta = \{ x \in \mathbb{R} : f(x|\theta) > 0\}$, which could possibly depend on $\theta \in \Theta$. For example, an exponential distribution has a pdf whose support is free from the parameter $\theta$, while a uniform distribution may have a pdf whose support depends on $\theta$.
+
+- It is always true that $f(x|\theta) = f(x|\theta)\cdot \mathbb{I}(x \in S_\theta)$ for all $x\in \mathbb{R}$ and so always true that 

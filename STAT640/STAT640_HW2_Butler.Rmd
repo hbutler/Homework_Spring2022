@@ -1,0 +1,267 @@
+---
+output: 
+  pdf_document: 
+    keep_tex: yes
+    includes:
+        in_header: preamble_common.tex
+---
+
+
+
+STAT 640: Homework 2
+===================
+Due **Wednesday, February 2, 11:59pm MT** on the course Canvas webpage. Please follow the homework guidelines on the syllabus.
+
+## Name: Hannah Butler
+##
+
+
+## Problem 1 
+Let $\bmQ \in \mathbb{R}^{n \times n}$ be an orthogonal matrix. 
+
+**a.** What values can $\det(\bmQ)$ take?
+
+
+*********************************************************************************
+
+**Answer:** 
+Let's first establish a Lemma: *For a real $n\times n$ matrix $\bmA$, $\det(\bmA) = \det)\bmA^T$.*
+
+Demi-Proof:
+
+Consider an arbitrary, real, $2\times 2$ matrix $\bmA = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$ and its transpose $\bmA^T = \begin{bmatrix} a & c \\ b & d \end{bmatrix}$. The determinant $|\bmA| = ad-bc$, which is equal to the determinant $|\bmA^T|$. 
+
+Now assume that this property, $|\bmA| = |\bmA^T|$, holds for any $n\times n$ matrix, $n\in \mathbb{N}$. It must be shown that this property also holds for an $(n+1) \times (n+1)$ matrix. To compute the determinant of an $(n+1)\times(n+1)$ matrix, we can sum the products of each element of the first row by the appropriate $n\times n$ matrices in the $n$ remaining rows. On the other hand, considering the transpose, summing the products of the each element in the first column by the respective $n\times n$ matrices in the $n$ remaining columns will result in the same thing, since these respective $n\times n$ matrices are transposes of the corresponding ones used in finding the determinant of the original matrix. Therefore, any square matrix has a determinant equal to it's transpose. $\square$
+
+After establishing this property, it is easy to show what the values of $\det(\bmQ)$ can be since $1 = \det(\bmI) = \det(\bmQ \bmQ^T) = \det(\bmQ)^2$. Then the values that the determinant of an orthogonal matrix can be only $\pm 1$.
+
+*********************************************************************************
+
+**b.** What values can the eigenvalues of $\bmQ$ be?
+
+*********************************************************************************
+
+**Answer:** 
+Let $\lambda$ be an eigenvalue of $\bmQ$. Then $\bmQ \bmv = \lambda \bmv$, and $\bmv \neq \bm0$. Then we have
+
+\begin{align*}
+\bmv^T \bmQ^T &= \lambda \bmv^T \\
+\bmv^T\bmQ^T\bmQ^T \bmv &= \lambda^2 \bmv^T\bmv \\
+\bmv^T \bmv &= \bmv^T\bmv, \quad \bmv^T\bmv \text{ does not equal } \bm0 \\
+\end{align*}
+
+That means that $\lambda^2 = 1$, so the eigenvalues of $\bmQ$ must be $\pm 1$.
+
+*********************************************************************************
+
+## Problem 2
+Prove Proposition 3.5: If $\bmA \in \mathbb{R}^{n \times n}$ is symmetric, then $\trace(\bmA^s) = \sum_{i=1}^n\lambda_i^s$, where $\lambda_i$ are eigenvalues of $\bmA$. ($\bmA^s$ means $\bmA$ self-multiplied $s$ times, for natural number $s$).
+
+*********************************************************************************
+
+**Answer:** 
+\begin{align*}
+\trace{(\bmA^s)} &= \trace((\bmQ \bmLambda \bmQ^T)^s) \\
+&= \trace(\bmQ \bmLambda \bmQ^T \dots \bmQ \bmLambda \bmQ^T) \\
+&= \trace(\bmQ \bmLambda^s \bmQ^T) \\
+&= \trace(\bmQ\bmQ^T \bmLambda^s) \\
+&= \trace(\bmLambda^s) \\
+&= \sum_{i=1}^n \lambda_i^s
+\end{align*}
+
+*********************************************************************************
+
+\newpage
+
+## Problem 3
+
+Consider the matrix $\bmX = \bbmx 1 & x_1 & x_1^2 \\ 1 & x_2 & x_2^2\\\vdots & \vdots & \vdots \\ 1 & x_n & x_n^2\ebmx$. Assume $n>3$. 
+For **(a)** through **(c)**, describe the circumstances (i.e. a set of conditions on the values of $\{x_1, \dots, x_n\}$) under which  $\rank(\bmX) = r$ for the given values of $r$. Show why your answer is correct.
+
+**a.** $r=1$
+
+
+*********************************************************************************
+
+**Answer:** 
+$x_1 = x_2 = \dots = x_n = a \in \mathbb{R}$. Then both the second and third columns will be scalar multiples of the first column. Namely $\bmv_2 = a\bmv_1$ and $\bmv_3 = a^2\bmv_1$. Hence, only one column will be linearly independent, and the rank of $\bmX$ is defined as the number of linearly independent columns.
+
+*********************************************************************************
+
+
+**b.** $r=2$
+
+
+*********************************************************************************
+
+**Answer:** 
+Consider the transpose of $\bmX$. 
+
+$$\begin{bmatrix} 1 & 1 & \dots & 1 \\ x_1 & x_2 & \dots & x_n \\ x_1^2 & x_2^2 & \dots & x_n^2 \end{bmatrix}$$
+
+It is known that $\rank{(\bmX)} = \rank{(\bmX^T)}$. We will have two linearly independent columns (and no more) if $x_i = a$ and $x_j = b, j\neq i$ for $a, b \in \mathbb{R}$. Indeed, ${\cal C}(\bmX)$ will be spanned by the vectors $\{ \bmv_1 = (1, \dots, 1)^T, \bmv_2 = (a, a, \dots, 0, \dots, 0)^T, \bmv_3 = (0, 0, \dots, b, \dots, b)^T, \bmv_4 = (a^2, a^2, \dots, 0, \dots, 0)^T, \bmv_3 = (0, 0, \dots, b^2, \dots, b^2)^T \}$ (or some other permutation/combination of $a$'s and 0's in $\bmv_2$ and $b$'s in $\bmv_3$ in the positions corresponding with the positions of the 0's in $\bmv_2$). However, you can take the combination $\frac{1}{a}\bmv_2 + \frac{1}{b}\bmv_3$ to get $\bmv_1$, as well as express $v_4 = a\bmv_2$, and $v_5 = b\bmv_3$. So there are only two linearly independent vectors under these conditions.  
+
+*********************************************************************************
+
+
+**c.** $r=3$
+
+
+*********************************************************************************
+
+**Answer:** 
+Again, considering the transpose of $\bmX$, we can achieve three linearly independent columns by having at least 3 distinct values among the $x_i$. Since the rank can not exceed 3, the values for the remaining $x_i$ do not matter and will only add redundant information. It can be shown similarly to the case for $r=2$, that there are only 3 vectors needed in order to express all the columns of $\bmX$, broken down by the value that $x_i$ takes on.
+
+*********************************************************************************
+
+\newpage
+
+## Problem 4
+This question implements the *power method* for finding eigenvectors. Suppose that $\bmA \in  \mathbb{R}^{n \times n}$ has eigenvalues $\lambda_1, \dots, \lambda_n$ and corresponding eigenvectors $\bmv_1, \dots, \bmv_n$. Assume that the following are true:
+
+* $\lambda_1 > \lambda_2 \ge \lambda_3 \ge \dots \ge \lambda_n > 0$.
+* $\bmx \in \Rn$ is an arbitrary vector. This means that $\exists c_1, \dots, c_n$  such that $\bmx = \sum_{i=1}^n c_i\bmv_i$.
+* Assume $c_1 \ne 0$.
+    
+**a.** Derive an expression for $\bmA\bmx$ that involves only $c_1, \dots, c_n, \bmv_1, \dots, \bmv_n$, and $\lambda_1, \dots, \lambda_n$.
+
+*********************************************************************************
+
+**Answer:** 
+\begin{align*}
+\bmA\bmx &= \bmA \sum_{i=1}^n c_i\bmv_i \\
+&= \sum_{i=1}^n c_i\bmA\bmv_i \\
+&= \sum_{i=1}^n c_i\lambda_i\bmv_i
+\end{align*}
+
+
+*********************************************************************************
+
+**b.** For an arbitrary (whole) number $k \ge 1$, derive an expression for $\bmA^k\bmx$ that involves only $k, c_1, \dots, c_n, \bmv_1, \dots, \bmv_n$, and $\lambda_1, \dots, \lambda_n$
+
+*********************************************************************************
+
+**Answer:** 
+\begin{align*}
+\bmA^k\bmx &= \sum_{i=1}^n c_i \bmA^k \bmv_i \\
+&= \bmA^{k-1} \sum_{i=1}^n c_i\bmA \bmv_i \\
+&= \bmA^{k-1} \sum_{i=1}^n c_i \lambda_i \bmv_i \\
+&= \quad \vdots \\
+&= \sum_{i=1}^n c_i \lambda_i^k \bmv_i
+\end{align*}
+
+*********************************************************************************
+
+
+**c.** Find $\displaystyle\lim_{k \to \infty} \left(\frac{\lambda_j}{\lambda_1}\right)^k$ for $j=2, \dots, n$.
+
+*********************************************************************************
+
+**Answer:** 
+\begin{align*}
+\lim_{k\to\infty} \left( \frac{\lambda_j}{\lambda_1} \right)^k = 0,
+\end{align*}
+
+Since $\lambda_1 > \lambda_j$ for $j = 2, \dots, n$.
+
+*********************************************************************************
+
+
+**d.** Use your answers from (b) and (c) to show that $\displaystyle\lim_{k \to \infty} \frac{\bmA^k\bmx}{\lambda_1^k} = \alpha\bmv_1$ for some scalar $\alpha$.
+
+*********************************************************************************
+
+**Answer:** 
+\begin{align*}
+\lim_{k\to\infty} \frac{\bmA^k\bmx}{\lambda_1^k} &= \lim_{k\to\infty} \frac{c_1\lambda_1^k\bmv_1 + c_2\lambda_2^k\bmv_2 + \dots + c_n\lambda_2^k\bmv_n}{\lambda_1^k} \\
+&= \lim_{k\to\infty} \left( c_1 \left(\frac{\lambda_1}{\lambda_1}\right)^k  + \dots + c_n \left(\frac{\lambda_n}{\lambda_1}\right)^k \right) \\
+&= 1
+\end{align*}
+
+*********************************************************************************
+
+\newpage
+
+## Problem 5
+Consider the set of vectors (from Homework 1):
+\[\bm{v}_1 = \begin{bmatrix} 1\\ -1\\ 1\\ -1\end{bmatrix}, \quad \bm{v}_2 = \begin{bmatrix} 1 \\ 0 \\ 1 \\ 0 \end{bmatrix} \quad \bm{v}_3=\begin{bmatrix} 2 \\ 2\\ 0\\0 \end{bmatrix}, \quad \bm{v}_4 = \begin{bmatrix} 0 \\ 1\\ 0\\ 1 \end{bmatrix}\]
+Let $\bmV = \bbmx \bmv_1 &  \bmv_2 &  \bmv_3 & \bmv_4 \ebmx$.
+ What is a basis for $\mathcal{N}(\bmV)$ and what is the nullity of $\bmV$?
+ 
+ *********************************************************************************
+
+**Answer:** 
+$\bmv_2 = \bmv_1 + \bmv_4$, so there are only 3 linearly independent vectors. Therefore, $\rank{(\bmV)} = 3$. Since the rank of $\bmV$ and the nullity of $\bmV$ add to the number of columns in $\bmV$, we have that the nullity must be 1. To find a basis for the null space, ${\cal N}(\bmX)$, we can set up a system of equations such that $\langle \bmv_i, \bmx \rangle = 0$ for $i = 1,2,3,4$:
+
+\begin{align*}
+0 &= x_1 + x_2 + 2x_3 \\
+0 &= -x_1 + 2x_3 + x_4 \\
+0 &= x_1 + x_2 \\
+0 &= -x_1 + x_4 = 0
+\end{align*}
+
+We have that $x_4 = x_1$ and $x_2 = - x_1$. Subbing these values into one of the first two equations we find that $x_3 = 0$.
+
+Therefore, we can construct a basis for ${\cal N}(\bmX)$ as $\left\{ ( a , -a , 0 , a )^T : a \in \mathbb{R} \right\}$. A possible basis would be $\left\{ \begin{bmatrix} 1 \\ -1 \\ 0 \\ 1 \end{bmatrix} \right\}$.
+
+*********************************************************************************
+
+\newpage
+
+## Problem 6
+Let $\bmX \in \mathbb{R}^{n \times p}$ with $\rank(\bmX)>0$, and $\nullity(\bmX)>0$. Consider the follow spaces:
+
+* $\mathcal{C}(\bmX)$, $\mathcal{C}(\bmX)^\perp$, $\mathcal{N}(\bmX)$, $\mathcal{N}(\bmX)^\perp$
+* $\mathcal{C}(\bmX^\mT)$, $\mathcal{C}(\bmX^\mT)^\perp$, $\mathcal{N}(\bmX^\mT)$, $\mathcal{N}(\bmX^\mT)^\perp$
+
+Not all of these spaces are distinct. Show which of these spaces are equivalent to one another.
+
+
+*********************************************************************************
+
+**Answer:** 
+Let $\bma \in {\cal N}(\bmX)$. Then $\bmX \bma = \bm0$. Less succinctly,
+
+\begin{align*}
+\begin{bmatrix} \vdots & \vdots & & \vdots \\ \bmx_1 & \bmx_2 & \dots & \bmx_p \\ \vdots & \vdots & & \vdots \end{bmatrix} 
+\begin{bmatrix} a_1 \\ \vdots \\ a_p \end{bmatrix} &= \begin{bmatrix} 0 \\ \vdots \\ 0 \end{bmatrix} \\
+\begin{bmatrix} \langle \bma, \text{1st column of } \bmX^T \rangle \\ \vdots \\ \langle \bma, n\text{th column of } \bmX^T \rangle \end{bmatrix} &= \begin{bmatrix} 0 \\ \vdots \\ 0 \end{bmatrix}.
+\end{align*}
+
+This indicates that $\bma$ is orthogonal to any vector in ${\cal C}(\bmX^T)$ for any $\bma \in {\cal N}(\bmX)$. Therefore, $\bma$ must be in the orthogonal compliment ${\cal C}(\bmX^T)^\perp$ and ${\cal N}(\bmX) \subset {\cal C}(\bmX^T)^\perp$. These steps can be followed backwards to show that every element of ${\cal C}(\bmX^T)^\perp$ is also an element of ${\cal N}(\bmX)$, hence they are equivalent. 
+
+Since $\bmX$ is an arbitrary matrix, let $\bmY = \bmX^T$. Then by the established equivalence above, we have
+$${\cal N}(\bmY) = {\cal C}(\bmY^T)^\perp \implies {\cal N}(\bmX^T) = {\cal C}(\bmX)^\perp$$
+
+Since we have established equality between the spaces ${\cal N}(\bmX)$ and ${\cal C}(\bmX^T)^\perp$, we know that any (non-zero) element of the orthogonal compliment of ${\cal C}(\bmX^T)^\perp$, ${\cal C}(\bmX^T)$, is also an element of the orthogonal compliment, ${\cal N}(\bmX)^\perp$, of ${\cal N}(\bmX)$ and vice-versa. So ${\cal C}(\bmX^T) = {\cal N}(\bmX)^\perp$.
+
+Using the second established equality, we can similarly establish that ${\cal C}(\bmX) = {\cal N}(\bmX^T)^\perp$.
+
+*********************************************************************************
+
+\newpage
+
+## Problem 7
+
+Prove part 2 of Proposition 2.11. If $\bmG$ and $\bmH$ are generalized inverses of $\XtX$, then $\bmX\bmG\bmX^\mT = \bmX\bmH\bmX^\mT$.
+
+
+*********************************************************************************
+
+**Answer:** 
+In class we have already established the first part of Proposition 2.11: $\bmX\bmG\bmX^T\bmX = \bmX\bmH\bmX^T\bmX = \bmX$. We use this to prove the second part.
+
+Let $\bmy$ be a non-zero vector in $\mathbb{R}^n$. Then $\bmy = \bmv + \bme$ for $\bm v \in {\cal C}(\bmX)$, and $\bme \in {\cal N}(\bmX)$. Then
+\begin{align*}
+\bmX\bmG\bmX^T\bmy &= \bmX\bmG\bmX^T(\bmv + \bme) \\
+&= \bmX\bmG\bmX^T\bm v + \bmX\bmG\bmX^T\bme \\
+&= \bmX\bmG\bmX^T\bmX\bmb + \bm0 & \bme \textit{ is in } {\cal N}(\bmX), \bmv \text{ is a linear combination of columns in } \bmX \\
+&= \bmX\bmH\bmX^T\bmX + \bmX\bmH\bmX^T\bme & \textit{Part 1 of Proposition 2.11} \\
+&= \bmX\bmH\bmX^T(\bmX\bmb + \bme) \\
+&= \bmX\bmH\bmX^T(\bmy + \bme) \\
+&= \bmX\bmH\bmX^T\bmy
+\end{align*}
+
+Therefore, $\bmX\bmG\bmX^T$ must be equal to $\bmX\bmH\bmX^T$
+
+*********************************************************************************

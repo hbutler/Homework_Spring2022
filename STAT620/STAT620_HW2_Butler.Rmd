@@ -1,0 +1,76 @@
+---
+title: "STAT 620 Homework 2"
+author: "Hannah Butler"
+date: "2/4/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Read Theorem 2.5.1
+
+*Theorem 2.5.1: Every nonempty subset of $\widehat{\mathbb{R}}$ has an infimum and supremum. If $\{a_i\}_{i=1}^\infty$ is a sequence in $\widehat{\mathbb{R}}$, then $\limsup a_i$ and $\liminf a_i$ exist in $\widehat{\mathbb{R}}$.*
+
+(a) Explain why every nonempty subset of $\widehat{\mathbb{R}}$ has a supremum. Is this true for $\mathbb{R}$?
+
+***
+
+A nonempty subset $A$ can be either bounded from above or not bounded from above.
+
+By definition 2.5.4, if $A$ is a subset in $\widehat{\mathbb{R}}$ that is not bounded from above, $\sup A = \infty$ which is a point in $\widehat{\mathbb{R}}$.
+
+If $A$ is bounded from above by a point $M$ in $\mathbb{R}$, then $M$ is the supremum of $A$ in $\mathbb{R}$. Since $\mathbb{R} \subset \widehat{\mathbb{R}}$, $M$ is also a point in $\widehat{\mathbb{R}}$ and hence $A$ has a supremum in $\widehat{\mathbb{R}}$.
+
+***
+
+(b) Show that if $\{ a_i \}_{i=1}^\infty$ is a sequence in $\widehat{\mathbb{R}}$ then $\limsup a_i$ exists in $\widehat{\mathbb{R}}$.
+
+***
+
+Consider a sequence $\{a_i \}_{i=1}^\infty$. The limit supremum is defined as $\limsup a_i := \inf \left\{ \sup \{a_j\}_{j=i}^\infty \right\}_{i=1}^\infty$. There are several different cases to consider, each with subcases:
+
+- $\{a_i \}_{i=1}^\infty$ is bounded above and below
+
+Let $M$ be the least upper bound (supremum) and $L$ be the greatest lower bound (infimum) of $\{a_i \}_{i=1}^\infty$. 
+
+If $\{a_i \}_{i=1}^\infty$ is increasing, then $\sup a_i = M$ always, so $\limsup a_i = \inf \{ M, M, \dots \} = M$. 
+
+If $\{a_i \}_{i=1}^\infty$ is decreasing, then ${\sup a_j}_{j=1}^\infty$ is also decreasing and will also be bounded below by $L$, so $\limsup a_i = L$.
+
+<!-- If $\{a_i \}_{i=1}^\infty$ oscillates between $M$ and $L$ without settling down to a value after some term of the sequence, then after any term in the sequence, $M$ will always be the least upper bound, regardless of where we start in the sequence. Therefore, $\limsup a_i = \inf \{ M, M, \dots \} = M$. -->
+
+If $\{a_i \}_{i=1}^\infty$ oscillates between $M$ and $L$ but approaches some value $k$, $L<k<M$, then $\{\sup a_j \}_{i=j}^\infty$ will be a decreasing sequence bounded below by $k$, so $\limsup a_i = k$.
+
+In any of these cases, the $\limsup a_i$ is an point of the extended reals $\widehat{\mathbb{R}}$ and therefore always exists in this space.
+
+- $\{a_i \}_{i=1}^\infty$ is bounded above but not below
+
+If $\{a_i \}_{i=1}^\infty$ is increasing, then $\limsup a_i$ will converge to $M$ by the same argument as above.
+
+If $\{a_i \}_{i=1}^\infty$ is decreasing, $\{\sup a_j \}$ will also be decreasing and not bounded from below. Therefore $\limsup a_i = \inf \{\sup a_j \}_{i=1}^\infty = -\infty$.
+
+<!-- If $\{a_i \}_{i=1}^\infty$ is oscillating without settling down, then $\limsup a_i = M$ by the same arguement as above. -->
+
+If $\{a_i \}_{i=1}^\infty$ is oscillating but settling down to a value $k < M$, then $\limsup a_i = k$ again by the same argument as above.
+
+- $\{a_i \}_{i=1}^\infty$ is bounded below but not above
+
+If $\{a_i \}_{i=1}^\infty$ is decreasing, then $\{\sup a_j \}$ will also be decreasing and bounded below by $L$, so $\limsup a_i = L$.
+
+If $\{a_i \}_{i=1}^\infty$ is increasing, then $\{\sup a_j \}$ is constant and $\limsup a_i = \infty$.
+
+<!-- If $\{a_i \}_{i=1}^\infty$ oscillates without settling down, then $\limsup a_i = \infty$. -->
+
+If $\{a_i \}_{i=1}^\infty$ oscillates while settling down to a value $k$, $L < k < \infty$, then $\limsup a_i = k$.
+
+- $\{a_i \}_{i=1}^\infty$ is unbounded
+
+If $\{a_i \}_{i=1}^\infty$ is increasing, then $\limsup a_i = \infty$.
+
+If $\{a_i \}_{i=1}^\infty$ is decreasing, then $\limsup a_i = - \infty$.
+
+For all of the above cases, $\limsup a_i$ is an element of $\widehat{\mathbb{R}}$, so $\limsup a_i$ always exists in $\widehat{\mathbb{R}}$ for any sequence $\{a_i\}_{i=1}^\infty$ in $\widehat{\mathbb{R}}$ of the afformentioned cases.
+
+Note: I think the case when the sequence oscillates without settling down to a specific value makes it difficult to explicitly define what $\limsup a_i$ is. However, since the supremum (and infimum) of any sequence in $\widehat{\mathbb{R}}$ is an element $\widehat{\mathbb{R}}$, then the infimum of the sequence of supremums should also be an element of $\widehat{\mathbb{R}}$. 

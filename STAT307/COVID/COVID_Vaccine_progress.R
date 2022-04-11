@@ -51,3 +51,10 @@ covid_vax_summary <- covid_vax %>%
 
 write_csv(covid_vax, "STAT307/covid_vax_ANOVA.csv")
 
+covid_vax %>%
+  group_by(country) %>%
+  mutate(residual = (monthly_vax - mean(monthly_vax))^2) %>%
+  summarise(sse = sum(residual))
+  
+  
+  summarize(sse = sum((monthly_vax - mean(monthly_vax))^2))

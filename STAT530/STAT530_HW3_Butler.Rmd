@@ -1,0 +1,43 @@
+---
+title: "STAT 530 Homework 3"
+author: "Hannah Butler"
+date: "2/18/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newcommand{\rsamp}[1]{#1_1, \dots, #1_n}
+
+(1) (8 pts) Problem 7.7, Casella & Berger:
+
+Let $\rsamp{X}$ be iid with one of two pdfs: If $\theta = 0$, then
+$$f(x|\theta) = \begin{cases} 1 & \text{if } 0<x<1 \\ 0 & \text{otherwise,} \end{cases}$$
+while if $\theta = 1$, then 
+$$f(x|\theta) = \begin{cases} 1/2\sqrt{x} & \text{if } 0<x<1 \\ 0 & \text{otherwise.} \end{cases}$$
+Find the MLE of $\theta$.
+
+\newpage
+
+(2) (12 pts) Problem 7.11, Casella & Berger:
+
+Let $\rsamp{X}$ be iid with pdf
+$$f(x|\theta) = \theta x^{\theta-1}, \quad 0\leq x \leq 1, \quad 0 < \theta < \infty.$$
+
+  (a) Find the MLE of $\theta$, and show that its variance $\to0$ as $n\to\infty$.
+  (b) Find the method of moments estimator of $\theta$.
+  
+(3) (10 pts) Problem 7.12(a), Casella & Berger:
+
+Let $\rsamp{X}$ be a random sample from a population with pmf
+$$P_\theta(X = x) = \theta^x(1-\theta)^x, \quad x = 0 \text{ or } 1, \quad 0\leq \theta \leq \frac{1}{2}.$$
+
+  (a) Find the method of moments estimator and MLE of $\theta$.
+  (b) Find the mean squared errors of each of the estimators.
+  (c) Which estimator is preferred? Justify your choice.
+  
+(4) (18 pts) Problem 7.14, Casella & Berger. *(Hint: what is the joint distribution of $(Z,W)$? For $F(z,w|\lambda, \mu) = P(Z\leq z, W = w|\lambda, \mu), f(z,w|\lambda, mu) = dF(z,w)/dz$ depends on $w$.*
+
+Let $X$

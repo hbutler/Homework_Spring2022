@@ -1,0 +1,55 @@
+---
+title: "STAT 620 Homework 5"
+author: "Hannah Butler"
+date: "2/28/2022"
+header-includes:
+  - \usepackage{mathrsfs}
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. (Exercise 5.7) Prove Theorem 5.2.2: *$(\mathbb{X}, \mathscr{M}, \mu)$ is $\sigma$-finite if and only if there is a countable disjoint collection of sets $\{ A_i\}_{i=1}^\infty$ with finite measure such that $\mathbb{X} = \bigcup_{i=1}^\infty A_i$.*
+
+**$(\mathbb{X}, \mathscr{M}, \mu)$ is $\sigma$-finite $\implies$ there is a countable disjoint collection of sets $\{A_i\}_{i=1}^{\infty}$ with finite measure such that $\mathbb{X} = \bigcup_{i=1}^\infty A_i$.**
+
+If $(\mathbb{X}, \mathscr{M}, \mu)$ is $\sigma$-finite, then $\mathscr{M}$ contains an increasing sequence of sets $B_1 \subset B_2 \subset \dots$ such that $\mathbb{X} = \bigcup_{i=1}^\infty B_i$ and $\mu(B_i) < \infty$. If we have an increasing sequence of sets, we can construct a disjoint sequence of sets $\{A_i\}_{i=1}^\infty$ such that $\mathbb{X} = \bigcup_{i=1}^\infty A_i$. We do this by defining $A_1 = A_1$, $A_i = A_i\backslash A_{i-1}$ for $i = 2, 3, \dots$. Additionally, since each $A_i$ is the subset of a set of finite measure, $\mu(A_i) < \infty$ as well.
+
+**there is a countable disjoint collection of sets $\{A_i\}_{i=1}^{\infty}$ with finite measure such that $\mathbb{X} = \bigcup_{i=1}^\infty A_i \implies (\mathbb{X}, \mathscr{M}, \mu)$ is $\sigma$-finite. **
+
+By defining $B_i = \cup_{j=1}^i A_i$, we can construct an increasing sequence of sets $\{B_i \}_{i=1}^\infty$ such that $\mathbb{X} = \bigcup_{i=1}^\infty A_i$. Additionally, since $\mu(A_i) < \infty$, and $B_i$ is a finite union of $A_i$, $\mu(B_i)<\infty$ as well. So $(\mathbb{X}, \mathscr{M}, \mu)$ is $\sigma$-finite. 
+
+***
+
+2. (Exercise 5.9) Prove that an algebra $\mathscr{A}$ is a $\sigma$-algebra if and only if $\mathscr{A}$ is closed under countable unions of increasing sequences of sets, i.e., if $\{E_i\}_{i=1}^\infty \subset \mathscr{A}$ and $E_1 \subset E_2 \subset E_3 \dots$, then $\cup_{i=1}^\infty E_i \in \mathscr{A}$.
+
+**An algebra $\mathscr{A}$ is a $\sigma$-algebra $\implies \mathscr{A}$ is closed under countable unions of increasing sequences of sets**
+
+This follows by definition.
+
+**$\mathscr{A}$ is closed under countable unions of increasing sequences of sets $\implies \mathscr{A}$ is a $\sigma$-algebra.**
+
+
+Theorem 5.1.4 states: *An algebra of sets $\mathscr{M}$ on $\mathbb{X}$ is a $\sigma$-algebra if and only if $\{A_i\}_{i=1}^\infty \subset \mathscr{M}$ is a disjoint collection implies $\bigcup_{i=1}^\infty A_i \in \mathscr{M}$.*
+
+Let $E_1 \subset E_2 \subset E_3 \dots$ be an increasing sequence of sets in $\mathscr{A}$ such that $\bigcup_{i=1}^\infty E_i \in \mathscr{M}$. Then we can construct a sequence of disjoint sets $\{A_i\}_{i=1}^\infty$ with $A_1 = E_1$ and $A_i = E_i\backslash E_{i-1}$ for $i=2, 3, \dots$. By Theorem 5.1.2, $A_i \in \mathscr{A}$ and $\bigcup_{i=1}^\infty A_i \in \mathscr{M}$. So I think that by Theorem 5.1.4, $\mathscr{M}$ is a $\sigma$-algebra.
+
+***
+
+3. (Exercise 5.10) Let $\mathbb{X}$ be a nonempty set. A family of sets $\mathscr{R} \subset \mathscr{P}_{\mathbb{X}}$ is called a $\sigma$-ring if it is closed under countable unions and differences, i.e., if $\{E_i\}_{i=1}^\infty \subset \mathscr{R}$ then $\cup_{i=1}^\infty E_i \in \mathscr{R}$ and if $E, F \in \mathscr{R}$ then $E \backslash F \in \mathscr{R}$. Prove the following
+  
+  a. $\sigma$-rings are closed under countable intersections.
+  
+  Consider two sets $A_1$ and $A_2$ in $\mathscr{R}$. Then $A_1 \cup A_2 \in \mathscr{R}$, $A_1\backslash A_2 \in \mathscr{R}$, $A_2\backslash A_1 \in \mathscr{R}$, and $(A_1\backslash A_2)\cup (A_2\backslash A_1) \in \mathscr{R}$. So $A_1 \cap A_2 = (A_1 \cup A_2)\backslash ((A_1\backslash A_2)\cup (A_2\backslash A_1)) \in \mathscr{R}$. This can be generalized to countable intersections, so $\mathscr{R}$ is closed under countable intersections.
+  
+  b. If $\mathscr{R}$ is a $\sigma$-ring, then $\mathscr{R}$ is a $\sigma$-algebra if and only if $\mathbb{X} \in \mathscr{R}$.
+
+**$\mathscr{R}$ is a $\sigma$-algebra $\implies \mathbb{X} \in \mathscr{R}$**
+
+This is by definition.
+
+**$\mathbb{X} \in \mathscr{R} \implies \mathscr{R}$ is a $\sigma$-algebra**
+
+We already have that $\mathscr{R}$ is closed under countable unions. If $\mathbb{X} \in \mathscr{R}$, then for any set $A \in mathscr{R}$, $A^c = \mathbb{X}\backslash A$ is also in $\mathscr{R}$. By definition 5.1.2, this satisfies the requirements for a $\sigma$-algebra.

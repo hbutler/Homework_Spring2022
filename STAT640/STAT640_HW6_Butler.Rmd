@@ -1,0 +1,486 @@
+---
+output: 
+  pdf_document: 
+    keep_tex: yes
+    includes:
+        in_header: preamble_common.tex
+                  
+---
+
+\newcommand{\s}{^*}
+
+```{r, echo = FALSE, message=FALSE}
+library(tidyverse)
+```
+
+STAT 640: Homework 6
+===================
+Due **Wednesday, March 9, 11:59pm MT** on the course Canvas webpage. Please follow the homework guidelines on the syllabus.
+
+
+
+## Name: Hannah Butler
+##
+
+
+## Problem 1 
+ Suppose that $\bbh_1$ and $\bbh_2$ are two *distinct* least squares estimators of $\bmbeta$. Show that there are infinitely many combinations of $\bbh_1$ and $\bbh_2$ that are also LSEs of $\bmbeta$.
+
+*********************************************************************************
+
+**Answer:** 
+If $\rank(\bmX) = p$, then $\bmX$ is full rank and there can not be 2 distinct least squares estimators of $\bmbeta$ (proposition 4.3). So $\rank(\bmX)$ must be less than $p$. This means that there exists $\bmu \neq \bm0$ in ${\cal N}(\bmX)$. Then $a\bmu$ is in ${\cal N}(\bmX)$ for any $a\in \mathbb{R}$. Since $\hat{\bmbeta}_1$ is an LSE for $\bmbeta$, $\bmX\hat{\bmbeta}_1 = \bmP_{\bmX}\bmY$ (proposition 4.1). So $\bmX(\hat{\bmbeta}_1 + a\bmu) = \bmX\hat{\bmbeta}_1 + a\bmX\bmu = \bmX\hat{\bmbeta}_1 + \bm0 = \bmX\hat{\bmbeta}_1 = \bmP_{\bmX}\bmY$. Therefore, $\hat{\bmbeta}_1 + a\bmu$ must be a distinct LSE of $\bmbeta$, for all $a \in \mathbb{R}$.
+
+*********************************************************************************
+
+\newpage
+
+## Problem 2
+Consider the linear regression model $\bmY = \bmX\bmbeta + \bmepsilon$. Assume the first column of $\bmX$ is $\bmx_1 = \bm1$ and that $\rank(\bmX) = p$ (i.e., $\bmX$ is full-rank).
+
+a. Show that $\sum_{i=1}^n(Y_i - \hat{Y}_i) = 0$.
+
+*********************************************************************************
+
+**Answer:** 
+\begin{align*}
+\sum_{i=1}^n (Y_i - \hat{Y}_i) &= (\bmY - \hat{\bmY}_i)^T \bm1 \\
+&= (\bmY - \bmP_{\bmX}\bmY)^T \bm1 \\
+&= [(\bmI - \bmP_{\bmX})\bmY]^T \bm1
+\end{align*}
+It is known that $\bmI - \bmP_{\bmX}$ is the projection matrix onto the orthogonal compliment of ${\cal C}(\bmX)$, so $(\bmI - \bmP_{\bmX})\bmY$ is in ${\cal C}(\bmX)^\perp$. But since $\bm1$ is the first column of $\bmX$, $\bm1 \in {\cal C}(\bmX)$, so the inner product $\langle (\bmI - \bmP_{\bmX})\bmY, \bm1 \rangle = 0$.
+
+*********************************************************************************
+
+
+
+
+
+b. Let $\bmX^*$ be a design matrix based on $\bmX$ in which columns $2, \dots, p$ are centered. That is, $X_{ij}^* = X_{ij} - \frac{1}{n}\sum_{i=1}^nX_{ij}$ for $j=2, \dots, p$. Suppose we fit the model $\bmY = \bmX^*\bmbeta^* + \bmepsilon$. How does the value of  $\bbh^*$ compare to the value of $\bbh$? (Hint start by partitioning $\bmX = \bbmx \bm1_n & \bmW \ebmx$. You may use the result $\bbmx \bmA & \bmB \\ \bmB^\mT & \bmD \ebmx = \bbmx \bmA^{-1} + \bmF\bmE^{-1}\bmF^\mT & -\bmF\bmE^{-1} \\ -\bmE^{-1}\bmF^\mT & \bmE^{-1}\ebmx$ where $\bmE = \bmD - \bmB^\mT\bmA^{-1}\bmB$ and $\bmF = \bmA^{-1}\bmB$.)
+
+*********************************************************************************
+
+**Answer:** 
+Let $\bmW^*$ denote the matrix of centered columns of $\bmX^*$. Then $\bmX^* = \begin{bmatrix} \bm1_n & \bmW^* \end{bmatrix}$. Note that $\bmX^*$ is still full rank, so we can get the unique projection matrix onto the column space of $\bmX^*$ using the Moore-Penrose generalized inverse: $(\bmX^{*T}\bmX^*)^{-1}$. It should also be noted that $\frac{1}{n-1}\bmW^{*T}\bmW\s$ forms the variance-covariance matrix for columns 2 through $p$ of $X$. So let $(n-1)\bmSigma_{\bmX} = \bmW^{*T}\bmW\s$.
+
+In terms of $\bmX\s$, the LSE $\hat{\bmbeta}\s$ is
+
+\begin{align*}
+\bbh\s &= (\bmX^{*T}\bmX\s)^{-1}\bmX^{*T}\bmY \\
+&= 
+\left( 
+\begin{bmatrix} \bm1 \\ \bmW\s \end{bmatrix} 
+\begin{bmatrix} \bm1 & \bmW\s \end{bmatrix} 
+\right)^{-1}
+\begin{bmatrix} 
+\bm1 \\ \bmW\s 
+\end{bmatrix} \bmY 
+\\
+&= 
+\begin{bmatrix} 
+\bm1^T\bm1 & \bm1^T\bmW\s \\
+\bmW^{*T}\bm1 & \bmW^{*T}\bmW\s
+\end{bmatrix}^{-1}
+\begin{bmatrix}
+\bm1^T\bmY \\
+\bmW^{*T}\bmY
+\end{bmatrix} \\
+&= \begin{bmatrix}
+n                    & & \bm0_{1\times(p-1)} \\
+\bm0_{(p-1)\times 1} & & (\bmW^{*T}\bmW\s)_{(p-1)\times(p-1)}
+\end{bmatrix}^{-1}
+\begin{bmatrix}
+\bm1^T\bmY \\
+\bmW^{*T}\bmY
+\end{bmatrix}
+\end{align*}
+
+Using the result provided, we have
+
+\begin{align*}
+\begin{bmatrix}
+n & \bm0_{1\times(p-1)} \\
+\bm0_{(p-1)\times 1} & (\bmW^{*T}\bmW\s)_{(p-1)\times(p-1)}
+\end{bmatrix}^{-1} 
+&=
+\begin{bmatrix}
+1/n                  & & \bm0_{1\times(p-1)} \\
+\bm0_{(p-1)\times 1} & & (\bmW^{*T}\bmW\s)^{-1}
+\end{bmatrix}
+\end{align*}
+So,
+\begin{align*}
+\hat{\bmbeta}\s &= 
+\begin{bmatrix}
+1/n                  & & \bm0_{1\times(p-1)} \\
+\bm0_{(p-1)\times 1} & & (\bmW^{*T}\bmW\s)^{-1}
+\end{bmatrix}
+\begin{bmatrix}
+\bm1^T\bmY \\
+\bmW^{*T}\bmY
+\end{bmatrix} 
+\\
+&= 
+\begin{bmatrix}
+\frac{1}{n}(\bm1^T\bmY) + 0 \\
+0 + (\bmW^{*T}\bmW\s)^{-1}\bmW^{*T}\bmY
+\end{bmatrix}
+= 
+\begin{bmatrix}
+\bar{Y} \\
+(\bmW^{*T}\bmW\s)^{-1}\bmW^{*T}\bmY
+\end{bmatrix}
+\end{align*}
+
+In contrast, the LSE for $\bmbeta$ when the columns of $\bmX$ are not centered is
+\begin{align*}
+\hat{\bmbeta} &= \begin{bmatrix} 
+\bar{Y} \\
+(\bmW^{T}\bmW)^{-1}\bmW^{T}\bmY
+\end{bmatrix}
+\end{align*}
+
+*********************************************************************************
+
+c. In the same setting as part (c), how does the variance of $\bbh$ compare to the variance of $\bbh^*$?
+
+*********************************************************************************
+
+**Answer:** 
+The variance of $\bbh^*$ is 
+\begin{align*}
+\sigma^2 (\bmX^{*T}\bmX\s)^{-1} &= \sigma^2 \left(
+\begin{bmatrix}
+\bm1^T \\
+\bmW^{*T}
+\end{bmatrix}
+\begin{bmatrix}
+\bm1 & \bmW\s
+\end{bmatrix}
+\right)^{-1} \\
+&= \sigma^2
+\begin{bmatrix}
+n & \bm1^T\bmW\s \\
+\bmW^{*T}\bm1 & \bmW^{*T}\bmW\s
+\end{bmatrix}
+\end{align*}
+
+Since $\bmX\s$ is just a shifted version of $\bmX$, I feel like the variances would be the same.
+
+*********************************************************************************
+
+\newpage
+
+    
+## Problem 3
+Researchers wish to estimate two parameters $\theta$ and $\phi$. It is possible to make three different kinds of observations: (a) observations with expectation $\theta + 3\phi$, (b) observations with expectation $\theta + \phi$, and (c) observations with expectation $\theta - 2\phi$. Suppose there are $n_1$ observations of type (a), $n_2$ observations of type (b), and $n_3$ observations of type (c).  Assume the observations are all independent and have variance $\sigma^2$.
+
+
+a. Write out the  linear model corresponding to these observations. 
+<!-- (Use notation similar to how the model is written in #3 above, which specifies the elements of the vectors and matrices). -->
+    
+*********************************************************************************
+
+**Answer:** 
+
+$$\begin{bmatrix} \bmY_{1, (n_1\times 1)} \\  \bmY_{2, (n_2\times 1)} \\ \bmY_{3, (n_3\times 1)} \end{bmatrix} = \begin{bmatrix} \bm1_{n_1} & 3\cdot\bm1_{n_1} \\  \bm1_{n_2} & 1 \cdot \bm1_{n_2} \\ \bm1_{n_3} & -2\cdot\bm1_{n_3} \end{bmatrix} \begin{bmatrix} \theta \\ \phi \end{bmatrix} + \begin{bmatrix} \epsilon_1 \\ \vdots \\ \epsilon_n \end{bmatrix}$$
+
+*********************************************************************************
+
+
+b. For what choices of $n_1$, $n_2$, and $n_3$ will $\theta$ and $\phi$ be uncorrelated?
+
+*********************************************************************************
+
+**Answer:** 
+The variance-covariance matrix for $(\theta, \phi)^T$ is computed as
+\begin{align*}
+\sigma^2(\bmX^T\bmX)^{-1} = \sigma^2
+\begin{bmatrix}
+n & 3n_1 + n_2 - 2n_3 \\
+3n_1 + n_2 - 2n_3 & 9n_1 + n_2 + 4n_3
+\end{bmatrix}^{-1}
+\end{align*}
+
+The rank of $\bmX$ is 2, so $\bmX^T\bmX$ is full rank and therefore nonsingular. The inverse of $\bmX^T\bmX$ requires that we switch the position of the diagonal terms and negate the off-diagonal terms, and divide all entries by the determinant of $\bmX^T\bmX$. After doing these steps, it is still the case that in order for $\theta$ and $\phi$ to be uncorrelated, the off-diagonal terms of $\bmX^T\bmX$, $3n_1 + n_2 - 2n_3$ must equal zero. This is the case if $n_1 = 2k_1$, $n_2 = 6k_2$, and $n_3 = 3k_3$, for non-negative, integer values of $k_1, k_2$, and $k_3$ such that $k_1 + k_2 = k_3$.
+
+*********************************************************************************
+
+\newpage
+
+## Problem 4
+For this question, use the subset of the `ChickWeight` dataset (part of base R). It contains data on the weight of chicks (`weight`, in grams), at specific ages (`Time`, in days) under different diets (`Diet`, factor with levels 1, 2, 3, 4). The variable `Chick` identifies unique chicks. Create a subset of this data that contains all measurements made at age 6 days. Use this dataset, which includes only one value per chick, for the remainder of this question.
+
+**a.** Write out the linear model for chick weight as a function of diet. Make clear what the coding of the columns in your design matrix represent.
+  
+*********************************************************************************
+
+**Answer:** 
+
+$$\bmY = \bmX \bmbeta + \bmepsilon$$
+where
+\begin{align*}
+\bmY_{49 \times 1} &= \begin{bmatrix} 
+Y_1 \\ \vdots \\ Y_{49}
+\end{bmatrix}
+& \bmX_{49 \times 4} &= \begin{bmatrix} 
+\bm1_{19} & \bm0_{19} & \bm0_{19} & \bm0_{19} \\
+\bm0_{10} & \bm1_{10} & \bm0_{10} & \bm0_{10} \\
+\bm0_{10} & \bm0_{10} & \bm1_{10} & \bm0_{10} \\
+\bm0_{10} & \bm0_{10} & \bm0_{10} & \bm1_{10} 
+\end{bmatrix},
+& \bmbeta_{4 \times 1} &= \begin{bmatrix}
+\beta_1 \\ \beta_2  \\ \beta_3 \\ \beta_4
+\end{bmatrix},
+& \bmepsilon_{49 \times 1} &= \begin{bmatrix}
+\epsilon_1 \\ \vdots \\ \epsilon_{49}
+\end{bmatrix}
+\end{align*}
+and
+\begin{align*}
+E[\epsilon] &= \bm0 & \text{Var}[\epsilon] &= \sigma^2\bmI_{49\times 49}
+\end{align*}
+In the design matrix $\bmX$, the columns are coded in binary with 1s for the chicks on diet corresponding to the column number and 0s otherwise.
+
+```{r}
+cw <- ChickWeight %>%   # Keep only measurements for 6 days
+  filter(Time == 6)
+
+# Response [Weight]
+Y <- cw$weight 
+
+# Design Matrix [Diet = 1, Diet = 2, Diet = 3, Diet = 4]
+X <- cbind(as.numeric(cw$Diet == 1) , as.numeric(cw$Diet == 2)
+           , as.numeric(cw$Diet == 3) , as.numeric(cw$Diet == 4)
+           )  
+
+colnames(X) <- c("diet1" , "diet2"
+                 , "diet3", "diet4"
+                 )
+```
+
+*********************************************************************************
+    
+\newpage
+
+**b.** What is the average weight of 6-day-old chicks for each diet? Provide your answer in the form of an estimable quantity $\bmG^\mT\bmbeta$.
+
+    
+    
+*********************************************************************************
+
+**Answer:** 
+
+$$\bmG^T (\bmX^T\bmX)^{-1} \bmX^T\bmY,$$
+Where $\bmG = \bmI_{4\times 4}$, so that the estimable quantity is reduced to
+$$(\bmX^T\bmX)^{-1}\bmX^T\bmY = \hat{\bmbeta} = \begin{bmatrix} \frac{1}{19} \sum_{i=1}^{19} Y_i \\ \frac{1}{10}\sum_{i=20}^{29}Y_i \\ \frac{1}{10}\sum_{i=30}^{39}Y_i \\ \frac{1}{10}\sum_{i=40}^{49}Y_i \end{bmatrix}.$$
+In other words, an estimate for the average weight of 6-day-old chicks on each diet is the value of the corresponding estimated parameter, or the sample average for each group.
+
+*********************************************************************************
+
+
+
+**c.** Find the corresponding BLUEs $\bmG^\mT\bbh$. Report the point estimates and the estimated standard deviation (square root of estimated variance) of each estimate.
+
+    
+    
+*********************************************************************************
+
+**Answer:** 
+As stated in the previous part, BLUEs are the average weights of the chicks on each diet. For the point estimates, we can compute $\hat{\bmbeta}$ as $(\bmX^T\bmX)^{-1}\bmX^T\bmY$ or simply find the averages of the weights for each diet:
+
+```{r}
+beta_LSE <- solve(t(X) %*% X) %*% (t(X) %*% Y)
+beta_LSE
+```
+
+Since our BLUE was found under the assumption of constant variance of the errors, we can estimate the variance with the sample variance of all of the weights and multiply that by $(\bmX^T\bmX)^{-1}$:
+
+```{r}
+v <- var(Y)
+beta_vcov <- v*solve(t(X) %*% X)
+# Variance:
+diag(beta_vcov)
+# Standard Deviation
+sqrt(diag(beta_vcov))
+```
+
+To Summarize:
+\begin{center}
+\begin{tabular}{c|c|c}
+Parameter & Estimate (g) & Standard Deviation (g) \\
+$\beta_1$ (Avg. Chick Weight on Diet 1) & 66.78947 & 2.067503 \\
+$\beta_2$ (Avg. Chick Weight on Diet 2) & 75.40000 & 2.849857 \\
+$\beta_3$ (Avg. Chick Weight on Diet 3) & 77.90000 & 2.849857 \\
+$\beta_4$ (Avg. Chick Weight on Diet 4) & 83.90000 & 2.849857
+\end{tabular}
+\end{center}
+
+*********************************************************************************
+
+\newpage
+    
+
+## Problem 5
+
+Researchers wish to conduct a randomized clinical trial (RCT) to compare effect of a candidate drug on blood pressure in adults. They plan a simple study: *n* participants will be randomized to receive the candidate drug or the current standard of care (a competitor's drug) and at the end of follow-up will have their blood pressure measured. The goal of the trial is to estimate the difference in average blood pressure between the groups at the end of the trial.
+
+
+**a.** Write out a linear model that can be used to answer the question of interest for this study. Let $n_{txt}$ and $n_{con}$ represent the number of participants randomized to the experimental drug ("treatment") and to the standard of care ("control"), so that $n_{txt} + n_{con} = n$. Identify what the data values and parameters in your model represent.  (*You may wish to consider the remainder of this problem when determining how to parameterize your model*)
+
+
+*********************************************************************************
+
+**Answer:** 
+Instead of using $n_{con}$ and $n_{txt}$, I'm going to use $n_c$ and $n_t$, respectively.
+
+The linear model that we will use to answer the question of interest is
+$$\begin{bmatrix} \bmY_c \\ \bmY_t \end{bmatrix} = \begin{bmatrix} \bm1_{n_{c}} & \bm0_{n_{c}} \\ \bm0_{n_{t}} & \bm1_{n_{t}} \end{bmatrix} \begin{bmatrix} \beta_c \\ \beta_t \end{bmatrix} + \bmepsilon$$
+Where $\bmY_c$ and $\bmY_t$ are the responses corresponding to those in the control and treatment group, respectively; the first column of the design matrix $\bmX$ indicates the control group and the second column indicates the treatment group; $\beta_c$ and $\beta_t$ are the parameters representing the effect of no treatment and treatment, respectively, and $\bmepsilon$ is the vector of random errors for each observation, which is assumed to have expectation $\bm0_n$ and variance-covariance matrix $\sigma^2\bmI_{n\times n}$.
+
+*********************************************************************************
+
+**b**.  Find the BLUE in your model from (a) that answers the question of interest.
+
+*********************************************************************************
+
+**Answer:** 
+As was stated in the question, the goal is to estimate the difference in average blood pressure between the groups. This can be states as estimating $\beta_t - \beta_c$ or $\bmg^T\bmbeta$, where $\bmg^T = \begin{bmatrix} -1 & 1\end{bmatrix}$. This is estimable, so $\bmg^T\bbh$ is the unique BLUE, by proposition 4.7. Computing this, we get
+\begin{align*}
+\bmg^T\bbh &= \bmg^T(\bmX^T\bmX)^{-1}\bmX^T\bmY \\
+&= \begin{bmatrix} -1 & 1 \end{bmatrix}
+\begin{bmatrix}
+1/n_c & 0 \\
+0 & 1/n_t
+\end{bmatrix}
+\begin{bmatrix}
+\sum_{i=1}^{n_c}Y_i \\
+\sum_{i=n_c+1}^n Y_i
+\end{bmatrix} \\
+&= \begin{bmatrix} -1 & 1 \end{bmatrix}
+\begin{bmatrix}
+\bar{Y}_c \\
+\bar{Y}_t 
+\end{bmatrix}
+= \bar{Y}_t - \bar{Y}_c
+\end{align*}
+
+*********************************************************************************
+
+
+**c.** What choice(s) of $n_{txt}$ and $n_{con}$ minimizes the variance of the BLUE in (b)? Prove that your answer minimizes this variance.
+
+
+*********************************************************************************
+
+**Answer:** 
+The variance of $\bmg^T\bbh$ is
+\begin{align*}
+\sigma^2\bmg^T(\bmX^T\bmX)^{-1}\bmg &= \sigma^2
+\begin{bmatrix} -1 & 1 \end{bmatrix}
+\begin{bmatrix}
+1/n_c & 0 \\
+0 & 1/n_t
+\end{bmatrix}
+\begin{bmatrix}
+-1 \\
+1
+\end{bmatrix} \\
+&= \sigma^2 \left(\frac{1}{n_c} + \frac{1}{n_t} \right)
+\end{align*}
+
+To minimize the variance, we need to minimize $\frac{1}{n_c} + \frac{1}{n_t}$ along the constraint $n = n_c + n_t$. Using the constraint, we can make a substitution for $n_t$ so that we have $\frac{1}{n_c} + \frac{1}{n - n_c}$. Taking the derivative with respect to $n_c$ and setting this equal to zero, we have $\frac{1}{(n-n_c)^2}-\frac{1}{n_c^2}=0$. This implies that $n_c = n/2$ is a critical point. To show that it is a minimum, we can see that when $n_c < n/2$, $\frac{1}{(n-n_c)^2}-\frac{1}{n_c^2} < 0$ and $\frac{1}{(n-n_c)^2}-\frac{1}{n_c^2}>0$ for $n_c > n/2$.
+
+
+*********************************************************************************
+
+
+\newpage
+    
+## Problem 6
+
+A different medical center has offered to partner with the company in Problem 3 for their RCT. The researchers decide to stratify the study by medical center, so that participants at each center are randomized to the two groups. Assume that the groups are equally split, so that:
+
+* $n_0$ participants at center A receive the experimental drug
+* $n_0$ participants at center A receive the control drug
+* $n_0$ participants at center B receive the experiemental drug
+* $n_0$ participants at center B receive the control drug
+
+Assume the populations at the centers are exchangeable, so that the effect of each drug is the same among participants at both centers. However, the instruments for measuring blood pressure at medical center B are older and so measurements made at medical center B have **twice the variance** of the measurements made at medical center A.
+
+
+**a.** Write out a linear model that can be used to answer the question of interest for this study. Identify what the data values and parameters in your model represent. 
+
+*********************************************************************************
+
+**Answer:** 
+A linear model that we can use to answer the question of interest (is there a difference between the treatment and control averages) is
+$$\begin{bmatrix} \bmY_{At} \\ \bmY_{Ac} \\ \bmY_{Bt} \\ \bmY_{Bc} \end{bmatrix} = \begin{bmatrix} \bm1_{n_0} & \bm0_{n_0} & \bm0_{n_0} & \bm0_{n_0} \\ \bm0_{n_0} & \bm1_{n_0} & \bm0_{n_0} & \bm0_{n_0} \\ \bm0_{n_0} & \bm0_{n_0} & \bm1_{n_0} & \bm0_{n_0} \\ \bm0_{n_0} & \bm0_{n_0} & \bm0_{n_0} & \bm1_{n_0} \end{bmatrix} \begin{bmatrix} \beta_1 \\ \beta_2 \\ \beta_1 \\ \beta_2 \end{bmatrix} + \bmepsilon$$
+Where $\bmY_{At}$ and $\bmY_{Ac}$ are the treatment and control group responses, respectively, at center A, and $\bmY_{Bt}$ and $\bmY_{Bc}$ are the treatment and control group responses, respectively at center B. The columns of the design matrix $\bmX$, from left to right, are indicators of the treatment group at center A, the control group at center A, the treatment group at center B and the control group at center B. $\beta_1$ and $\beta_2$ are the treatment and control effects, respectively. $\bmepsilon$ is the vector of random errors for each observation, and it is assumed that 
+$$E[\bmepsilon] = \bm0_n \quad \text{and} \quad \text{Var}[\bmepsilon] = \sigma^2 \bmV,$$
+where
+$$\bmV = \begin{bmatrix} \bmI_{2n_0\times 2n_0} & \bm0_{2n_0\times 2n_0} \\ \bm0_{2n_0\times 2n_0} & 2\bmI_{2n_0\times 2n_0} \end{bmatrix} \quad \text{and} \quad \bmV^{-1} = \begin{bmatrix} \bmI_{2n_0\times 2n_0} & \bm0_{2n_0\times 2n_0} \\ \bm0_{2n_0\times 2n_0} & \frac{1}{2}\bmI_{2n_0\times 2n_0} \end{bmatrix}$$
+
+*********************************************************************************
+
+**b**.  Find the BLUE from your model from (a) that answers the question of interest.
+
+*********************************************************************************
+
+**Answer:** 
+Because the variance of the errors are not constant, we should use generalized least squares to find the BLUE that answers the question of whether there is a difference between the treatment and control averages. Here, our BLUE will be $\bmg^T\bbh\s$, where $\bbh\s = (\bmX^T\bmV^{-1}\bmX)^{-1}\bmX^T\bmV^{-1}\bmY$. So we have
+\begin{align*}
+\bbh\s &= (\bmX^T\bmV^{-1}\bmX)^{-1}\bmX^T\bmV^{-1}\bmY \\
+&= \begin{bmatrix} 
+n_0 & 0 & 0 & 0 \\
+0 & n_0 & 0 & 0 \\
+0 & 0 & \frac{n_0}{2} & 0 \\
+0 & 0 & 0 & \frac{n_0}{2} 
+\end{bmatrix}^{-1}
+\begin{bmatrix}
+\bm1_{n_0} & \bm0 & \bm0 & \bm0 \\
+\bm0 & \bm1_{n_0} & \bm0 & \bm0 \\
+\bm0 & \bm0 & \frac{1}{2}\bm1_{n_0} & \bm0 \\
+\bm0 & \bm0 & \bm0 & \frac{1}{2}\bm1_{n_0}
+\end{bmatrix}^T
+\begin{bmatrix}
+\bmY_{At} \\
+\bmY_{Ac} \\
+\bmY_{Bt} \\
+\bmY_{Bc}
+\end{bmatrix} \\
+&= 
+\begin{bmatrix}
+\frac{1}{n_0} & 0 & 0 & 0 \\
+0 & \frac{1}{n_0} & 0 & 0 \\
+0 & 0 & \frac{2}{n_0} & 0 \\
+0 & 0 & 0 & \frac{2}{n_0}
+\end{bmatrix}
+\begin{bmatrix}
+\sum_{At}Y_i \\
+\sum_{Ac}Y_i \\
+\sum_{Bt}Y_i \\
+\sum_{Bc}Y_i 
+\end{bmatrix} 
+= 
+\begin{bmatrix}
+\bar{Y}_{At} \\
+\bar{Y}_{Ac} \\
+\bar{Y}_{Bt} \\
+\bar{Y}_{Bc}
+\end{bmatrix}
+\end{align*}
+And the BLUE will be $\bmg^T\bbh\s$ where $\bmg^T = \begin{bmatrix} \frac{1}{2} & -\frac{1}{2} & \frac{1}{2} & -\frac{1}{2} \end{bmatrix}$:
+\begin{align*}
+\bmg^T\bbh\s &= 
+\begin{bmatrix} \frac{1}{2} & -\frac{1}{2} & \frac{1}{2} & -\frac{1}{2} \end{bmatrix}
+\begin{bmatrix}
+\bar{Y}_{At} \\
+\bar{Y}_{Ac} \\
+\bar{Y}_{Bt} \\
+\bar{Y}_{Bc}
+\end{bmatrix} 
+= \frac{(\bar{Y}_{At}+\bar{Y}_{Bt})}{2} - \frac{(\bar{Y}_{Ac} + \bar{Y}_{Bc})}{2}
+\end{align*}
+
+*********************************************************************************
