@@ -207,38 +207,56 @@ $\dfrac{\bmY^\mT(\bmP_4 - \bmP_1)\bmY/ \rank(\bmP_4 - \bmP_1)}{\bmY^\mT(\bmI - \
   
 $\dfrac{\bmY^\mT(\bmP_4 - \bmP_1)\bmY/ \rank(\bmP_4 - \bmP_1)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
 
-  1. This is a valid $F$ statistic, according to the three conditions listed above. Since $(\bmP_4 - \bmP_1)$ **is** a projection matrix, we can use Proposition 3.18 to confirm that it is distributed as a $\chi^2$ random vector. Since $\bmP_7$ projects onto the full column space of $\bmX$, the centrality parameter for $\frac{1}{\sigma^2}\bmY^T(\bmI-\bmP_7)\bmY$ will be zero. Finally, because $\bmP_4$ projects onto a subspace of $\bmP_7$, the numerator and denominator will be independent (not sure why??)
+  1. This is a valid $F$ statistic, according to the three conditions listed above. Since $(\bmP_4 - \bmP_1)$ **is** a projection matrix, we can use Proposition 3.18 to confirm that it is distributed as a $\chi^2$ random vector. Since $\bmP_7$ projects onto the full column space of $\bmX$, the centrality parameter for $\frac{1}{\sigma^2}\bmY^T(\bmI-\bmP_7)\bmY$ will be zero. Finally, because $\bmP_4$ projects onto a subspace of ${\cal C}(\bmX)$, the numerator and denominator will be independent (not sure why??)
   
-  2. $H_0: \beta_2 = 0$, $H_a: \beta_2 \neq 0$.
+  2. The null hypothesis is $H_0: \beta_2 = 0$, given $\beta_3 = 0$ and the alternative is $H_a: \beta_2 \neq 0$, since the difference in the spaces that $\bmP_4$ and $\bmP_1$ project onto is the column space spanned by $x_2$ (the second column of the design matrix), corresponding the parameter $\beta_2$.
+  
+  3. This statistic does not correspond to a GLRT because we are not considering the difference in residuals of the response projected onto the full space with the model projected onto a lower space. You can tell by inspection because we would expect to see the full projection matrix $\bmP_7$ in the position where $\bmP_4$ is in the numerator - if this were a GLRT.
+  
+  4. This statistic would appear in a type I ANOVA table. This statistic describes the average MS difference between a model with $x_2$, given $x_1$ and a model with just $x_1$. Since this utilizes a sequential SS, we would see this in a type I ANOVA table.
+  
+  5. This statistic would not appear in a type III ANOVA table, because we do not account for the contribution of all of the variables in the design. Additionally, if it is not a GLRT, it will not appear in a Type III ANOVA table.
 
 $\dfrac{\bmY^\mT(\bmP_7 - \bmP_5)\bmY/ \rank(\bmP_7 - \bmP_5)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
 
-  1. Using the same justifications as we did for b. above, we can see that this is a valid $F$ statistic.
+  1. Again, this is a valid F-statistic, since the denominator is a central $\chi^2$ random variable, and $\bmP_7$ projects onto a space which contains the space $\bmP_5$ projects onto, implying that the numerator and denominator are independent. 
   
-  2. $H_0: \beta_2 = 0$, $H_a: \beta_2 \neq 0$.
+  2. Because $\bmP_5$ projects onto a space spanned by the 1st and 3rd columns of $\bmX$, the null hypothesis would be $H_0: \beta_2 = 0$, and the alternative would be $H_a: \beta_2 \neq 0$.
   
   3. This is a GLRT, since $\bmP_7$ is in both the numerator and denominator.
+  
+  4. This statistic would not appear in a type I ANOVA table as it is not utilizing a sequential SS. It is utilizing a type III SS, because we account for all of the other variables in the design.
+  
+  5. Yes, because we account for the other two variables in the design.
   
   
 $\dfrac{\bmY^\mT(\bmP_3 - \bmP_2)\bmY/ \rank(\bmP_3 - \bmP_2)}{\bmY^\mT(\bmI - \bmP_6)\bmY/\rank(\bmI - \bmP_6)}$
 
-  1. No, this is not a valid $F$ statistic, since $\bmP_8$ does not project onto ${\cal C}(\bmX)$. (Although I do think it projects onto a subspace of ${\cal C}(\bmX)$, where the first three components are 0 and the last 6 components of the elements are the same).
+  1. No, this is not a valid $F$ statistic, since $\bmP_8$ does not project onto ${\cal C}(\bmX)$. This means that the denominator will not be a central $\chi^2$ random variable.
 
 $\dfrac{\bmY^\mT(\bmP_6 - \bmP_8)\bmY/ \rank(\bmP_6 - \bmP_8)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
 
   1. Yes, this is a valid $F$ statistic, since we have a central $\chi^2$ random variable in the denominator, $\bmP_8$ projects onto a subspace of $\bmP_6$ ($\bmP_6 - \bmP_8$ is itself a projection matrix), and $\bmP_6$ projects onto a subspace of $\bmP_7$ (The numerator is independent of the denominator).
   
-  2. $H_0: \beta_2 = \beta_3$, $H_a: \beta_2 \neq \beta_3$
+  2. The null hypothesis is $H_0: \beta_2 = \beta_3$, given $\beta_1 = 0$, and the alternative hypothesis is $H_a: \beta_2 \neq \beta_3$
   
-  3. This is not a GLRT, since we are not utilizing all of the information available to test the hypothesis.
+  3. This is not a GLRT, since we are not utilizing all of the information available to test the hypothesis. (We are comparing two subspaces of ${\cal C}(\bmX))$ rather than the entirety of ${\cal C}(\bmX)$).
+  
+  4. No, this statistic would not appear in a type I ANOVA table, since we do not account for the contribution of $x_1$ (this first variable) when testing the hypothesis. Therefore this is not sequential. 
+  
+  5. No, this would not appear in a type III ANOVA table, since we do not account for the contribution of all of the variables in our hypothesis. 
   
 $\dfrac{\bmY^\mT(\bmP_7 - \bmP_8)\bmY/ \rank(\bmP_7 - \bmP_8)}{\bmY^\mT(\bmI - \bmP_7)\bmY/\rank(\bmI - \bmP_7)}$
 
-  1. This is also a valid $F$ statistic.
+  1. This is a valid F statistic, since we can see that the denominator is a central $\chi^2$ random variable, the numerator is $\chi^2$ distributed, and the numerator is independent of the denominator.
   
   2. $\boldsymbol{H_0}: \beta_1 = 0$ *and* $\beta_2 = \beta_3$, $\boldsymbol{H_a}: \beta_1 \neq$ *or* $\beta_2\neq \beta_3$.
   
-  3. This is a GLRT.
+  3. This is a GLRT, since we utilize all of the information from the design in testing the hypothesis. (We compare the projection onto the full space spanned by the columns of $\bmX$ with a subspace of ${\cal C}(\bmX)$)
+  
+  4. This test statistic would not appear in a type I ANOVA table, I don't think. But I am not entirely sure why.
+  
+  5. Since it accounts for all of the variables in the design, would appear in a type III ANOVA table if we were simply testing whether parameters are equal to zero. However, because our hypothesis is slightly more complex, it would likely not appear in an ANOVA table (of any type). I am not sure about this.
 
 *********************************************************************************
 
@@ -276,8 +294,18 @@ H <- bdiag(solve( t(X_c[,-6])%*%X_c[,-6] ), 0) %>%
   as.matrix() 
 P_int <- X_c[,1] %*% solve( t(X_c[,1])%*%X_c[,1]) %*% t(X_c[,1])
 P_X <- X_c %*% H %*% t(X_c)
+# Residual SS
 RSS <- t(strength) %*% (diag(1, 25) - P_X) %*% strength
-SS <- t(strength) %*% (P_X - P_int) %*% strength
+cat("RSS = ", RSS, "; MSE = ", RSS/20)
+# Diff in Residual SS between full model and intercept-only model
+SSH <- t(strength) %*% (P_X - P_int) %*% strength
+cat("SSH = ", SSH, "; MSH = ", SSH/4)
+
+# F Statistic
+Fstat <- (SSH/4)/(RSS/20); cat("F = ", Fstat)
+
+# p-value
+pval <- 1 - pf(Fstat, 4, 20); cat("p-value = ", pval)
 ```
 
 
