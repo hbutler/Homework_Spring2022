@@ -38,7 +38,7 @@ where
 \begin{bmatrix} 
 Y_1 \\ 
 \vdots \\ 
-Y_49 
+Y_{49} 
 \end{bmatrix},
 & \bmX_{49\times 4} &=
 \begin{bmatrix}
@@ -61,7 +61,7 @@ Y_49
 \epsilon_{49}
 \end{bmatrix}
 \end{align*}
-and since we will be testing a hypothesis on $\bmbeta$, we must make the distributional assumption
+Where $\bmY$ is the vector of 6-day-old chick weights, and $\bmX$ is the design matrix with each column corresponding to that diet (ie. column 1 corresponds to diet 1). Each entry in the column is coded with a 1 if the chick was on that diet and 0 otherwise. There were 19 chicks in the sample on diet 1, and 10 chicks in each of diets 2-4. $\bmbeta$ is the vector of parameters representing the effect of the corresponding diet on the weight of a 6-day-old chick. Finally, $\bmepsilon$ is the vector of random errors, each with mean 0. Since we will be testing a hypothesis on $\bmbeta$, we must make add the distributional assumption
 \begin{align*}
 \bmepsilon \sim N(\bm0, \sigma^2\bmI_{49\times 49})
 \end{align*}
@@ -225,7 +225,8 @@ Prove Proposition 5.11. That is, under the conditions of that proposition, show 
 \begin{align*}
 \frac{RSS_H - RSS}{RSS} &= \frac{\bmY^T(\bmP_{\bmX} - \bmP_{\bmX_H})\bmY}{\bmY^T(\bmI - \bmP_{\bmX})\bmY} \\
 &= \frac{\bmY^T(\bmP_{\bmX} - \bmJ_n)\bmY - \bmY^T(\bmP_{\bmX_H} - \bmJ_n)\bmY}{\bmY^T(\bmI - \bmJ_n)\bmY - \bmY^T(\bmP_{\bmX} - \bmJ_n)\bmY} \\
-&= \frac{RSS - RSS_H}{1 - \bmY^T(\bmP_{\bmX} - \bmJ_n)\bmY/\bmY^T(\bmI - \bmJ_n)\bmY}
+&= \frac{(\bmY^T(\bmP_{\bmX} - \bmJ_n)\bmY - \bmY^T(\bmP_{\bmX_H} - \bmJ_n)\bmY) / \bmY^T(\bmI-\bmJ_n)\bmY }{(\bmY^T(\bmI - \bmJ_n)\bmY - \bmY^T(\bmP_{\bmX} - \bmJ_n)\bmY) / \bmY^T(\bmI - \bmJ_n)\bmY} \\
+&= \frac{R^2 - R_H^2}{1 - R^2}
 \end{align*}
 
 *********************************************************************************

@@ -111,7 +111,7 @@ Since both sides of the equality are polynomials in $\lambda$, each term on the 
 Solving for $\varphi(t)$, we find that the UMVUE for $\lambda^r$ is 
 \begin{align*}
 \varphi(t) = \begin{cases} 0 & \text{ for } 0 \leq t < r \\
-\frac{n^{-r}t!}{(t-r)!} & \text{ for } t \geq r \end{cases}
+\frac{n^{-r}t!}{(t-r)!} & \text{ for } 0t \geq r \end{cases}
 \end{align*}
 
 (3) Prove the following claims:
