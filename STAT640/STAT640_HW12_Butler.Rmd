@@ -1,0 +1,194 @@
+---
+output: 
+  pdf_document: 
+    keep_tex: yes
+    includes:
+        in_header: preamble_common.tex
+---
+
+
+
+STAT 640: Homework 12
+===================
+Due **Friday, May 6, 11:59pm MT** on the course Canvas webpage. Please follow the homework guidelines on the syllabus.
+
+
+
+## Name: Hannah Butler
+##
+
+
+
+
+## Problem 1
+
+(Adapted from Problem 8.2 of Oehlert) Particleboard is made from wood chips and resins. An experiment is conducted to study the effect of using slash chips (waste wood chips) along with standard chips. The researchers make eighteen boards by varying the target density (42 or 48 lb/ft$^3$ ), the amount of resin (6, 9, or 12\%), and the
+fraction of slash (0, 25, or 50\%). The response is the actual density of the boards produced (lb/ft$^3$ , data from Boehner 1975).  The goal is to determine the impact of the composition factors on density. The data are:
+
+\begin{tabular}{ccccccc}\hline
+&\multicolumn{3}{c}{42 Target}&\multicolumn{3}{c}{48 Target}\\\hline
+& 0\% & 25\% & 50\% & 0\% & 25\% & 50\%\\\hline
+6\% & 40.9 & 41.9 & 42.0 & 44.4 & 46.2 & 48.4\\
+9\% & 42.8 & 43.9 & 44.8 & 48.2 & 48.6 & 50.7\\
+12\% & 45.4 & 46.0 & 46.2 & 49.9 & 50.8 & 50.3\\\hline
+\end{tabular}
+
+
+**a.**  Is this a CRD, RCB, Latin Square, or other type of design? Explain why, and what are you assuming to make the determination.
+
+*********************************************************************************
+
+**Answer:** 
+Since the goal is to determine the composition of the boards on the density, we would probably block on the target density, since this is not of interest. My guess would be a randomized complete block design, since a completely randomized design doesn't include blocking. It is not a latin square design, since a latin square design would have $a$ treatment levels with two blocking factors each with $a$ levels. There are 3 level in two of the factors, but only two levels in the other factor. 
+
+*********************************************************************************
+
+**b.** How many replicates are there?
+
+*********************************************************************************
+
+**Answer:** 1 board for each combination of levels. 
+
+*********************************************************************************
+
+**c.** Write the equation(s) for an appropriate ANOVA-style model that you could fit to these data. 
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+## Problem 2
+
+(Adapted from Casella 3.1) A researcher is planning an experiment
+to determine the effectiveness of four house plant fertilizers. The
+researcher has arranged to use three benches (blocks) in different areas of a
+greenhouse. There are four pots on each bench, and the fertilizers will be randomly
+assigned to the pots. At the end of the experiment plant heights will
+be recorded (in inches). The data are in \texttt{Greenhouse1.txt}.
+
+**a.** Since the benches are specific locations of interest within the greenhouse, the researcher treats them as fixed blocks. Provide the appropriate ANOVA model and ANOVA table for this experiment.
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+**b.** Is there a difference among the treatments? Provide the null hypothesis in terms of model parameters, the test statistic, the distribution of the test statistic under the null, a p-value, and a conclusion.
+
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+**c.** What sample size would have been needed to achieve the same power without blocking?
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+## Problem 3
+
+Show that for $\bmA$ and $\bmB$ defined as in Section 12.1.3, $\bmA^\mT\bmB = \bm0$
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+## Problem 4
+
+(Adapted from Wakefield 8.14) Crowder and Hand (1990) describe data on the body weight of rats measured over 64 days. These data are available in the R package \texttt{nlme} and are named \texttt{BodyWeight}. Body weight is measured (in grams) on day 1, and every 7 days subsequently until day 64, with an extra measurement on day 44. There are 3 groups of rats, each on a different diet; 8 rats are on a control diet, and two sets of 4 rats are each on a different treatment.
+
+**a.** Plot the data, displaying weight on the vertical axis, time on the horizontal axis, and splitting diet into different panels.
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+**b.** Write the equation for an LMM for these data, with a random intercept for each rat. 
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+**c.** Fit your model from (b) and provide point estimates of all fixed effects and variance parameters.
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+**d.** Find the BLUPs $\hat\bmu$ using the formula in Section 13.9.1. (You can check against the output from `ranef()`).
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+**e.** Verify that $\bbh$ and your $\hat\bmu$ solve the mixed model normal equations.
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+
+
+**f.** Write the equation for an LMM for these data, with a random intercept and random slope for each rat. 
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+**g.** Fit your model from (f) and provide point estimates of all fixed effects and variance parameters.
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+**h.** Compare your models. Is there evidence that the random slopes improve the model fit?
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+
+
+
+**g.** Based on either the model from (c) or (h), is there evidence of a difference in *rate* of weight gain between diets?
+
+*********************************************************************************
+
+**Answer:** 
+
+*********************************************************************************
+

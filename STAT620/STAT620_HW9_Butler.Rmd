@@ -1,0 +1,18 @@
+---
+title: "STAT 620 Homework 9"
+author: "Hannah Butler"
+date: "4/21/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### (Alternative to 6.7) Does a continuous distribution function have to be uniformly continuous? If yes, prove, if no, give a counterexample.
+
+*Note: Problem 6.7 implies that if $F$ is a continuous distribution function on $\mathbb{R}$, it must be uniformly conintinous*
+
+The notes define a distribution function to be a function $F:\mathbb{R}^n \rightarrow \mathbb{R}^n$ that is a monotone increasing, right-continuous function. If $F$ is continuous, then it is both right-continuous and left-continuous at every point. A function that is uniformly continuous is one such that for any given $\varepsilon >0$, there can be found a single $\delta >0$ such that $|F(x) - F(x_0)| < \varepsilon$ whenever $|x - x_0| < \delta$, for all $x_0 \in \mathbb{R}$.
+
+A continuous distribution function must be continuous at every point $x$.
