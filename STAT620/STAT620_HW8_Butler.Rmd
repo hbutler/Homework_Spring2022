@@ -1,0 +1,83 @@
+---
+title: "STAT 620 Homework 7"
+header-includes:
+  - \usepackage{mathrsfs}
+output: pdf_document
+date: '2022-04-20'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newcommand{\R}{\mathbb{R}}
+
+### 6.1 Prove Theorem 6.3.2
+
+**Theorem 6.3.2** *$\mathscr{R}^{hi}$ is a semi-algebra.*
+
+$\mathscr{R}^{hi} = \{ (a, b], (-\infty, b], (a, \infty), \emptyset: a, b \in \R \}$. To show that $\mathscr{R}^{hi}$, we need to show the following properties hold for all sets in $\mathscr{R}^{hi}$:
+
+  a. $\emptyset \in \mathscr{R}^{hi}$
+  b. If $E, F \in \mathscr{R}^{hi}$, then $E \cap F \in \mathscr{R}^{hi}$
+  c. If $E \in \mathscr{R}^{hi}$, then $E^c$ is a finite disjoint union of members of $\mathscr{R}^{hi}$. 
+  
+The empty set is in $\mathscr{R}^{hi}$ by definition. 
+
+To show the second property, let $E$ and $F$ be sets in $\mathscr{R}^{hi}$. Then we have multiple cases:
+
+* $E = (a, b]$, $F = \emptyset$: $E\cap F = \emptyset \in \mathscr{R}^{hi}$.
+
+* $E = (a, b]$, $F = (c, d]$: If $E$ and $F$ are disjoint, then $E\cap F = \emptyset \in \mathscr{R}^{hi}$. If $E$ and $F$ are not disjoint, then this can be broken down into one of the following cases: one set is contained in the other, or the left limit point of one set is an interior point of the other set. Considering the first case, without loss of generality, let $F$ be contained in $E$. Then $E\cap F = F \in \mathscr{R}^{hi}$. Considering the second case, WLOG, let $c \in E$. Then $E\cap F = (c, b]$, which is a set that is contained $\mathscr{R}^{hi}$.
+
+* $E = (a, b]$, $F = (-\infty, d]$: This case is similar to the above, in that $E \subset F$ and $E\cap F = E \in \mathscr{R}^{hi}$ or $a \in F$ and $E\cap F = (-\infty, b] \in \mathscr{R}^{hi}$.
+
+* $E = (a, b]$, $F = (c, \infty)$: Again this is similar to the above two cases; $E \subset F$ and $E\cap F = E \in \mathscr{R}^{hi}$, or $b \in F$ and $E\cap F = (a, \infty)$.
+
+Finally, to show the third property, we consider all the cases below:
+
+* $E = \emptyset$: $E^c = (-\infty, \infty) = (-infty, p] \cup (p, \infty)$, this is the union of 2 disjoint sets in $\mathscr{R}^{hi}$.
+
+* $E = (a, b]$: $E^c = (-\infty, a] \cup (b, \infty)$, this is the union of 2 disjoint set in $\mathscr{R}^{hi}$.
+
+* $E = (a, \infty)$: $E^c = (-\infty, a]$, which is a single set, which we can categorize as a finite union of disjoint sets in $\mathscr{R}^{hi}$.
+
+* $E = (-\infty, b]$: $E^c = (b, \infty)$, which is again a single set in $\mathscr{R}^{hi}$.
+
+### 6.6 Let $\mu_F$ be the Lebesgue-Stieltjes measure corresponding to a right continuous increasing function $F$. Show that for each $x\in \R$, $$\mu_F(\{ x \}) = F(x) - \lim_{y\uparrow x} F(y).$$
+
+\begin{align*}
+\mu_F(\{x\}) &= \lim_{y \uparrow x}\mu_F( (y, x]) \\
+&= \lim_{y \uparrow x} ( F(x) - F(y) ) \\
+&= F(x) - \lim_{x\uparrow y}(y)
+\end{align*}
+
+### 6.10 Let $F$ be the distribution function on $\R$ given by   
+$$F(x) = \begin{cases} 0, & x < -1, \\ 1 + x & -1\leq x < 0, \\ 2+x^2 & 0 \leq x < 2, \\ 9, & x \geq 2.\end{cases}$$
+
+### Compute the measure of
+
+1. $\{2\}$
+
+\begin{align*}
+\mu_F(\{2\}) &= F(2) - \lim_{y\uparrow 2}F(y) 
+= 9 - 6 = 3
+\end{align*}
+
+2. $(-1, 0]\cup (1,2)$ 
+
+\begin{align*}
+\mu_F((-1, 0]\cup (1,2)) &= \mu_F((-1, 0]) + \mu_F((1,2)) \\
+&= F(0) - F(-1) + \lim_{y\uparrow 2}F(y) - F(1) \\
+&= 2 - 0 + 6 - 3 = 5
+\end{align*}
+
+3. $[0,1/2)\cup (1, 2]$ 
+
+\begin{align*}
+\mu_F([0,1/2)\cup (1, 2]) &= \mu_F([0,1/2)) + \mu_F((1, 2]) \\
+&= \lim_{y\uparrow 1/2}(y) - F(0) + F(2) - F(1) \\
+&= F(1/2) - F(0) + F(2) - F(1) \\
+&= \frac{9}{4} - 2 + 9 - 3 \\
+&= \frac{9 - 8 + 24}{4} = \frac{25}{4}
+\end{align*}

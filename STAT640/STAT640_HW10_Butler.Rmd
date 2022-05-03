@@ -198,8 +198,7 @@ X <- ivd %>%                                       # ANOVA design matrix
   as.matrix()
 
 Px <- X %*% solve(t(X)%*%X) %*% t(X)
-Jn <- Px
-Jn[Px != 0] = 1/N
+Jn <- matrix(1, nrow = N, ncol = N)/N
 
 F_num3 <- (t(Y) %*% (Px - Jn) %*% Y)/(t-1)
 F_den3 <- (t(Y) %*% (diag(1, nrow = N) - Px) %*% Y)/(N-t)
