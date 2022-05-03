@@ -33,6 +33,7 @@ Consider the data in the file `coagulation.csv` on Canvas, which comes from an e
 library(tidyverse)
 coag <- read_csv("coagulation.csv")
 ivd <- read_csv("ivd.csv")
+library(kableExtra)
 ```
 
 $$
@@ -104,11 +105,11 @@ cat("P-Value: ", pval
 
 ```{r}
 # check 
-coag_mod <- lm(time ~ 0 + . - seq, coag)
-anova(coag_mod)                           # My SSR is off. Jn incorrect?
+coag_mod <- lm(time ~. - seq, coag)
+anova(coag_mod)                           
 ```
 
-Under the null hypothesis, we obtain an $F$-statistic of 13.57 **(I think this is wrong)** with a $p$-value of 0.000047 **(This would also be wrong)**. According to these values, the experimental data provides evidence that *at least* one of the diets has an effect on coagulation time, so we reject the null hypothesis that none of the diets has an effect on blood coagulation time. Further testing would be needed to see which diet(s) have a *statistically* significant effect.
+Under the null hypothesis, we obtain an $F$-statistic of 13.57 with a $p$-value of 0.000047. According to these values, the experimental data provides evidence that *at least* one of the diets has an effect on coagulation time, so we reject the null hypothesis that none of the diets has an effect on blood coagulation time. Further testing would be needed to see which diet(s) have a *statistically* significant effect.
 
 *********************************************************************************
 
@@ -134,16 +135,19 @@ bbh <- c(0, tapply(coag$time, coag$diet, mean))  # LSE (0, group means)
 g <- c(0, 0, 1, 0, -1)                           # contrast
 n2 <- sum(coag$diet == "B")
 n4 <- sum(coag$diet == "D")
+
+F_num2 <- (g %*% bbh)^2 / (1/n2 + 1/n4)
+F_den2 <- F_den                                  # Same denominator as before
+F_stat2 <- F_num2/F_den2
 ```
 
 ```{r, echo = FALSE}
-F_num2 <- (g %*% bbh)^2 / (1/n2 + 1/n4)
-F_den2 <- F_den
-F_stat2 <- F_num2/F_den2; cat("F-test statistic:", F_num2, "/", F_den2, "=", F_stat2)
-pval2 <- 1 - pf(F_stat2, 1, N - t); cat("P-Value:", pval2, ifelse(pval2 < 0.05, "- Reject", "- FTR"))
+cat("F-test statistic:", F_num2, "/", F_den2, "=", F_stat2)
+pval2 <- 1 - pf(F_stat2, 1, N - t)
+cat("P-Value:", pval2, ifelse(pval2 < 0.05, "- Reject", "- FTR"))
 ```
 
-We get an $F$-statistic of 15.306 and under the null hypothesis, $H_0: \alpha_2 = \alpha_4$, we get a $p$-value of $0.00086$, which is suggests that there is a difference in average blood coagulation times between animals on diet B and animals on diet A. Therefore, our decision would be to reject the null hypothesis.
+We get an $F$-statistic of 15.306 and under the null hypothesis, $H_0: \alpha_2 = \alpha_4$, $F \sim {\cal F}(1, 20, \theta = 0)$ and we get a $p$-value of $0.00086$. This suggests that there is a difference in average blood coagulation times between animals on diet B and animals on diet A. Therefore, our decision would be to reject the null hypothesis.
 
 *********************************************************************************
 
@@ -156,6 +160,7 @@ Since the denominator does not involve any contrasts, we should focus our attent
 
 *********************************************************************************
 
+\newpage
 
 ## Problem 2
 
@@ -185,6 +190,17 @@ $$
 
 **b.** Provide the ANOVA table and for the overall F-test give the following: the null hypothesis, test statistic, the distribution of the test statistic under the null, and a brief conclusion.
 
+
+*********************************************************************************
+
+**Answer:** 
+For an overall $F$-test, we assess the null hypothesis that there is no difference in average IVD of alpha grown at the 4 different temperature levels, or $H_0: \alpha_1 = \alpha_2 = \alpha_3 = \alpha_4$, with the alternative hypothesis being that at least one of the tested temperature levels has alfalfa with a different average IVD than another temperature level. The $F$-test statistic is computed as
+
+$$
+\frac{\bmY^T(\bmP_{\bmX} - \bmJ_N)\bmY/3}{\bmY^T(\bmI - \bmP_{\bmX})\bmY/12} = 12.89 \quad \textit{(See code below)}
+$$
+and under the null hypothesis, is distributed as a central ${\cal F}$ random variable with $4-1 = 3$ and $16-4 = 12$ degrees of freedom.
+
 ```{r}
 N <- nrow(ivd)                                     # Total number of observations
 t <- length(unique(ivd$temp))                      # Number of treatment levels
@@ -198,23 +214,41 @@ X <- ivd %>%                                       # ANOVA design matrix
   as.matrix()
 
 Px <- X %*% solve(t(X)%*%X) %*% t(X)
-Jn <- Px
-Jn[Px != 0] = 1/N
+Jn <- matrix(1, nrow = N, ncol = N)/N
 
 F_num3 <- (t(Y) %*% (Px - Jn) %*% Y)/(t-1)
 F_den3 <- (t(Y) %*% (diag(1, nrow = N) - Px) %*% Y)/(N-t)
 F_stat3 <- F_num3/F_den3
-cat("F-test Statisic:", F_stat3)
+```
 
+```{r, echo = FALSE}
+cat("F-test Statisic:", F_num3, "/", F_den3, "=", F_stat3)
+cat("P-Value:", 1 - pf(F_stat3, t-1, N-t), ifelse(1 - pf(F_stat3, t-1, N-t) < 0.05, "- Reject", "- FTR"))
+```
+
+```{r, echo = FALSE}
 # check
-mod_ivd <- lm(ivd ~ 0 + as.factor(temp), ivd)
+mod_ivd <- lm(ivd ~ as.factor(temp), ivd)
 anova(mod_ivd)
 ```
 
+With an $F$-test statistic of 12.89 and a $p$-value of 0.00046 under $H_0$, we reject the null hypothesis and say that the data provides evidence that the average IVD of alfalfa grown in at least one temperature differs from the average IVD of alfalfa at another temperature. Further testing would be required to identify the groups that differ. A summary of the results can be found below in the ANOVA table. 
 
-*********************************************************************************
+```{r, echo = FALSE}
+tibble("Source" = c("Treatment", "Residuals", "Total")
+                   , "d.f." = c(3, 12, 15)
+                   , "SS" = c(F_num3*3, F_den3*12, F_num3*3+ F_den3*12)
+                   , "MS" = c(F_num3, F_den3, NA)
+                   , "F-statistic" = c(F_num3/F_den3, NA, NA)
+                   , "P-value" = c(1 - pf(F_stat3, t-1, N-t), NA, NA)
+                   ) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = "striped"
+                , full_width = TRUE
+                )
 
-**Answer:** 
+
+```
 
 *********************************************************************************
 
@@ -230,21 +264,50 @@ anova(mod_ivd)
 **Answer:** 
 The first contrast tests if the effect on IVD at the higher 3 temperatures is the same as the effect at 17 degrees on IVD.
 
-The second contrast tests whether the difference in effect on IVD between 22 degrees and 27 degrees is equal to three times the difference in effect on IVD between 32 degrees and 17 degrees.
+The second contrast tests whether there is a linear trend in the group effect of temperature on IVD. This is valid because the treatment levels are numerical and evenly spaced, and the design is balanced.
 
 *********************************************************************************
 
 **d.** Assuming the model from (a), what are the distributions of $\bmg^\mT\bbh$ for the two $\bmg^\mT$ in (c)?
 
 
+
 *********************************************************************************
 
 **Answer:** 
+Assuming that the errors are iid $\sim N(\bm0, \sigma^2\bmI)$, $\bmg^T\bbh$ is also normally distributed, with mean $\bmg^T\bmbeta$ and variance $\sigma^2\bmg^T (\bmX^T\bmX)^- \bmg$.
+
+Using the generalized inverse 
+$$
+(\bmX^T\bmX)^- = \begin{bmatrix} 0 & 0 & 0 & 0 & 0 \\
+0 & \frac{1}{4} & 0 & 0 & 0 \\
+0 & 0 & \frac{1}{4} & 0 & 0 \\
+0 & 0 & 0 & \frac{1}{4} & 0 \\
+0 & 0 & 0 & 0 & \frac{1}{4} 
+\end{bmatrix},
+$$
+for the first contrast $\begin{bmatrix} 0 & -3 &  1 & 1 & 1 \end{bmatrix}\bmbeta$, 
+$$
+\bmg^T\bbh \sim N\left( \alpha_2 + \alpha_3 + \alpha_4 - 3\alpha_1, 3\sigma^2 \right),
+$$
+and for the second contrast $\begin{bmatrix} 0 & -3 & -1 & 1 & 3 \end{bmatrix}\bmbeta$, 
+$$
+\bmg^T\bbh \sim N(-3\alpha_1 - \alpha_2 + \alpha_3 + 3\alpha_4, 5\sigma^2).
+$$
+
+```{r}
+Xinv <- rbind(0, cbind(0, solve(t(X) %*% X)))
+g <- c(0, -3, 1, 1, 1)
+
+g %*% Xinv %*% g
+
+g2 <- c(0, -3, -1, 1, 3)
+
+g2 %*% Xinv %*% g2
+```
+
 
 *********************************************************************************
-
-
-
 
 
 ## Problem 3
@@ -262,13 +325,28 @@ Come up with two possible studies, **one a designed experiment and one an observ
 
 **Answer:** 
 
-**Designed Experiment**
+## Designed Experiment
 
-Recruit 100 graduate students and assign them to groups with different levels of mandatory mental health maintenance. Group 1 is allowed to maintain their mental health how they see fit, group 2 must attend a weekly 1-hour counseling session, group 3 must attend a weekly 1-hour yoga session, and group 4 must meditate 1 hour per week. Students who currently report none of the current treatments as part of their regular weekly routine and have no plans to incorporate them are eligible for the study. The study is conducted in the first 8 weeks of the spring semester and at the end, each student receives a score for their stress level determined by answering a questionnaire. This is a designed experiment, since the treatment levels are determined by the experimenters and the students are randomly assigned to be in one of the treatment groups. Blocking may be necessary, if we believe year in program or study discipline may have some effect on stress level. For this study, there are no other factors being considered. 
+**Description:** An experiment is conducted at CSU to determine whether regular mental health maintenance strategies have any impact on the stress level of graduate students in PhD programs. Students will be assigned to one of four treatment groups over the course of 8 weeks during the semester and asked to complete a questionnaire to gauge their stress level at the end.
 
-**Observational Experiment**
+**Treatment:** The factor that will be considered is mental health maintenance strategy. For this experiment, there are 4 levels: "Control", where students are not given a specific routine to follow, "Yoga," where students are required to attend a 1-hour yoga class each week, "Counseling," where students are required to attend a 1-hour group counseling session each week, and "Mediation," where students are required to meditate for a total of one hour per week. 
 
-Research Question: Do PhD students who have been in the program longer spend less time on campus?
-Asked 50 students in each of years 1-4 how many hours they spend on campus per week. This is an observational experiment, since we do not assign students to groups, but observe students that can be divided into groups. The "treatment" here is year in PhD program, with 4 levels: 1st, 2nd, 3rd, and 4th. The experimental units are students, the observational units are students. We might suspect that the program or discipline (art, STEM, Humanities, etc.) might have an effect on time spent on campus as well, so we would want to block in order to better isolate the effect of year on the time spent on campus. I don't think there are other important factors here.
+**Experimental/Observational Units:** The experimental and observational units are the students. 
+
+**Blocking:** Blocking will be required, since we expect that program and year in program will also have an effect on the student stress level. However, we are not interested in measuring these effects and would simply like to control for these factors. 
+
+**Other Factors:** I do not think there are other important factors that are being considered. 
+
+## Observational Study
+
+**Description:** An observational study will be conducted to see how long, on average, PhD students of different years spend on campus. 
+
+**Treatment:** The factor in question is the number of years the student has been in their PhD program. We question students in any of the first 4 years of their study how many hours they estimate that they spend on campus per week.
+
+**Experimental/Observational Units:** The students are the experimental and observational units for this study
+
+**Blocking:** Blocking by program is required because we believe that different programs have different requirements that will influence the amount of time spent on campus by students.
+
+**Other Factors:** I don't think there are other factors to be considered.
 
 *********************************************************************************

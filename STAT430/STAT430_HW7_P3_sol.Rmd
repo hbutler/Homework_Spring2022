@@ -1,0 +1,44 @@
+---
+title: "STAT 430 HW07 Problem 3b Solution"
+output: pdf_document
+date: '2022-04-23'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\textcolor{red}{
+The UMVUE for $\theta$ can be found by taking the expectation of an unbiased estimator of $\theta$ conditioned on a sufficient statistic. A sufficient statistic for $\theta$ is $S = \sum_{i=1}^n |X_i|$, so the UMVUE for $\theta$ is 
+\begin{align*}
+E(T_n \mid S = s) &=
+\frac{1}{n}\sum_{i=1}^n E(T(X_i) | S = s)
+\end{align*}
+The expectation $E(T(X_i)|S)$ is
+\begin{align*}
+E(T(X_i)|S=s) &= T(-1)P(X_i = -1 \mid S = s) + T(0)P(T(X_i = 0 \mid S = s)) + T(1)P(T(X_i = 1 \mid S = s)) \\
+&= 2P(T(X_i = 1 \mid S = s)) \\
+&=  \frac{2P(X_i = 1, S = s)}{P(S = s)} \\
+&=  \frac{2P(X_i = 1, \sum_{j\neq i}|X_i| = s - 1)}{P(S = s)} \\
+&=  \frac{2P(X_i = 1)P(\sum_{j\neq i}|X_i| = s - 1)}{P(S = s)} \\
+&=  \frac{2(\theta/2) \begin{pmatrix} n-1 \\ s-1 \end{pmatrix} \theta^{s-1}(1-\theta)^{n-s} }{ \begin{pmatrix} n \\ s \end{pmatrix} \theta^s(1-\theta)^{n-s}} \\
+&= \frac{\begin{pmatrix} n-1 \\ s-1 \end{pmatrix}}{\begin{pmatrix} n \\ s \end{pmatrix}} 
+= \frac{(n-1)!}{(s-1)!(n-s)!} \frac{s!(n-s)!}{n!} 
+= \frac{s}{n}
+\end{align*}
+So the expectation $E(T_n|S) = \frac{S}{n} = \frac{1}{n}\sum_{i=1}^n |X_i|$ is the UMVUE for $\theta$. To show that this is a "better" estimator that $T_n$, we have to show that the variance of the UMVUE is smaller than the variance of $T_n$. The variance of $T_n$ is
+\begin{align*}
+VarT_n &= \frac{1}{n^2}\sum_{i=1}^n VarT(X_i) \\
+&= \frac{1}{n^2} \sum_{i=1}^n (ET(X_i)^2 - (ET(X_i))^2) \\
+&= \frac{n(4(\theta/2) - (\theta)^2)}{n^2} \\
+&= \frac{\theta(2 - \theta)}{n}
+\end{align*}
+and the variance of $\frac{1}{n}S$ is
+\begin{align*}
+Var\frac{1}{n}S &= \frac{1}{n^2}\sum_{i=1}^n Var|X_i| \\
+&= \frac{1}{n^2}\sum_{i=1}^n (E|X_i|^2 - (E|X_i|)^2) \\
+&= \frac{n(\theta/2 + \theta/2 - (\theta/2 + \theta/2)^2)}{n^2} \\
+&= \frac{\theta(1- \theta)}{n}
+\end{align*}
+and it should be easy to see that $\frac{\theta(2 - \theta)}{n} > \frac{\theta(1-\theta)}{n}$, so $S/n$ is better than $T_n$, as it should be.
+}

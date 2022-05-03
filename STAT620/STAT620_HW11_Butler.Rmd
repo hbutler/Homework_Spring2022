@@ -1,0 +1,69 @@
+---
+title: "STAT 620 Homework 11"
+header-includes:
+  - \usepackage{mathrsfs}
+output: pdf_document
+date: '2022-04-29'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### 7.9 Let $(\Omega, \mathscr{F}, P)$ be a probability space.
+
+1. If $\{A_i\}_{i=1}^m$ is a collection of independent events, show 
+$$
+P\left( \bigcup_{i=1}^m A_i\right) = 1 - \prod_{i=1}^m (1-P(A_i)).
+$$
+
+
+\begin{align*}
+P\left( \bigcup_{i=1}^m A_i\right) &= 1 - P\left(\left( \bigcup_{i=1}^m A_i\right)^C \right) \\
+&= 1 - P\left( \bigcap_{i=1}^m A_i^C \right) \\
+&= 1 - \prod_{i=1}^m P(A_i^C) && \textit{(Theorem 7.4.4 \& Definition 7.4.3)} \\
+&= 1 - \prod_{i=1}^m (1 - P(A_i)) && \square
+\end{align*}
+
+2. If $\{A_i\}_{i=1}^\infty$ is a collection of independent events, show
+$$
+P\left( \bigcap_{i=1}^\infty A_i \right) = \prod_{i=1}^\infty P(A_i) 
+$$
+
+I am going to attempt to prove this by induction. Consider two sets in the collection $A_{i_1}$ and $A_{i_2}$. By Definition 7.4.2, $P(A_{i_1}\cap A_{i_2}) = P(A_{i_1})P(A_{i_2})$. We also have that by definition, for $m \in \mathbb{N}$, $P\left( \bigcap_{j=1}^m A_{i_j}\right) = \prod_{j=1}^m P(A_{i_j})$.
+
+Now consider $m+1$ sets. We want to show that $P\left( \bigcap_{j=1}^{m+1} A_{i_j}\right) = \prod_{j=1}^{m+1}P(A_{i_j})$. We have
+
+\begin{align*}
+P\left( \bigcap_{j=1}^{m+1} A_{i_j} \right) &= P\left(\left( \bigcap_{j=1}^m A_{i_j} \right) \cap A_{i_{m+1}} \right) \\
+&= P\left( \bigcap_{j=1}^{m+1}A_{i_j}\right) \times P(A_{i_{m+1}}) \\
+&= \prod_{j=1}^mP(A_{i_j}) \times P(A_{i_{m+1}}) \\
+&= \prod_{j=1}^{m+1} P(A_{i_j}) && \square
+\end{align*}
+
+Therefore, the probability of a countable intersection of independent events can be expressed as the countable product of the probabilities of the individual events.
+
+### 8.2 Let $(\mathbb{X}, \mathscr{M}, \mu)$ be a measure space and $\mathbb{X} = A\cup B$ with $A,B \in \mathscr{M}$. Prove that a real valued function $f$ on $\mathbb{X}$ is measurable if and only if $f$ is measurable on $A$ and on $B$.
+
+($f$ is measurable on $\mathbb{X}$ $\implies$ $f$ is measurable on $A$ and $B$)
+
+If $f$ is measurable on $\mathbb{X} = A\cup B$, then $f^{-1}(C) \in \mathscr{M}$ for all $C$ in the corresponding Borel $\sigma$-algebra. Then by definition 8.2.3, and the closure of a $\sigma$-algebra under finite intersection, $f^{-1}(C) \cap A \in \mathscr{M}$ and $f^{-1}(C) \cap B \in \mathscr{M}$ for all $C \in \mathscr{N}$ (the Borel $\sigma$-algebra), so $f$ is measurable on $A$ and $B$. 
+
+($f$ is measurable on $A$ and $B$ $\implies$ $f$ is measurable on $\mathbb{X}$)
+
+Starting from the end and going to the beginning in the above proof should be sufficient for this direction, I think. If $f$ is measurable on $A$ and $B$, then $f^{-1}(C) \cap A \in \mathscr{M}$ and $f^{-1}(C) \cap B \in \mathscr{M}$ for all $C \in \mathscr{N}$. This implies by the properties of $\sigma$-algebras that $f^{-1}(C) \in \mathscr{M}$ for all $C \in \mathscr{N}$, so by definition 8.2.1, $f$ is $\mathscr{M}$-measurable.
+
+### 8.7 Let $X$ be an integer valued random variable on a probability space $(\Omega, \mathscr{F}, P)$ and $m$ a positive integer. Show
+$$
+\sum_{i=-\infty}^\infty P(\{ \omega : i < X(\omega) \leq i+m \}) = m.
+$$
+
+\begin{align*}
+\sum_{i=-\infty}^\infty P(\{ \omega : i < X(\omega) \leq i+m \}) &=
+\sum_{i=-\infty}^\infty P(\{ i, \dots, i + m \}) \\
+&= \sum_{i=-\infty}^\infty P\left( \bigcup_{j=i}^{i+m} \{ j\} \right) \\
+&= \sum_{i=-\infty}^\infty \sum_{j=i}^{i+m} P(\{j\}) \\
+&= \dots \sum_{i=k}^{k+m} P(\{i \}) + \sum_{i=k+1}^{k+1+m}P(\{i\}) + \dots \\
+&= \sum_{i=-\infty}^\infty m P(\{i\}) \\
+&= m \sum_{i=-\infty}^\infty P(\{i\}) = m\times 1 = m && \square
+\end{align*}

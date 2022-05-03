@@ -1,0 +1,274 @@
+---
+output: 
+  pdf_document: 
+    keep_tex: yes
+    includes:
+        in_header: preamble_common.tex
+---
+
+
+
+STAT 640: Homework 11
+===================
+Due **Wednesday, April 27, 11:59pm MT** on the course Canvas webpage. Please follow the homework guidelines on the syllabus.
+
+
+
+## Name: Hannah Butler
+##
+
+```{r, echo=FALSE, message=FALSE}
+library(tidyverse)
+library(ggplot2)
+coag <- read_csv("coagulation.csv")
+```
+
+## Problem 1
+
+
+(This is carry-over from Homework 10)
+
+Consider the data in the file `coagulation.csv` on Canvas, which comes from an experiment of diet on blood coagulation time. Animals were independently randomized to four diets and the time for blood coagulation was measured.
+
+**e.** Find the contrast $\gtb$ that results in the largest possible F statistic for $H_0: \gtb = 0$. Report the contrast ($\gtb$), a corresponding $\bmd$, and the value of its $F$ statistic.
+
+*********************************************************************************
+
+**Answer:** 
+The contrast that results in the largest $F$-test statistic is $\bmg^T\bmbeta = (\bmX^T(\bmP_{\bmX} - \bmP_1)\bmY)^T\bmbeta$.
+
+```{r}
+Y <- coag$time
+X <- cbind(1
+            , A = as.numeric(coag$diet == "A")
+            , B = as.numeric(coag$diet == "B")
+            , C = as.numeric(coag$diet == "C")
+            , D = as.numeric(coag$diet == "D")
+            )
+X2 <- X[,-1]
+Px <- X2 %*% solve(t(X2)%*%X2) %*% t(X2)
+P1 <- matrix(1/24, 24, 24)
+g <- round(t(X) %*% (Px - P1) %*% Y, 2); cat(g)
+```
+
+The contrast is
+$$
+\gtb = \begin{bmatrix} 0 \\ -12 \\ 12 \\ 24 \\ -24 \end{bmatrix} \bmbeta = 12(\alpha_2 - \alpha_1) + 24(\alpha_3 - \alpha_4)
+$$
+
+and $\bmd$ is not unique, so one possibility could be
+$$
+\bmd = \begin{bmatrix} -3\cdot\bm1_4 \\ 2\cdot\bm1_6 \\ 4\cdot\bm1_6 \\ -3\cdot\bm1_8 \end{bmatrix}
+$$
+
+```{r}
+d <- c(rep(c(-3, 2, 4, -3), times = c(4, 6, 6, 8)))
+sum(d)
+```
+
+```{r}
+bbh <- c(0, tapply(coag$time, coag$diet, mean))
+Ginv <- diag(c(0, 1/diag(t(X2)%*%X2)))
+
+MSE <- ( t(Y) %*% (diag(1, 24) - Px) %*% Y )/20
+F_stat <- (((t(g) %*% bbh)^2 * (t(g) %*% Ginv %*% g)^(-1))/3)/MSE
+cat(F_stat)
+
+# check
+mod <- lm(time ~ diet, coag)
+anova(mod)
+```
+
+*********************************************************************************
+
+
+
+## Problem 2
+Summarize the different error rates that can be controlled in multiple comparisons by completing the following table. Where possible use $ND/FD/FN/FT/N/D$ in the formulas, and keep your description to a phrase or two.
+
+*********************************************************************************
+
+**Answer:** 
+
+\begin{center}
+\begin{tabular}{ l c l l }
+\hline
+Error Rate/Quantity & Formula & Description\\
+\hline
+Simultaneous CI's & & &\\
+$\sFWER$ &  $P(FD > 0 \mid \text{ at least 1 } H_0 \text{ true})$ &  Probability of at least 1 FD. & \\
+$\FDR$ & $\frac{FD}{D}P(D > 0)$ &  Expected proportion of all D that are FD. \\
+$\FWER$ & $P(D > 0 \mid H_0 \text{ all true})$  &  Probability of at least 1 FD when all $H_0$ are true. & \\
+$\PCER$ & $P(FD_i = 1 \mid H_{0i} \text{ true})$ & Probability of a FD when $H_0$ is true. \\
+\hline
+\end{tabular}
+\end{center}
+
+*********************************************************************************
+
+
+## Problem 3
+
+Suppose we have an ANOVA model with four treatments. Researchers wish to conduct all pairwise comparisons AND test two additional (pre-specified) contrasts. They propose to use Tukey's method for pairwise comparisons at level $\alpha/2$ and then test each of the other two contrasts at level $\alpha/4$. Prove that this approach will control $\sFWER$ at level $\alpha$.
+
+
+*********************************************************************************
+
+**Answer:** 
+I'm not sure I understand this problem. When using Tukey's HSD for the pairwise comparisons, they control sFEWER at $P(FD>0) \leq \alpha/2$ for all comparisons. (Notes specify that Tukey Method controls sFEWER). Controlling each of the other contrasts at level $\alpha/4$ means that $P(FD>0) \leq \alpha/4$ for each contrast, which is the same as controlling sFEWER at $\alpha/4$ for each contrast. This means, I think that for all of the contrasts
+\begin{align*}
+P(FD > 0) &= P_{\text{(pairwise)}}(FD >0) + P_{\text{(contrast 1)}}(FD >0) + P_{\text{(contrast 2)}}(FD>0) \\
+&\leq \frac{\alpha}{2} + \frac{\alpha}{4} + \frac{\alpha}{4} = \alpha
+\end{align*}
+
+*********************************************************************************
+
+## Problem 4
+
+This continues Problem 2 from Homework 10. The data in `ivd.csv` on Canvas contain measurements of the in vitro digestibility (IVD) of alfalfa grown at different temperatures. The variable `temp` has four levels: 17, 22, 27, and 32 degrees Celsius. Each level has four randomly-assigned replicates.
+
+
+**a.** Test all pairwise comparisons of mean IVD by treatment group using the Tukey HSD test. For each comparison, provide the estimated difference, a confidence interval, and a $p$-value. Compute the values using your own code (but you can check yourself against the results from `TukeyHSD()`).
+
+
+*********************************************************************************
+
+**Answer:** 
+
+```{r, message = FALSE, warning = FALSE}
+ivd <- read_csv("ivd.csv")
+X <- cbind(1                                               # Design Matrix
+           , T17 = as.numeric(ivd$temp == 17)
+           , T22 = as.numeric(ivd$temp == 22)
+           , T27 = as.numeric(ivd$temp == 27)
+           , T32 = as.numeric(ivd$temp == 32)
+           )
+bbh <- c(0, tapply(ivd$ivd, ivd$temp, mean))               # beta hat
+Px <- X[,-1] %*% solve(t(X[,-1])%*%X[,-1]) %*% t(X[,-1])   # Projection Matrix
+MSE <- (t(ivd$ivd) %*% (diag(1, nrow(X)) - Px) %*% ivd$ivd)/12
+# Manual Tukey HSD
+diffs <- data.frame(comparison = c("diff17x22", "diff17x27"
+                                   , "diff17x32", "diff22x27"
+                                   , "diff22x32", "diff27x32"
+                                   ) 
+                    , difference = c(bbh[2] - bbh[3], bbh[2] - bbh[4]
+                                   , bbh[2] - bbh[5], bbh[3] - bbh[4]
+                                   , bbh[3] - bbh[5], bbh[4] - bbh[5]
+                                   )
+                    )
+
+q_05 <- qtukey(.95, 4, 12)                                         # 95% TukeySR quantile
+diffs$lower_95 <- abs(diffs$difference) - q_05*sqrt(MSE/4)         # Lower 95% bound
+diffs$upper_95 <- abs(diffs$difference) + q_05*sqrt(MSE/4)         # Upper 95% bound
+diffs$pval <- 1 - ptukey(abs(diffs$difference)/sqrt(MSE/4), 4, 12) # P-Value
+diffs
+
+# check
+TukeyHSD(aov(ivd ~ as.factor(temp), ivd))
+```
+
+*********************************************************************************
+
+
+
+
+## Problem 5
+
+(Adapted from Oehlert, Problem 3.2) Scientists are interested in whether the energy costs involved in reproduction affect longevity. In this experiment, 125 male fruit flies were divided at random into five sets of 25. In one group, the males were kept by themselves. In two groups, the males were supplied with one or eight receptive virgin female fruit flies per day. In the final two groups, the males were supplied with one or eight unreceptive (pregnant) female fruit flies per day. Other than the number and type of companions, the males were treated identically. The longevity of the flies was observed.
+
+The data are in `FruitFly.csv` on Canvas. The treatments are 1 = no companion, 2 = one pregnant, 3 = one virgin, 4 = eight pregnant, and 5 = eight virgin.
+
+
+**a.** Does the number and type of companions affect longevity? Conduct your test at level $\alpha=0.05$. In your response, provide the null hypothesis, alternative hypothesis, test statistic, the distribution of the test statistic under the null, and a brief conclusion.
+
+*********************************************************************************
+
+**Answer:** 
+This seems to be asking if any of the groups has a mean that is significantly different than the overall mean, so we would conduct a model utility test, considering the 5 treatment levels.
+
+```{r, message = FALSE}
+fruitfly <- read_csv("FruitFly.csv")
+N <- nrow(fruitfly)                              # Total Number of Observations
+t <- length(unique(fruitfly$trt))                # Number of Treatment Levels
+Y <- fruitfly$days                               # Response
+X <- fruitfly %>%                                # Design Matrix: Single Factor
+  mutate(mu = 1
+         , NC = as.numeric(trt == 1)
+         , P1 = as.numeric(trt == 2)
+         , V1 = as.numeric(trt == 3)
+         , P8 = as.numeric(trt == 4)
+         , V8 = as.numeric(trt == 5)
+         ) %>%
+  select(-c(days, trt)) %>%
+  as.matrix()
+X_ <- X[,-1]
+
+P_1 <- matrix(1/N, N, N)                        # Projection matrix onto 1
+P_x <- X_ %*% solve(t(X_)%*%X_) %*% t(X_)       # Projection matrix onto X
+I <- diag(1, N)                                 # Projection matrix onto R^N
+
+F_num <- (t(Y) %*% (P_x - P_1) %*% Y)/(t-1)     # MSTrt             
+F_den <- (t(Y) %*% (I - P_x) %*% Y)/(N-t)       # MSE
+pval <- 1 - pf(F_num/F_den, t-1, N-t)
+```
+
+```{r, echo = FALSE}
+cat("F-test Statistic:", F_num, "/", F_den, "=", F_num/F_den)
+cat("P-Value:", pval, ifelse(pval <0.05, "- Reject", "- FTR"))
+```
+
+```{r}
+# check
+anova(lm(days ~ as.factor(trt), fruitfly))
+```
+
+For testing the hypothesis that number and type of companions has no effect on longevity ($H_0: \alpha_1 = \dots \alpha_5 = 0$) versus the alternative hypothesis that at least one combination of receptive/non-receptive and one/eight companions has a significant effect on longevity, we obtained an $F$-test statistic of 13.612 which, under the null hypothesis, gives a $p$-value of $< 0.001$. This is evidence to suggest that there is a difference in average longevity between at least 2 groups which may be caused by the number and type of companions, so we reject $H_0$.
+
+*********************************************************************************
+
+
+**b.** Design a set of at least three contrasts that seem meaningful to you in this context. For each contrast, describe its purpose (i.e. what it is comparing). Using Bonferroni correction, create *simultaneous* 95% confidence intervals for your contrasts. Provide the point estimates and CI for each contrast.
+
+*********************************************************************************
+
+**Answer:** 
+
+* We can use the contrast $\alpha_1 - \frac{1}{4}(\alpha_2 + \alpha_3 + \alpha_4 + \alpha_5) = 0$ to test whether there is a difference in average longevity between fruit flies with no companion and fruit flies with companions.
+
+* We can use the contrast $\frac{1}{2}(\alpha_2 + \alpha_3) - \frac{1}{2}(\alpha_4 + \alpha_5) = 0$ to test whether there is a difference in average longevity between flies with one companion and flies with eight companions.
+
+* We can use the contrast $\frac{1}{2}(\alpha_2 + \alpha_4) - \frac{1}{2}(\alpha_3 + \alpha_5) = 0$ to test whether there is a difference between average longevity between fruit flies with companions and fruit flies with non-receptive companions. 
+
+```{r, warning=FALSE}
+alpha = 0.05
+A <- rbind(c(0, 1, -.25, -.25, -.25, -.25)       # These are orthogonal contrasts
+           , c(0, 0, .5, .5, -.5, -.5)
+           , c(0, 0, .5, -.5, .5, -.5)
+           )
+bp <- alpha/3                                   # Bonferroni Adjusted Sig Level
+
+Ginv <- diag(c(0, diag(solve(t(X_)%*%X_))))     # Generalized Inverse of XTX
+bbh <- c(0, tapply(Y, fruitfly$trt, mean))      # beta hat
+Abeta <- A %*% bbh                              # Estimates
+AXXinvA <- solve(A %*% Ginv %*% t(A))
+F_nums <- t(Abeta^2) %*% AXXinvA
+F_den <- F_den
+pvals <- 1 - pf(c(F_nums/c(F_den)), 1, N-t)
+fq <- qf(1-bp, 1, N-t)
+lower_95sFWER <- Abeta - fq*sqrt(diag(AXXinvA)*F_den)
+upper_95sFWER <- Abeta + fq*sqrt(diag(AXXinvA)*F_den)
+```
+
+```{r, echo = FALSE}
+tibble(Estimate = c(Abeta)
+       , "Lower 95% sFWER" = c(lower_95sFWER)
+       , "Upper 95% sFWER" = c(upper_95sFWER)
+       , "F-Statistic" = c(F_nums/c(F_den))
+       , "P-Value" = c(pvals)
+       ) %>%
+  mutate(Decision = ifelse(pvals < bp, "Reject", "FTR")) %>%
+  print()
+```
+Something is wrong with the confidence bounds and I can't figure out what.
+
+*********************************************************************************

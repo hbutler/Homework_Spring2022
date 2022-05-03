@@ -1,0 +1,71 @@
+---
+output:
+  pdf_document: 
+    extra_dependencies: ["bm", "dsfont"]
+  word_document: default
+  html_document: default
+---
+
+\newcommand{\given}{\,|\,}
+\newcommand{\trans}{^\text{T}}
+\newcommand{\frechet}{Fr\'echet }
+\newcommand{\matern}{Mat\'ern }
+\newcommand{\ind}{\mathds{1}}
+\newcommand{\iid}{\stackrel{\text{iid}}{\sim}}
+\newcommand{\indep}{\stackrel{\text{indep}}{\sim}}
+
+
+STAT430 Homework #9: Due Friday, April 29, 2022. 
+========================================================
+
+#### Name: 
+
+*********************************************************************************
+
+Submit this homework as a pdf file to Canvas. 
+
+## Question 1
+
+We want to estimate $\bm{\theta} = (\alpha, \beta)\trans$ from an iid sample $Y_1,...,Y_n$  a from a Gamma($\alpha, \text{rate}=\beta$) distribution.  For the following, use as a reference the R script posted on canvas that calculates that MLE of the generalized extreme value distribution.
+
+a) Write an R function that takes $\bm{\theta}$ and $Y_1,...,Y_n$ as input and outputs the gamma log likelihood.  Make sure that the first parameter in the parameter list is $\bm{\theta}$, such that your function can be used by \texttt{optim} to find the MLE.  Be careful that R is interpreting your $\beta$ as the rate parameter of the gamma distribution.
+
+b) Simulate $n=25$ iid random variables from a Gamma($\alpha = 2, \text{rate}=\beta = 3$) distribution.  Use \texttt{optim} and your function from part (a) to find the MLE.  Use the observed information matrix to calculate 95% confidence intervals for $\alpha$ and $\beta$ based on the asymptotic distribution of the MLE.
+
+c) Now repeat part (b) 1,000 times, keeping track of both $\hat{\bm{\theta}}$ and whether your CI covered $\bm{\theta}$ for each dataset.  Estimate the bias and variance of $\hat{\bm{\theta}}$.
+
+d) Repeat part (c), but with $n=50$ samples in each dataset.
+
+e) Repeat part (c), now with $n=100$ samples in each dataset. The theory says that the variance of $\hat{\bm{\theta}}$ should decrease at a rate of $1/\sqrt{n}$.  Does that seem plausible based on your results?
+
+
+*********************************************************************************
+
+**Answer:**
+
+
+
+*********************************************************************************
+
+
+## Question 2
+Let $Y_1, \ldots, Y_n \iid \text{Poisson}(\lambda)$, and let the prior distribution for $\lambda$ be $\lambda\sim \text{Gamma}(\alpha, \text{rate}=\beta)$.
+
+a) Find the posterior distribution $f(\lambda \given \bm{Y})$. \textit{(Hint: I wouldn't ask you to do this if it wasn't a conjugate pair!)}
+
+b) If $n=5$, $\sum_{i=1}^n y_i = 10$, $\alpha=2$, and $\beta=0.5$, plot the prior and the posterior distributions for $\lambda$ on the same axes.  Mark the MLE for $\lambda$ with a vertical line.  On the same axes, add the plot for the posterior when $n=25$ and $\sum_{i=1}^n y_i = 50$.
+
+
+
+c) Repeat part (b), but with using prior parameters $\alpha=8$ and $\beta=2$.  What do you observe about the relationship between $n$, the prior mean, and the prior variance?
+
+
+
+*********************************************************************************
+
+**Answer:**
+
+
+
+*********************************************************************************
+
